@@ -24,22 +24,25 @@ function useDisplaySize() {
     return dimensions;
 }
 
-function useFitToScreen(ref: RefObject<HTMLImageElement | null>) {
+function useFitToScreen() {
     const displaySize = useDisplaySize();
     const widthScale = displaySize.width / safeZoneDimensions.width;
     const heightScale = displaySize.height / safeZoneDimensions.height;
 
-    const scale = Math.min(widthScale, heightScale);
-
-    if (ref.current) ref.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    return Math.min(widthScale, heightScale);
 }
 
 export default function Game() {
     const containerRef = useRef<HTMLImageElement>(null);
-    useFitToScreen(containerRef);
+    const scale = useFitToScreen();
     return (
         <>
-            <img className={styles.bgImg} src={bgImgUrl} ref={containerRef} />
+            <img
+                className={styles.bgImg}
+                src={bgImgUrl}
+                ref={containerRef}
+                style={{ transform: `translate(-50%, -50%) scale(${scale})` }}
+            />
         </>
     );
 }
