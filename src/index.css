@@ -1,4 +1,11 @@
 :root {
     font-family: system-ui, "Segoe UI", Roboto, sans-serif;
     font-size: 18px;
+
+    margin: 0;
+    padding: 0;
+}
+body {
+    margin: 0;
+    padding: 0;
 }
