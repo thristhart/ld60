@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState, type Ref, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import bgImgUrl from "./assets/PLACEHOLDER_BACKGROUND.png";
 import styles from "./game.module.css";
-
-const bgImgDimensions = { width: 896, height: 1584 };
 
 // Area on the background image that we must ensure is always visible
 const safeZoneLeft = 180;
