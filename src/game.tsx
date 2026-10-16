@@ -1,6 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type Ref, type RefObject } from "react";
 import bgImgUrl from "./assets/PLACEHOLDER_BACKGROUND.png";
 import styles from "./game.module.css";
+
+const bgImgDimensions = { width: 896, height: 1584 };
+
+// Area on the background image that we must ensure is always visible
+const safeZoneLeft = 180;
+const safeZoneRight = 700;
+const safeZoneTop = 600;
+const safeZoneBottom = 1200;
+
+const safeZoneDimensions = { width: safeZoneRight - safeZoneLeft, height: safeZoneBottom - safeZoneTop };
 
 function useDisplaySize() {
     const [dimensions, setDimensions] = useState(() => ({ width: window.innerWidth, height: window.innerHeight }));
@@ -16,12 +26,22 @@ function useDisplaySize() {
     return dimensions;
 }
 
-export default function Game() {
+function useFitToScreen(ref: RefObject<HTMLImageElement | null>) {
     const displaySize = useDisplaySize();
-    console.log(displaySize);
+    const widthScale = displaySize.width / safeZoneDimensions.width;
+    const heightScale = displaySize.height / safeZoneDimensions.height;
+
+    const scale = Math.min(widthScale, heightScale);
+
+    if (ref.current) ref.current.style.transform = `translate(-50%, -50%) scale(${scale})`;
+}
+
+export default function Game() {
+    const containerRef = useRef<HTMLImageElement>(null);
+    useFitToScreen(containerRef);
     return (
         <>
-            <img className={styles.bgImg} src={bgImgUrl} />
+            <img className={styles.bgImg} src={bgImgUrl} ref={containerRef} />
         </>
     );
 }
