@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
 import styles from "./game.module.css";
 import { TV } from "./widgets/tv";
