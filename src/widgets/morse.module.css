@@ -17,3 +17,18 @@
 .TelegraphButton {
     position: absolute;
 }
+
+.TelegraphPreview {
+    position: absolute;
+    top: 870px;
+    left: 880px;
+    width: 740px;
+    height: 170px;
+    background-color: #35afd4;
+}
+
+.TelegraphPreviewText {
+    padding-left: 12px;
+    font-weight: bold;
+    font-size: 36px;
+}

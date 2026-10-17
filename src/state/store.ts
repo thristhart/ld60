@@ -14,6 +14,9 @@ const initialState = {
             hasTape: false,
             currentTime: undefined as number | undefined,
         },
+        morse: {
+            currentValue: "" as string,
+        },
     },
 };
 
@@ -26,6 +29,9 @@ type GameState = typeof initialState & {
         tv: {
             setHasTape: (hasTape: boolean) => void;
             setCurrentTime: (currentTime: number | undefined) => void;
+        };
+        morse: {
+            addMorse: (newCharacter: string) => void;
         };
     };
 };
@@ -51,6 +57,17 @@ export const useGameStore = create<GameState>()((set) => ({
                     }
                     return { widgets: { ...s.widgets, tv: { ...s.widgets.tv, currentTime } } };
                 }),
+        },
+        morse: {
+            ...initialState.widgets.morse,
+            addMorse(newCharacter: string) {
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        morse: { ...s.widgets.morse, currentValue: s.widgets.morse.currentValue + newCharacter },
+                    },
+                }));
+            },
         },
     },
 }));
