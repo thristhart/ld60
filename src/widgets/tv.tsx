@@ -1,4 +1,5 @@
-import { DragDropProvider, useDraggable, useDroppable } from "@dnd-kit/react";
+import { Scroller } from "@dnd-kit/dom";
+import { DragDropProvider, useDragDropManager, useDraggable, useDroppable } from "@dnd-kit/react";
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
 import tvOverviewImgUrl from "../assets/placeholder_tv_overview.png";
@@ -20,6 +21,8 @@ function VHS() {
     const draggable = useDraggable({
         id: "vhs",
     });
+    const manager = useDragDropManager();
+    manager?.registry.plugins.get(Scroller)?.disable();
     if (draggable.isDragging) {
         document.documentElement.dataset.cursor = "grab_closed";
     } else {
