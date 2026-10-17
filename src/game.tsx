@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
-import bgImgUrl from "./assets/PLACEHOLDER_BACKGROUND.png";
+import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
 import styles from "./game.module.css";
+import { TV } from "./widgets/tv";
 
 // Area on the background image that we must ensure is always visible
-const safeZoneLeft = 180;
-const safeZoneRight = 700;
-const safeZoneTop = 600;
-const safeZoneBottom = 1200;
+const safeZoneLeft = 240;
+const safeZoneRight = 2386;
+const safeZoneTop = 240;
+const safeZoneBottom = 1240;
 
 const safeZoneDimensions = { width: safeZoneRight - safeZoneLeft, height: safeZoneBottom - safeZoneTop };
 
@@ -36,13 +37,9 @@ export default function Game() {
     const containerRef = useRef<HTMLImageElement>(null);
     const scale = useFitToScreen();
     return (
-        <>
-            <img
-                className={styles.bgImg}
-                src={bgImgUrl}
-                ref={containerRef}
-                style={{ transform: `translate(-50%, -50%) scale(${scale})` }}
-            />
-        </>
+        <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
+            <img className={styles.bgImg} src={bgImgUrl} ref={containerRef} />
+            <TV left={100} top={100} />
+        </div>
     );
 }

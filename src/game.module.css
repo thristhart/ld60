@@ -1,6 +1,11 @@
-.bgImg {
+.playArea {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    width: 2560px;
+    height: 1440px;
+}
+.bgImg {
+    position: absolute;
+    inset: 0;
 }
