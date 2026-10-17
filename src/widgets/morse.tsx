@@ -2,6 +2,8 @@ import classNames from "classnames";
 import { useEffect, useState } from "react";
 import telegraphKeyBaseImgUrl from "../assets/placeholder_telegraph_key_base.png";
 import telegraphKeyLeverImgUrl from "../assets/placeholder_telegraph_key_lever.png";
+import telegraphKeyLightOffImgUrl from "../assets/placeholder_telegraph_key_off.png";
+import telegraphKeyLightOnImgUrl from "../assets/placeholder_telegraph_key_on.png";
 import telegraphKeyOverviewImgUrl from "../assets/placeholder_telegraph_key_overview.png";
 import { Control } from "./Control";
 import styles from "./morse.module.css";
@@ -54,6 +56,10 @@ function TelegraphKey() {
     return (
         <div className={styles.TelegraphKey}>
             <img className={styles.TelegraphKeyBase} src={telegraphKeyBaseImgUrl} />
+            <img
+                className={styles.TelegraphKeyLight}
+                src={pressed ? telegraphKeyLightOnImgUrl : telegraphKeyLightOffImgUrl}
+            />
             <img
                 className={classNames(styles.TelegraphKeyLever, pressed && styles.LeverPressed)}
                 src={telegraphKeyLeverImgUrl}
