@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
 import grabClosedHandImgUrl from "./assets/placeholder_hand_grabbing_closed.png";
 import grabOpenHandImgUrl from "./assets/placeholder_hand_grabbing_open.png";
@@ -45,6 +45,8 @@ interface WidgetClickAreaProps {
     width: number;
     height: number;
     widget: Widget;
+    clipPath?: CSSProperties["clipPath"];
+    debug?: boolean;
 }
 function WidgetClickArea(props: WidgetClickAreaProps) {
     const store = useGameStore();
@@ -58,6 +60,8 @@ function WidgetClickArea(props: WidgetClickAreaProps) {
                 top: props.top,
                 width: props.width,
                 height: props.height,
+                backgroundColor: props.debug ? "rgba(255, 0, 0, .5)" : "transparent",
+                clipPath: props.clipPath ?? "none",
             }}
             onClick={() => store.setOpenWidget(props.widget)}
         />
@@ -68,7 +72,7 @@ function Overview() {
     return (
         <>
             <WidgetClickArea left={1120} top={600} width={360} height={250} widget={TV} />
-            <WidgetClickArea left={1500} top={300} width={250} height={250} widget={AnalogClock} />
+            <WidgetClickArea left={1505} top={300} width={235} height={235} widget={AnalogClock} clipPath="circle(50% at 50% 50%)" />
         </>
     );
 }
