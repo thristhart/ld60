@@ -17,6 +17,12 @@
     height: 376px;
     background-color: black;
 }
+.ScaledDown .TVVideo {
+    top: 139px;
+    left: 205px;
+    width: 254px;
+    height: 196px;
+}
 .VHS {
     position: absolute;
     top: 640px;

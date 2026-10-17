@@ -1,9 +1,10 @@
 import { DragDropProvider, useDraggable, useDroppable } from "@dnd-kit/react";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import vhsTapeUrl from "../assets/placeholder_vhs_tape_video.mp4";
 import tvImgUrl from "../assets/tv.png";
 import vhsImgUrl from "../assets/vhs.png";
+import { useGameStore } from "../state/store";
 import styles from "./tv.module.css";
 import type { WidgetProps } from "./widget";
 
@@ -40,7 +41,29 @@ function VHS() {
 
 interface TVProps extends WidgetProps {}
 export function TV(props: TVProps) {
-    const [bVHSTapeInPlayer, setVHSInPlayer] = useState(false);
+    const tvState = useGameStore((s) => s.widgets.tv);
+    const isTVFocused = useGameStore((s) => s.openWidget === TV);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const updateVideoCurrentTime = () => {
+            playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
+            tvState.setCurrentTime(videoRef.current?.currentTime);
+        };
+        let playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
+        return () => {
+            cancelAnimationFrame(playbackTrackingAnimationFrame);
+        };
+    }, [tvState.setCurrentTime]);
+
+    useEffect(() => {
+        if (!videoRef.current) {
+            return;
+        }
+        if (props.scaleDown) {
+            videoRef.current.currentTime = tvState.currentTime ?? 0;
+        }
+    }, [tvState.currentTime, props.scaleDown]);
 
     return (
         <div className={classNames(styles.TV, props.scaleDown && styles.ScaledDown)} inert={props.blockInteraction}>
@@ -50,13 +73,24 @@ export function TV(props: TVProps) {
                         return;
                     }
                     if (event.operation.target?.id === "vhsDrop") {
-                        setVHSInPlayer(true);
+                        tvState.setHasTape(true);
+                        requestAnimationFrame(() => {
+                            videoRef.current?.play();
+                        });
                     }
                 }}>
                 <img className={styles.TVimg} src={tvImgUrl} />
                 <VHSDropTarget />
-                {!props.scaleDown && !bVHSTapeInPlayer && <VHS />}
-                {bVHSTapeInPlayer && <video className={styles.TVVideo} src={vhsTapeUrl} playsInline autoPlay />}
+                {!props.scaleDown && !tvState.hasTape && <VHS />}
+                {tvState.hasTape && (
+                    <video
+                        className={styles.TVVideo}
+                        src={vhsTapeUrl}
+                        playsInline
+                        ref={videoRef}
+                        muted={props.blockInteraction && isTVFocused}
+                    />
+                )}
             </DragDropProvider>
         </div>
     );
