@@ -99,6 +99,7 @@ export function AnalogClock(props: AnalogClockProps) {
                 src={secondHandImgUrl}
                 style={{ transform: `rotate(${secondAngle}deg)` }}
                 draggable={false}
+                data-cursor="point"
             />
             <img
                 onMouseDown={onMinuteHandClick}
@@ -106,6 +107,7 @@ export function AnalogClock(props: AnalogClockProps) {
                 src={minuteHandImgUrl}
                 style={{ transform: `rotate(${minuteAngle}deg)` }}
                 draggable={false}
+                data-cursor="point"
             />
             <img
                 onMouseDown={onHourHandClick}
@@ -113,6 +115,7 @@ export function AnalogClock(props: AnalogClockProps) {
                 src={hourHandImgUrl}
                 style={{ transform: `rotate(${hourAngle}deg)` }}
                 draggable={false}
+                data-cursor="point"
             />
         </div>
     );
