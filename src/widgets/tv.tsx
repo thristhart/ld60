@@ -1,6 +1,7 @@
 import { DragDropProvider, useDraggable, useDroppable } from "@dnd-kit/react";
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
+import tvOverviewImgUrl from "../assets/placeholder_tv_overview.png";
 import vhsTapeUrl from "../assets/placeholder_vhs_tape_video.mp4";
 import tvImgUrl from "../assets/TV_placeholder.png";
 import vhsImgUrl from "../assets/vhs.png";
@@ -79,7 +80,6 @@ export function TV(props: TVProps) {
                         });
                     }
                 }}>
-                <img className={styles.TVimg} src={tvImgUrl} />
                 <VHSDropTarget />
                 {!props.scaleDown && !tvState.hasTape && <VHS />}
                 {tvState.hasTape && (
@@ -91,6 +91,7 @@ export function TV(props: TVProps) {
                         muted={props.blockInteraction && isTVFocused}
                     />
                 )}
+                <img className={styles.TVimg} src={props.scaleDown ? tvOverviewImgUrl : tvImgUrl} />
             </DragDropProvider>
         </div>
     );
