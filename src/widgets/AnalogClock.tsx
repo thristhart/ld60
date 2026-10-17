@@ -1,8 +1,9 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import clockFaceImgUrl from "../assets/analog_clock/clock_face.jpg";
 import hourHandImgUrl from "../assets/analog_clock/hour_hand.png";
 import minuteHandImgUrl from "../assets/analog_clock/minute_hand.png";
 import secondHandImgUrl from "../assets/analog_clock/second_hand.png";
+import { useGameStore } from "../state/store";
 import analogClockStyles from "./AnalogClock.module.css";
 
 interface AnalogClockProps {
@@ -39,9 +40,16 @@ function useRadianDrag(containerRef: React.RefObject<HTMLDivElement|null>, setDe
 export function AnalogClock( props: AnalogClockProps) { 
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const [hourAngle, setHourAngle] = useState( 270 ); 
-    const [minuteAngle, setMinuteAngle] = useState( 315 ); 
-    const [secondAngle, setSecondAngle] = useState( 0 ); 
+    const store = useGameStore();
+    const {
+        analogClockHourDegree: hourAngle, 
+        setAnalogClockHourDegree: setHourAngle,
+        analogClockMinuteDegree: minuteAngle,
+        setAnalogClockMinuteDegree: setMinuteAngle,
+        analogClockSecondDegree: secondAngle,
+        setAnalogClockSecondDegree: setSecondAngle
+    } = store;
+
     
     const hourHandRadianDrag = useRadianDrag(containerRef, setHourAngle); 
     const minuteHandRadianDrag = useRadianDrag(containerRef, setMinuteAngle); 

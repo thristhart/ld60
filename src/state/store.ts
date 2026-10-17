@@ -1,20 +1,25 @@
 // store.ts
 import { create } from "zustand";
 import type { Widget } from "../widgets/widget";
+
 const initialState = {
-    puzzles: 0,
+    analogClockHourDegree: 270,
+    analogClockMinuteDegree: 315,
+    analogClockSecondDegree: 0,
     openWidget: undefined as Widget | undefined,
 };
 
 type GameState = typeof initialState & {
-    increase: (delta: number) => void;
-    reset: () => void;
+    setAnalogClockHourDegree: ( degree: number ) => void;
+    setAnalogClockMinuteDegree: ( degree: number ) => void;
+    setAnalogClockSecondDegree: ( degree: number ) => void;
     setOpenWidget: (newWidget: Widget | undefined) => void;
 };
 
 export const useGameStore = create<GameState>()((set) => ({
     ...initialState,
-    increase: (delta: number) => set((s) => ({ puzzles: s.puzzles + delta })),
-    reset: () => set(initialState),
+    setAnalogClockHourDegree: ( degree: number ) => set({ analogClockHourDegree: degree }), 
+    setAnalogClockMinuteDegree: ( degree: number ) => set({ analogClockMinuteDegree: degree }), 
+    setAnalogClockSecondDegree: ( degree: number ) => set({ analogClockSecondDegree: degree }), 
     setOpenWidget: (newWidget) => set({ openWidget: newWidget }),
 }));
