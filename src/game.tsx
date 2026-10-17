@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
+import bgImgUrlLeft from "./assets/left_window_furniture.png";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
 import grabClosedHandImgUrl from "./assets/placeholder_hand_grabbing_closed.png";
 import grabOpenHandImgUrl from "./assets/placeholder_hand_grabbing_open.png";
 import pointHandImgUrl from "./assets/placeholder_hand_pointing.png";
+import bgImgUrlTable from "./assets/table_layer.png";
 import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
 import { AnalogClock } from "./widgets/AnalogClock";
@@ -33,6 +35,9 @@ function useDisplaySize() {
 
 function useFitToScreen() {
     const displaySize = useDisplaySize();
+    if (displaySize.width > safeZoneDimensions.width && displaySize.height > safeZoneDimensions.height) {
+        return 1;
+    }
     const widthScale = displaySize.width / safeZoneDimensions.width;
     const heightScale = displaySize.height / safeZoneDimensions.height;
 
@@ -160,6 +165,8 @@ export default function Game() {
         <>
             <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
                 <img className={styles.bgImg} src={bgImgUrl} />
+                <img className={styles.bgImg} src={bgImgUrlLeft} />
+                <img className={styles.bgImg} src={bgImgUrlTable} />
                 <Overview />
                 <WidgetView />
             </div>
