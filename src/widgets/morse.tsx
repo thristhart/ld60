@@ -35,8 +35,8 @@ export function Morse(props: MorseProps) {
 
 const secondsMorseBeepFade = 0.05;
 const morseBeepVolume = 0.01;
-const maxDotLength = 300; //300ms
-const minSpaceLength = 1000; //1s
+const maxDotLength = 300; // 300ms
+const minSpaceLength = 500; // half a second
 
 function TelegraphKey() {
     const { context, gain } = useMorseAudioContext();
