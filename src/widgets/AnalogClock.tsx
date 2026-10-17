@@ -1,11 +1,13 @@
+import classNames from "classnames";
 import { useCallback, useRef, useState } from "react";
 import clockFaceImgUrl from "../assets/analog_clock/clock_face.png";
 import hourHandImgUrl from "../assets/analog_clock/hour_hand.png";
 import minuteHandImgUrl from "../assets/analog_clock/minute_hand.png";
 import secondHandImgUrl from "../assets/analog_clock/second_hand.png";
 import analogClockStyles from "./AnalogClock.module.css";
+import type { WidgetProps } from "./widget";
 
-interface AnalogClockProps {}
+interface AnalogClockProps extends WidgetProps {}
 
 function useRadianDrag(containerRef: React.RefObject<HTMLDivElement | null>, setDegrees: (degrees: number) => void) {
     const onMouseMove = useCallback(
@@ -74,8 +76,15 @@ export function AnalogClock(props: AnalogClockProps) {
     }, []);
 
     return (
-        <div ref={containerRef} className={analogClockStyles.AnalogClockContainer}>
-            <img className={analogClockStyles.ClockFace} src={clockFaceImgUrl} draggable={false} />
+        <div
+            ref={containerRef}
+            className={classNames(
+                analogClockStyles.AnalogClockContainer,
+                props.scaleDown && analogClockStyles.ScaledDown
+            )}
+            inert={props.blockInteraction}
+            draggable={false}>
+            <img className={analogClockStyles.ClockFace} src={clockFaceImgUrl} />
             <img
                 onMouseDown={onSecondHandClick}
                 className={analogClockStyles.SecondHand}

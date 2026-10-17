@@ -63,8 +63,9 @@ function WidgetClickArea(props: WidgetClickAreaProps) {
                 backgroundColor: props.debug ? "rgba(255, 0, 0, .5)" : "transparent",
                 clipPath: props.clipPath ?? "none",
             }}
-            onClick={() => store.setOpenWidget(props.widget)}
-        />
+            onClick={() => store.setOpenWidget(props.widget)}>
+            <props.widget scaleDown blockInteraction></props.widget>
+        </button>
     );
 }
 
@@ -72,7 +73,7 @@ function Overview() {
     return (
         <>
             <WidgetClickArea left={1120} top={600} width={360} height={250} widget={TV} />
-            <WidgetClickArea left={1505} top={300} width={235} height={235} widget={AnalogClock} clipPath="circle(50% at 50% 50%)" />
+            <WidgetClickArea left={1505} top={300} width={235} height={235} widget={AnalogClock} />
         </>
     );
 }

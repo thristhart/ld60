@@ -1,9 +1,11 @@
 import { DragDropProvider, useDraggable, useDroppable } from "@dnd-kit/react";
+import classNames from "classnames";
 import { useEffect, useState } from "react";
 import vhsTapeUrl from "../assets/placeholder_vhs_tape_video.mp4";
 import tvImgUrl from "../assets/tv.png";
 import vhsImgUrl from "../assets/vhs.png";
 import styles from "./tv.module.css";
+import type { WidgetProps } from "./widget";
 
 function VHSDropTarget() {
     const droppable = useDroppable({
@@ -36,12 +38,12 @@ function VHS() {
     );
 }
 
-interface TVProps {}
+interface TVProps extends WidgetProps {}
 export function TV(props: TVProps) {
     const [bVHSTapeInPlayer, setVHSInPlayer] = useState(false);
 
     return (
-        <div className={styles.TV}>
+        <div className={classNames(styles.TV, props.scaleDown && styles.ScaledDown)} inert={props.blockInteraction}>
             <DragDropProvider
                 onDragEnd={(event) => {
                     if (event.canceled) {

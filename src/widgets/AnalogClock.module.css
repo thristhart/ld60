@@ -1,5 +1,6 @@
 .AnalogClockContainer {
     position: relative;
+    width: fit-content;
 }
 
 .ClockFace {
@@ -29,4 +30,8 @@
     top: 50%;
     left: 50%;
     transform-origin: 20px 50%;
+}
+
+.AnalogClockContainer.ScaledDown {
+    transform: translate(-500px, -550px) scale(0.2);
 }
