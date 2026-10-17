@@ -37,4 +37,5 @@
     right: 8px;
     color: #62e390;
     text-shadow: 0 0 10px rgba(0, 255, 192, 0.6);
+    white-space: pre;
 }

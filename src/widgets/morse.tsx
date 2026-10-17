@@ -47,16 +47,15 @@ function TelegraphKey() {
     const previewRef = useRef<HTMLDivElement>(null);
     const currentMorse = useGameStore((s) => s.widgets.morse.currentValue);
     const addMorse = useGameStore((s) => s.widgets.morse.addMorse);
+    const addSpaceTimeoutRef = useRef<number | undefined>(undefined);
 
     useEffect(() => {
         if (lastPressed.current !== pressed) {
+            if (addSpaceTimeoutRef.current) {
+                clearTimeout(addSpaceTimeoutRef.current);
+            }
             const timeNow = Date.now();
             if (pressed) {
-                // if newly pressed:
-                if (timeNow - lastUnpressedTime.current > minSpaceLength) {
-                    addMorse(" ");
-                }
-
                 lastPressedTime.current = Date.now();
             } else {
                 // if newly unpressed:
@@ -67,6 +66,10 @@ function TelegraphKey() {
                 }
 
                 lastUnpressedTime.current = Date.now();
+
+                addSpaceTimeoutRef.current = window.setTimeout(() => {
+                    addMorse(" ");
+                }, minSpaceLength);
             }
         }
         if (pressed) {
