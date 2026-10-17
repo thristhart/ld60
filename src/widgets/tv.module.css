@@ -33,4 +33,5 @@
 .TV.ScaledDown {
     width: 368px;
     height: 462px;
+    transform: translate(-188px, -114px);
 }

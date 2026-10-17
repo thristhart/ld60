@@ -55,7 +55,7 @@ export function TV(props: TVProps) {
                 }}>
                 <img className={styles.TVimg} src={tvImgUrl} />
                 <VHSDropTarget />
-                {!bVHSTapeInPlayer && <VHS />}
+                {!props.scaleDown && !bVHSTapeInPlayer && <VHS />}
                 {bVHSTapeInPlayer && <video className={styles.TVVideo} src={vhsTapeUrl} playsInline autoPlay />}
             </DragDropProvider>
         </div>
