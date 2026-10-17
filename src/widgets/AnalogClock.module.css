@@ -1,6 +1,7 @@
 .AnalogClockContainer {
     position: relative;
     width: fit-content;
+    user-select: none;
 }
 
 .ClockFace {
