@@ -1,5 +1,5 @@
 import { DragDropProvider, useDraggable, useDroppable } from "@dnd-kit/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import vhsTapeUrl from "../assets/placeholder_vhs_tape_video.mp4";
 import tvImgUrl from "../assets/tv.png";
 import vhsImgUrl from "../assets/vhs.png";
@@ -16,7 +16,24 @@ function VHS() {
     const draggable = useDraggable({
         id: "vhs",
     });
-    return <img className={styles.VHS} src={vhsImgUrl} ref={draggable.ref} />;
+    if (draggable.isDragging) {
+        document.documentElement.dataset.cursor = "grab_closed";
+    } else {
+        delete document.documentElement.dataset.cursor;
+    }
+    useEffect(() => {
+        return () => {
+            delete document.documentElement.dataset.cursor;
+        };
+    }, []);
+    return (
+        <img
+            className={styles.VHS}
+            src={vhsImgUrl}
+            ref={draggable.ref}
+            data-cursor={draggable.isDragging ? "grab_closed" : "grab_open"}
+        />
+    );
 }
 
 interface TVProps {}

@@ -1,5 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
+import grabClosedHandImgUrl from "./assets/placeholder_hand_grabbing_closed.png";
+import grabOpenHandImgUrl from "./assets/placeholder_hand_grabbing_open.png";
+import pointHandImgUrl from "./assets/placeholder_hand_pointing.png";
 import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
 import { AnalogClock } from "./widgets/AnalogClock";
@@ -47,6 +50,8 @@ function WidgetClickArea(props: WidgetClickAreaProps) {
     const store = useGameStore();
     return (
         <button
+            inert={!!store.openWidget}
+            data-cursor="point"
             className={styles.widgetClickArea}
             style={{
                 left: props.left,
@@ -94,14 +99,66 @@ function WidgetView() {
     );
 }
 
+function getCursorImageForType(cursorType: string | undefined) {
+    if (cursorType === "point") {
+        return pointHandImgUrl;
+    }
+    if (cursorType === "grab_open") {
+        return grabOpenHandImgUrl;
+    }
+    if (cursorType === "grab_closed") {
+        return grabClosedHandImgUrl;
+    }
+
+    return "";
+}
+
+function useCustomCursor(pointerImgRef: RefObject<HTMLImageElement | null>, scale: number) {
+    useEffect(() => {
+        const mouseMove = (e: MouseEvent) => {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            const hoverTargets = document.elementsFromPoint(x, y);
+            let cursorType = undefined;
+            for (const target of hoverTargets) {
+                if ("dataset" in target) {
+                    let targetCursor = (target as HTMLElement).dataset.cursor;
+                    if (targetCursor) {
+                        cursorType = targetCursor;
+                        break;
+                    }
+                }
+            }
+            if (pointerImgRef.current) {
+                // hacks to make sure it's always on top
+                pointerImgRef.current?.hidePopover();
+                pointerImgRef.current?.showPopover();
+
+                const newImg = getCursorImageForType(cursorType);
+                pointerImgRef.current.src = newImg;
+                pointerImgRef.current.style.transform = `translate3d(calc(${x}px), ${y}px, 0) scale(${scale})`;
+            }
+        };
+        window.addEventListener("mousemove", mouseMove);
+        return () => window.removeEventListener("mousemove", mouseMove);
+    });
+}
+
 export default function Game() {
-    const containerRef = useRef<HTMLImageElement>(null);
+    const customPointerRef = useRef<HTMLImageElement>(null);
+
     const scale = useFitToScreen();
+    useCustomCursor(customPointerRef, scale);
+
     return (
-        <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
-            <img className={styles.bgImg} src={bgImgUrl} ref={containerRef} />
-            <Overview />
-            <WidgetView />
-        </div>
+        <>
+            <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
+                <img className={styles.bgImg} src={bgImgUrl} />
+                <Overview />
+                <WidgetView />
+            </div>
+            <img className={styles.customPointer} ref={customPointerRef} popover="manual" />
+        </>
     );
 }
