@@ -81,17 +81,15 @@ export function TV(props: TVProps) {
                     }
                 }}>
                 <VHSDropTarget />
-                {!props.scaleDown && !tvState.hasTape && <VHS />}
-                {tvState.hasTape && (
-                    <video
-                        className={styles.TVVideo}
-                        src={vhsTapeUrl}
-                        playsInline
-                        ref={videoRef}
-                        muted={props.blockInteraction && isTVFocused}
-                    />
-                )}
+                <video
+                    className={styles.TVVideo}
+                    src={vhsTapeUrl}
+                    playsInline
+                    ref={videoRef}
+                    muted={props.blockInteraction && isTVFocused}
+                />
                 <img className={styles.TVimg} src={props.scaleDown ? tvOverviewImgUrl : tvImgUrl} />
+                {!props.scaleDown && !tvState.hasTape && <VHS />}
             </DragDropProvider>
         </div>
     );
