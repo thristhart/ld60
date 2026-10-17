@@ -3,23 +3,54 @@ import { create } from "zustand";
 import type { Widget } from "../widgets/widget";
 
 const initialState = {
-    analogClockHourDegree: 270,
-    analogClockMinuteDegree: 315,
-    analogClockSecondDegree: 0,
     openWidget: undefined as Widget | undefined,
+    widgets: {
+        clock: {
+            hourAngle: 270,
+            minuteAngle: 315,
+            secondAngle: 0,
+        },
+        tv: {
+            hasTape: false,
+            currentTime: undefined as number | undefined,
+        },
+    },
 };
 
 type GameState = typeof initialState & {
-    setAnalogClockHourDegree: ( degree: number ) => void;
-    setAnalogClockMinuteDegree: ( degree: number ) => void;
-    setAnalogClockSecondDegree: ( degree: number ) => void;
     setOpenWidget: (newWidget: Widget | undefined) => void;
+    widgets: {
+        clock: {
+            setClockHandAngle: (hand: "hour" | "minute" | "second", angle: number) => void;
+        };
+        tv: {
+            setHasTape: (hasTape: boolean) => void;
+            setCurrentTime: (currentTime: number | undefined) => void;
+        };
+    };
 };
 
 export const useGameStore = create<GameState>()((set) => ({
     ...initialState,
-    setAnalogClockHourDegree: ( degree: number ) => set({ analogClockHourDegree: degree }), 
-    setAnalogClockMinuteDegree: ( degree: number ) => set({ analogClockMinuteDegree: degree }), 
-    setAnalogClockSecondDegree: ( degree: number ) => set({ analogClockSecondDegree: degree }), 
     setOpenWidget: (newWidget) => set({ openWidget: newWidget }),
+    widgets: {
+        ...initialState.widgets,
+        clock: {
+            ...initialState.widgets.clock,
+            setClockHandAngle: (hand, angle) =>
+                set((s) => ({ widgets: { ...s.widgets, clock: { ...s.widgets.clock, [`${hand}Angle`]: angle } } })),
+        },
+        tv: {
+            ...initialState.widgets.tv,
+            setHasTape: (hasTape: boolean) =>
+                set((s) => ({ widgets: { ...s.widgets, tv: { ...s.widgets.tv, hasTape } } })),
+            setCurrentTime: (currentTime: number | undefined) =>
+                set((s) => {
+                    if (s.widgets.tv.currentTime === currentTime) {
+                        return s;
+                    }
+                    return { widgets: { ...s.widgets, tv: { ...s.widgets.tv, currentTime } } };
+                }),
+        },
+    },
 }));

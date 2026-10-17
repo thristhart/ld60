@@ -1,4 +1,7 @@
 import type { ReactNode } from "react";
 
-interface WidgetProps {}
+export interface WidgetProps {
+    scaleDown?: boolean;
+    blockInteraction?: boolean;
+}
 export type Widget = (props: WidgetProps) => ReactNode;

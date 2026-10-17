@@ -1,55 +1,37 @@
-.AnalogClockContainer { 
-    position: relative; 
-    height: 1000px;
-    width: 1000px;
-    
+.AnalogClockContainer {
+    position: relative;
+    width: fit-content;
 }
 
 .ClockFace {
-    position: absolute;
-    height: 100%;
-    width: 100;
     z-index: 1;
-    -webkit-user-drag: none;   /* Prevent drag in WebKit browsers */
-    user-drag: none;  
+    transform: translate(20px, 42px);
 }
 
 .SecondHand {
     position: absolute;
-    height: 8px;
-    width: 40%;
     z-index: 2;
-    transform: translateY(-50%);
-    top:  50%;
+    top: 50%;
     left: 50%;
-    -webkit-user-drag: none;   /* Prevent drag in WebKit browsers */
-    user-drag: none;  
-    transform-origin: 0% 50%;
+    transform-origin: 20px 50%;
 }
 
 .MinuteHand {
     position: absolute;
-    height: 8px;
-    width: 30%;
     z-index: 3;
-    transform: translateY(-50%);
-    top:  50%;
+    top: 50%;
     left: 50%;
-    -webkit-user-drag: none;   /* Prevent drag in WebKit browsers */
-    user-drag: none; 
-    transform-origin: 0% 50%; 
-
+    transform-origin: 20px 50%;
 }
 
 .HourHand {
     position: absolute;
-    height: 8px;
-    width: 20%; 
     z-index: 4;
-    transform: translateY(-50%);
-    top:  50%;
+    top: 50%;
     left: 50%;
-    -webkit-user-drag: none;   /* Prevent drag in WebKit browsers */
-    user-drag: none;
-    transform-origin: 0% 50%;
+    transform-origin: 20px 50%;
+}
+
+.AnalogClockContainer.ScaledDown {
+    transform: translate(-500px, -550px) scale(0.2);
 }
