@@ -1,0 +1,16 @@
+.ScaledDown {
+}
+
+.TelegraphKeyLever {
+    position: absolute;
+    top: 670px;
+    left: 880px;
+    transform-origin: 420px 120px;
+}
+.LeverPressed {
+    transform: rotate(-7deg);
+}
+
+.TelegraphButton {
+    position: absolute;
+}

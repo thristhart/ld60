@@ -9,6 +9,7 @@ import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
 import { AnalogClock } from "./widgets/AnalogClock";
 import { Hotspot } from "./widgets/Hotspot";
+import { Morse } from "./widgets/morse";
 import { RotaryPhone } from "./widgets/RotaryPhone";
 import { TV } from "./widgets/tv";
 
@@ -51,6 +52,7 @@ function Overview() {
             <Hotspot left={1120} top={600} width={1490 / 4} height={1064 / 4} widget={TV} />
             <Hotspot left={1505} top={300} width={235} height={235} widget={AnalogClock} />
             <Hotspot left={895} top={750} width={190} height={150} widget={RotaryPhone} />
+            <Hotspot left={520} top={780} width={190} height={150} widget={Morse} />
         </>
     );
 }
