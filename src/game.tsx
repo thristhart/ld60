@@ -52,7 +52,6 @@ function WidgetClickArea(props: WidgetClickAreaProps) {
                 top: props.top,
                 width: props.width,
                 height: props.height,
-                backgroundColor: "cornflowerblue",
             }}
             onClick={() => store.setOpenWidget(props.widget)}
         />
@@ -69,17 +68,33 @@ function Overview() {
 
 function WidgetView() {
     const store = useGameStore();
+    useEffect(() => {
+        if (!store.openWidget) {
+            return () => {};
+        }
+        const keyup = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                store.setOpenWidget(undefined);
+            }
+        };
+        window.addEventListener("keyup", keyup);
+        return () => window.removeEventListener("keyup", keyup);
+    });
     if (!store.openWidget) {
         return null;
     }
 
-    return <store.openWidget />;
+    return (
+        <div className={styles.widgetView}>
+            <store.openWidget />
+            <span className={styles.widgetViewInstructions}>hit ESC to close</span>
+        </div>
+    );
 }
 
 export default function Game() {
     const containerRef = useRef<HTMLImageElement>(null);
     const scale = useFitToScreen();
-    const store = useGameStore();
     return (
         <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
             <img className={styles.bgImg} src={bgImgUrl} ref={containerRef} />

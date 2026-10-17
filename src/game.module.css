@@ -13,4 +13,22 @@
 .widgetClickArea {
     position: absolute;
     cursor: pointer;
+    background-color: transparent;
+}
+.widgetView {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.widgetViewInstructions {
+    position: absolute;
+    bottom: 250px;
+    left: 250px;
+    color: white;
+    font-size: 24px;
 }
