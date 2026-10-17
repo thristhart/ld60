@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
 import styles from "./game.module.css";
+import { useGameStore } from "./state/store";
 import { TV } from "./widgets/tv";
+import type { Widget } from "./widgets/widget";
 
 // Area on the background image that we must ensure is always visible
 const safeZoneLeft = 240;
@@ -33,13 +35,56 @@ function useFitToScreen() {
     return Math.min(widthScale, heightScale);
 }
 
+interface WidgetClickAreaProps {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    widget: Widget;
+}
+function WidgetClickArea(props: WidgetClickAreaProps) {
+    const store = useGameStore();
+    return (
+        <button
+            className={styles.widgetClickArea}
+            style={{
+                left: props.left,
+                top: props.top,
+                width: props.width,
+                height: props.height,
+                backgroundColor: "cornflowerblue",
+            }}
+            onClick={() => store.setOpenWidget(props.widget)}
+        />
+    );
+}
+
+function Overview() {
+    return (
+        <>
+            <WidgetClickArea left={1120} top={600} width={360} height={250} widget={TV} />
+        </>
+    );
+}
+
+function WidgetView() {
+    const store = useGameStore();
+    if (!store.openWidget) {
+        return null;
+    }
+
+    return <store.openWidget />;
+}
+
 export default function Game() {
     const containerRef = useRef<HTMLImageElement>(null);
     const scale = useFitToScreen();
+    const store = useGameStore();
     return (
         <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
             <img className={styles.bgImg} src={bgImgUrl} ref={containerRef} />
-            <TV left={100} top={100} />
+            <Overview />
+            <WidgetView />
         </div>
     );
 }
