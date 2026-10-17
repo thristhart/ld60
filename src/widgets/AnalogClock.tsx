@@ -57,28 +57,47 @@ export function AnalogClock(props: AnalogClockProps) {
     );
 
     const onHourHandClick = useCallback(() => {
+        if( containerRef.current ) {
+            containerRef.current.dataset.cursor = "point";
+        }
+
         window.addEventListener("mousemove", hourHandRadianDrag);
         const onMouseUp = () => {
             window.removeEventListener("mousemove", hourHandRadianDrag);
             window.removeEventListener("mouseup", onMouseUp);
+            if( containerRef.current ) {
+                delete containerRef.current.dataset.cursor;
+            }
         };
         window.addEventListener("mouseup", onMouseUp);
     }, []);
 
     const onMinuteHandClick = useCallback(() => {
+        if( containerRef.current ) {
+            containerRef.current.dataset.cursor = "point";
+        }
         window.addEventListener("mousemove", minuteHandRadianDrag);
         const onMouseUp = () => {
             window.removeEventListener("mousemove", minuteHandRadianDrag);
             window.removeEventListener("mouseup", onMouseUp);
+            if( containerRef.current ) {
+                delete containerRef.current.dataset.cursor; 
+            }
         };
         window.addEventListener("mouseup", onMouseUp);
     }, []);
 
     const onSecondHandClick = useCallback(() => {
+        if( containerRef.current ) {
+            containerRef.current.dataset.cursor = "point";
+        }
         window.addEventListener("mousemove", secondHandRadianDrag);
         const onMouseUp = () => {
             window.removeEventListener("mousemove", secondHandRadianDrag);
             window.removeEventListener("mouseup", onMouseUp);
+            if( containerRef.current ) {
+                delete containerRef.current.dataset.cursor;
+            }
         };
         window.addEventListener("mouseup", onMouseUp);
     }, []);
