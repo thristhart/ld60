@@ -13,6 +13,7 @@ import { Morse } from "./widgets/morse";
 import { RotaryPhone } from "./widgets/RotaryPhone";
 import { SwitchBoard } from "./widgets/SwitchBoard";
 import { TV } from "./widgets/tv";
+import type { WidgetProps } from "./widgets/widget";
 
 // Area on the background image that we must ensure is always visible
 const safeZoneLeft = 240;
@@ -47,12 +48,16 @@ function useFitToScreen() {
     return Math.min(widthScale, heightScale);
 }
 
+function LoggingRotaryPhone(props: WidgetProps) {
+    return <RotaryPhone {...props} onDial={(dialed) => console.log(`dialed ${dialed}`)} />;
+}
+
 function Overview() {
     return (
         <>
             <Hotspot left={1120} top={600} width={1490 / 4} height={1064 / 4} widget={TV} />
             <Hotspot left={1505} top={300} width={235} height={235} widget={AnalogClock} />
-            <Hotspot left={895} top={750} width={190} height={150} widget={RotaryPhone} />
+            <Hotspot left={895} top={750} width={190} height={150} widget={LoggingRotaryPhone} />
             <Hotspot left={520} top={780} width={190} height={150} widget={Morse} />
             <Hotspot left={1925} top={246} width={400} height={400} widget={SwitchBoard} />
         </>
