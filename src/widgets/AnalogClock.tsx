@@ -75,24 +75,27 @@ export function AnalogClock(props: AnalogClockProps) {
 
     return (
         <div ref={containerRef} className={analogClockStyles.AnalogClockContainer}>
-            <img className={analogClockStyles.ClockFace} src={clockFaceImgUrl} />
+            <img className={analogClockStyles.ClockFace} src={clockFaceImgUrl} draggable={false} />
             <img
                 onMouseDown={onSecondHandClick}
                 className={analogClockStyles.SecondHand}
                 src={secondHandImgUrl}
                 style={{ transform: `rotate(${secondAngle}deg)` }}
+                draggable={false}
             />
             <img
                 onMouseDown={onMinuteHandClick}
                 className={analogClockStyles.MinuteHand}
                 src={minuteHandImgUrl}
                 style={{ transform: `rotate(${minuteAngle}deg)` }}
+                draggable={false}
             />
             <img
                 onMouseDown={onHourHandClick}
                 className={analogClockStyles.HourHand}
                 src={hourHandImgUrl}
                 style={{ transform: `rotate(${hourAngle}deg)` }}
+                draggable={false}
             />
         </div>
     );

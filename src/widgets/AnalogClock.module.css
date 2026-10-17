@@ -4,7 +4,6 @@
 
 .ClockFace {
     z-index: 1;
-    pointer-events: none;
     transform: translate(20px, 42px);
 }
 
@@ -14,7 +13,6 @@
     transform: translateY(-50%);
     top: 50%;
     left: 50%;
-    pointer-events: none;
     transform-origin: 20px 50%;
 }
 
@@ -24,7 +22,6 @@
     transform: translateY(-50%);
     top: 50%;
     left: 50%;
-    pointer-events: none;
     transform-origin: 20px 50%;
 }
 
@@ -34,6 +31,5 @@
     transform: translateY(-50%);
     top: 50%;
     left: 50%;
-    pointer-events: none;
     transform-origin: 20px 50%;
 }
