@@ -1,5 +1,6 @@
+import classNames from "classnames";
 import { useCallback, useRef } from "react";
-import clockFaceImgUrl from "../assets/analog_clock/clock_face.jpg";
+import clockFaceImgUrl from "../assets/analog_clock/clock_face.png";
 import hourHandImgUrl from "../assets/analog_clock/hour_hand.png";
 import minuteHandImgUrl from "../assets/analog_clock/minute_hand.png";
 import secondHandImgUrl from "../assets/analog_clock/second_hand.png";
