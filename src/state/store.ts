@@ -64,7 +64,10 @@ export const useGameStore = create<GameState>()((set) => ({
                 set((s) => ({
                     widgets: {
                         ...s.widgets,
-                        morse: { ...s.widgets.morse, currentValue: s.widgets.morse.currentValue + newCharacter },
+                        morse: {
+                            ...s.widgets.morse,
+                            currentValue: (s.widgets.morse.currentValue + newCharacter).slice(-50),
+                        },
                     },
                 }));
             },
