@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
 import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
+import { AnalogClock } from "./widgets/AnalogClock";
 import { TV } from "./widgets/tv";
 import type { Widget } from "./widgets/widget";
 
@@ -62,6 +63,7 @@ function Overview() {
     return (
         <>
             <WidgetClickArea left={1120} top={600} width={360} height={250} widget={TV} />
+            <WidgetClickArea left={1500} top={300} width={250} height={250} widget={AnalogClock} />
         </>
     );
 }
