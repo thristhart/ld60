@@ -34,7 +34,7 @@ const secondsMorseBeepFade = 0.05;
 const morseBeepVolume = 0.01;
 
 function TelegraphKey() {
-    const { context, oscillator, gain } = useMorseAudioContext();
+    const { context, gain } = useMorseAudioContext();
     const [pressed, setPressed] = useState(false);
 
     useEffect(() => {
@@ -43,9 +43,11 @@ function TelegraphKey() {
             gain.gain.linearRampToValueAtTime(morseBeepVolume, context.currentTime + secondsMorseBeepFade);
             gain.gain.setValueAtTime(morseBeepVolume, context.currentTime + secondsMorseBeepFade);
         } else {
-            gain.gain.setValueAtTime(morseBeepVolume, context.currentTime);
-            gain.gain.linearRampToValueAtTime(0, context.currentTime + secondsMorseBeepFade);
-            gain.gain.setValueAtTime(0, context.currentTime + secondsMorseBeepFade);
+            if (gain.gain.value !== 0) {
+                gain.gain.setValueAtTime(morseBeepVolume, context.currentTime);
+                gain.gain.linearRampToValueAtTime(0, context.currentTime + secondsMorseBeepFade);
+                gain.gain.setValueAtTime(0, context.currentTime + secondsMorseBeepFade);
+            }
         }
     }, [pressed]);
 
