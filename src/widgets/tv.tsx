@@ -45,29 +45,33 @@ function VHS() {
 
 interface TVProps extends WidgetProps {}
 export function TV(props: TVProps) {
-    const tvState = useGameStore((s) => s.widgets.tv);
+    const currentTime = useGameStore((s) => s.widgets.tv.currentTime);
+    const setCurrentTime = useGameStore((s) => s.widgets.tv.setCurrentTime);
+    const hasTape = useGameStore((s) => s.widgets.tv.hasTape);
+    const setHasTape = useGameStore((s) => s.widgets.tv.setHasTape);
+
     const isTVFocused = useGameStore((s) => s.openWidget === TV);
     const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         const updateVideoCurrentTime = () => {
             playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
-            tvState.setCurrentTime(videoRef.current?.currentTime);
+            setCurrentTime(videoRef.current?.currentTime);
         };
         let playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
         return () => {
             cancelAnimationFrame(playbackTrackingAnimationFrame);
         };
-    }, [tvState.setCurrentTime]);
+    }, [setCurrentTime]);
 
     useEffect(() => {
         if (!videoRef.current) {
             return;
         }
-        if (props.scaleDown) {
-            videoRef.current.currentTime = tvState.currentTime ?? 0;
+        if (videoRef.current.paused) {
+            videoRef.current.currentTime = currentTime ?? 0;
         }
-    }, [tvState.currentTime, props.scaleDown]);
+    }, [currentTime, props.scaleDown]);
 
     return (
         <div className={classNames(styles.TV, props.scaleDown && styles.ScaledDown)} inert={props.blockInteraction}>
@@ -77,7 +81,7 @@ export function TV(props: TVProps) {
                         return;
                     }
                     if (event.operation.target?.id === "vhsDrop") {
-                        tvState.setHasTape(true);
+                        setHasTape(true);
                         requestAnimationFrame(() => {
                             videoRef.current?.play();
                         });
@@ -92,7 +96,7 @@ export function TV(props: TVProps) {
                     muted={props.blockInteraction && isTVFocused}
                 />
                 <img className={styles.TVimg} src={props.scaleDown ? tvOverviewImgUrl : tvImgUrl} />
-                {!props.scaleDown && !tvState.hasTape && <VHS />}
+                {!props.scaleDown && !hasTape && <VHS />}
             </DragDropProvider>
         </div>
     );

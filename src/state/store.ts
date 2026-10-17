@@ -44,7 +44,12 @@ export const useGameStore = create<GameState>()((set) => ({
             setHasTape: (hasTape: boolean) =>
                 set((s) => ({ widgets: { ...s.widgets, tv: { ...s.widgets.tv, hasTape } } })),
             setCurrentTime: (currentTime: number | undefined) =>
-                set((s) => ({ widgets: { ...s.widgets, tv: { ...s.widgets.tv, currentTime } } })),
+                set((s) => {
+                    if (s.widgets.tv.currentTime === currentTime) {
+                        return s;
+                    }
+                    return { widgets: { ...s.widgets, tv: { ...s.widgets.tv, currentTime } } };
+                }),
         },
     },
 }));

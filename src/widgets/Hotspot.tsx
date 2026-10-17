@@ -7,9 +7,10 @@ interface HotspotProps extends Omit<ControlProps, "onClick" | "inert" | "childre
 }
 
 export function Hotspot({ widget: Widget, ...controlProps }: HotspotProps) {
-    const store = useGameStore();
+    const openWidget = useGameStore((s) => s.openWidget);
+    const setOpenWidget = useGameStore((s) => s.setOpenWidget);
     return (
-        <Control {...controlProps} inert={!!store.openWidget} onClick={() => store.setOpenWidget(Widget)}>
+        <Control {...controlProps} inert={!!openWidget} onClick={() => setOpenWidget(Widget)}>
             <Widget scaleDown blockInteraction />
         </Control>
     );
