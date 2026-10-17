@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import bgImgUrlLeft from "./assets/left_window_furniture.png";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
 import grabClosedHandImgUrl from "./assets/placeholder_hand_grabbing_closed.png";
@@ -8,10 +8,9 @@ import bgImgUrlTable from "./assets/table_layer.png";
 import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
 import { AnalogClock } from "./widgets/AnalogClock";
-import { TV } from "./widgets/tv";
-import type { Widget } from "./widgets/widget";
-import { RotaryPhone } from "./widgets/RotaryPhone";
 import { Hotspot } from "./widgets/Hotspot";
+import { RotaryPhone } from "./widgets/RotaryPhone";
+import { TV } from "./widgets/tv";
 
 // Area on the background image that we must ensure is always visible
 const safeZoneLeft = 240;
@@ -49,7 +48,7 @@ function useFitToScreen() {
 function Overview() {
     return (
         <>
-            <Hotspot left={1120} top={600} width={360} height={250} widget={TV} />
+            <Hotspot left={1120} top={600} width={1490 / 4} height={1064 / 4} widget={TV} />
             <Hotspot left={1505} top={300} width={235} height={235} widget={AnalogClock} />
             <Hotspot left={895} top={750} width={190} height={150} widget={RotaryPhone} />
         </>

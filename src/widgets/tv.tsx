@@ -2,7 +2,7 @@ import { DragDropProvider, useDraggable, useDroppable } from "@dnd-kit/react";
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
 import vhsTapeUrl from "../assets/placeholder_vhs_tape_video.mp4";
-import tvImgUrl from "../assets/tv.png";
+import tvImgUrl from "../assets/TV_placeholder.png";
 import vhsImgUrl from "../assets/vhs.png";
 import { useGameStore } from "../state/store";
 import styles from "./tv.module.css";
