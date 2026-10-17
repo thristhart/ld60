@@ -1,0 +1,54 @@
+.SwitchboardContainer {
+    position: relative;
+    width: 800px; 
+    height: 800px;
+}
+
+.SwitchboardContainer.ScaledDown {
+    transform: translate(-225px, -200px) scale(0.5);
+}
+
+.BackgroundContainer { 
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.SwitchboardBack {
+    width: 800px;
+    height: 600px; 
+}
+
+.SwitchboardDeck {
+    width: 800px;
+    height: 200px;
+}
+
+.PlugGrid {
+    position: absolute; 
+    z-index: 2;
+    width: 800px;
+    height: 600px; 
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+}
+
+.PlugJackContainer { 
+    margin: auto
+
+}
+
+.PlugJackName {
+    font-size: 72px;
+    padding-bottom: 24px;
+    
+}
+
+.PlugJack {
+    height: 48px;
+    width: 48px;
+
+}

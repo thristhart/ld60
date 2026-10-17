@@ -11,6 +11,7 @@ import { AnalogClock } from "./widgets/AnalogClock";
 import { Hotspot } from "./widgets/Hotspot";
 import { Morse } from "./widgets/morse";
 import { RotaryPhone } from "./widgets/RotaryPhone";
+import { SwitchBoard } from "./widgets/SwitchBoard";
 import { TV } from "./widgets/tv";
 
 // Area on the background image that we must ensure is always visible
@@ -53,6 +54,7 @@ function Overview() {
             <Hotspot left={1505} top={300} width={235} height={235} widget={AnalogClock} />
             <Hotspot left={895} top={750} width={190} height={150} widget={RotaryPhone} />
             <Hotspot left={520} top={780} width={190} height={150} widget={Morse} />
+            <Hotspot left={1925} top={246} width={400} height={400} widget={SwitchBoard} />
         </>
     );
 }
