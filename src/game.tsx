@@ -10,6 +10,8 @@ import { useGameStore } from "./state/store";
 import { AnalogClock } from "./widgets/AnalogClock";
 import { TV } from "./widgets/tv";
 import type { Widget } from "./widgets/widget";
+import { RotaryPhone } from "./widgets/RotaryPhone";
+import { Hotspot } from "./widgets/Hotspot";
 
 // Area on the background image that we must ensure is always visible
 const safeZoneLeft = 240;
@@ -44,41 +46,12 @@ function useFitToScreen() {
     return Math.min(widthScale, heightScale);
 }
 
-interface WidgetClickAreaProps {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-    widget: Widget;
-    clipPath?: CSSProperties["clipPath"];
-    debug?: boolean;
-}
-function WidgetClickArea(props: WidgetClickAreaProps) {
-    const store = useGameStore();
-    return (
-        <button
-            inert={!!store.openWidget}
-            data-cursor="point"
-            className={styles.widgetClickArea}
-            style={{
-                left: props.left,
-                top: props.top,
-                width: props.width,
-                height: props.height,
-                backgroundColor: props.debug ? "rgba(255, 0, 0, .5)" : "transparent",
-                clipPath: props.clipPath ?? "none",
-            }}
-            onClick={() => store.setOpenWidget(props.widget)}>
-            <props.widget scaleDown blockInteraction></props.widget>
-        </button>
-    );
-}
-
 function Overview() {
     return (
         <>
-            <WidgetClickArea left={1120} top={600} width={360} height={250} widget={TV} />
-            <WidgetClickArea left={1505} top={300} width={235} height={235} widget={AnalogClock} />
+            <Hotspot left={1120} top={600} width={360} height={250} widget={TV} />
+            <Hotspot left={1505} top={300} width={235} height={235} widget={AnalogClock} />
+            <Hotspot left={895} top={750} width={190} height={150} widget={RotaryPhone} />
         </>
     );
 }
