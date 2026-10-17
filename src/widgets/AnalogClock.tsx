@@ -1,9 +1,10 @@
 import classNames from "classnames";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import clockFaceImgUrl from "../assets/analog_clock/clock_face.png";
 import hourHandImgUrl from "../assets/analog_clock/hour_hand.png";
 import minuteHandImgUrl from "../assets/analog_clock/minute_hand.png";
 import secondHandImgUrl from "../assets/analog_clock/second_hand.png";
+import { useGameStore } from "../state/store";
 import analogClockStyles from "./AnalogClock.module.css";
 import type { WidgetProps } from "./widget";
 
@@ -40,13 +41,20 @@ function useRadianDrag(containerRef: React.RefObject<HTMLDivElement | null>, set
 export function AnalogClock(props: AnalogClockProps) {
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const [hourAngle, setHourAngle] = useState(270);
-    const [minuteAngle, setMinuteAngle] = useState(315);
-    const [secondAngle, setSecondAngle] = useState(0);
+    const { hourAngle, minuteAngle, secondAngle, setClockHandAngle } = useGameStore((s) => s.widgets.clock);
 
-    const hourHandRadianDrag = useRadianDrag(containerRef, setHourAngle);
-    const minuteHandRadianDrag = useRadianDrag(containerRef, setMinuteAngle);
-    const secondHandRadianDrag = useRadianDrag(containerRef, setSecondAngle);
+    const hourHandRadianDrag = useRadianDrag(
+        containerRef,
+        useCallback((a) => setClockHandAngle("hour", a), [setClockHandAngle])
+    );
+    const minuteHandRadianDrag = useRadianDrag(
+        containerRef,
+        useCallback((a) => setClockHandAngle("minute", a), [setClockHandAngle])
+    );
+    const secondHandRadianDrag = useRadianDrag(
+        containerRef,
+        useCallback((a) => setClockHandAngle("second", a), [setClockHandAngle])
+    );
 
     const onHourHandClick = useCallback(() => {
         window.addEventListener("mousemove", hourHandRadianDrag);
@@ -84,7 +92,7 @@ export function AnalogClock(props: AnalogClockProps) {
             )}
             inert={props.blockInteraction}
             draggable={false}>
-            <img className={analogClockStyles.ClockFace} src={clockFaceImgUrl} />
+            <img className={analogClockStyles.ClockFace} src={clockFaceImgUrl} draggable={false} />
             <img
                 onMouseDown={onSecondHandClick}
                 className={analogClockStyles.SecondHand}
