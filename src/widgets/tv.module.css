@@ -3,9 +3,29 @@
     height: 924px;
     position: relative;
 }
-.TV img {
+.TVimg {
     width: 100%;
     height: 100%;
     position: absolute;
     top: -20%;
+}
+.TVVideo {
+    position: absolute;
+    top: 279px;
+    left: 55px;
+    width: 486px;
+    height: 376px;
+    background-color: black;
+}
+.VHS {
+    position: absolute;
+    top: 640px;
+    left: 900px;
+}
+.VHSDropTarget {
+    position: absolute;
+    left: 0px;
+    bottom: 180px;
+    width: 730px;
+    height: 150px;
 }
