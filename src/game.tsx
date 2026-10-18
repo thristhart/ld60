@@ -1,10 +1,6 @@
-import { useEffect, useRef, useState, type RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 import bgImgUrlLeft from "./assets/left_window_furniture.png";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
-import grabClosedHandImgUrl from "./assets/placeholder_hand_grabbing_closed.png";
-import grabOpenHandImgUrl from "./assets/placeholder_hand_grabbing_open.png";
-import idleHandImgUrl from "./assets/placeholder_hand_idle.png";
-import pointHandImgUrl from "./assets/placeholder_hand_pointing.png";
 import bgImgUrlTable from "./assets/table_layer.png";
 import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
@@ -96,62 +92,10 @@ function WidgetView() {
     );
 }
 
-function getCursorImageForType(cursorType: string | undefined) {
-    if (cursorType === "point") {
-        return pointHandImgUrl;
-    }
-    if (cursorType === "grab_open") {
-        return grabOpenHandImgUrl;
-    }
-    if (cursorType === "grab_closed") {
-        return grabClosedHandImgUrl;
-    }
-
-    return idleHandImgUrl;
-}
-
-function useCustomCursor(pointerImgRef: RefObject<HTMLImageElement | null>, scale: number) {
-    useEffect(() => {
-        const mouseMove = (e: MouseEvent) => {
-            const x = e.clientX;
-            const y = e.clientY;
-
-            const hoverTargets = document.elementsFromPoint(x, y);
-            let cursorType = undefined;
-            for (const target of hoverTargets) {
-                if ("dataset" in target) {
-                    let targetCursor = (target as HTMLElement).dataset.cursor;
-                    if (targetCursor) {
-                        cursorType = targetCursor;
-                        break;
-                    }
-                }
-            }
-            if (pointerImgRef.current) {
-                // hacks to make sure it's always on top
-                pointerImgRef.current?.hidePopover();
-                pointerImgRef.current?.showPopover();
-
-                const newImg = getCursorImageForType(cursorType);
-                pointerImgRef.current.src = newImg;
-                const offset = { x: 0, y: 0 };
-                if (newImg === idleHandImgUrl) {
-                    offset.x = -20;
-                    offset.y = -25;
-                }
-                pointerImgRef.current.style.transform = `translate3d(calc(${x + offset.x}px), ${y + offset.y}px, 0) scale(${scale})`;
-            }
-        };
-        window.addEventListener("mousemove", mouseMove);
-        return () => window.removeEventListener("mousemove", mouseMove);
-    });
-}
-
 export default function Game() {
     const customPointerRef = useRef<HTMLImageElement>(null);
 
     const scale = useFitToScreen();
-    useCustomCursor(customPointerRef, scale);
 
     return (
         <>
