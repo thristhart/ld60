@@ -248,7 +248,7 @@ export const useGameStore = create<GameState>()((set) => ({
 const targetHourAngleRange = { min: 24, max: 59 };
 const targetMinuteAngleRange = { min: 209, max: 238 };
 
-const targetPhoneNumber = "123456";
+const targetPhoneNumber = "5552431460";
 
 function hourInRange(hour: number) {
     return hour < targetHourAngleRange.max && hour > targetHourAngleRange.min;
