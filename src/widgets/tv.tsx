@@ -199,6 +199,25 @@ export function TV(props: TVProps) {
         const updateVideoCurrentTime = () => {
             playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
             if (isRewindingRef.current) {
+                if (rewindStartTimeRef.current) {
+                    const now = audio.context.currentTime;
+                    const timeSpentRewinding = now - rewindStartTimeRef.current;
+                    let forwardTimeLost = 0;
+
+                    if (timeSpentRewinding <= 0.8) {
+                        // stopped rewinding while doing linearRampToValueAtTime
+                        const endingRateAtStop =
+                            1.0 + (rewindTopSpeed - 1.0) * (timeSpentRewinding / rewindRampDuration);
+                        const averageRate = (1.0 + endingRateAtStop) / 2;
+                        forwardTimeLost = timeSpentRewinding * averageRate;
+                    } else {
+                        // stopped after ramping
+                        const rampTimeLost = rewindRampDuration * ((1.0 + rewindTopSpeed) / 2);
+                        const constantTimeLost = (timeSpentRewinding - rewindRampDuration) * rewindTopSpeed;
+                        forwardTimeLost = rampTimeLost + constantTimeLost;
+                    }
+                    setCurrentTime(Math.max(0, playbackPositionRef.current! - forwardTimeLost));
+                }
                 return;
             }
             setCurrentTime(
