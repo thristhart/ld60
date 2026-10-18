@@ -111,12 +111,16 @@ export function TV(props: TVProps) {
                     muted={props.blockInteraction && isTVFocused}
                 />
                 <img className={styles.TVimg} src={props.scaleDown ? tvOverviewImgUrl : tvImgUrl} />
-                <button className={styles.TVPlay} onClick={playFromCurrent}>
-                    ▶️
-                </button>
-                <button className={styles.TVRewind} onClick={rewind}>
-                    ⏪
-                </button>
+                {!props.scaleDown && (
+                    <button className={styles.TVPlay} onClick={playFromCurrent}>
+                        ▶️
+                    </button>
+                )}
+                {!props.scaleDown && (
+                    <button className={styles.TVRewind} onClick={rewind}>
+                        ⏪
+                    </button>
+                )}
                 {!props.scaleDown && !hasTape && <VHS />}
             </DragDropProvider>
         </div>
