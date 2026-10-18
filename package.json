@@ -13,11 +13,13 @@
         "@dnd-kit/react": "^0.5.1",
         "@dnd-kit/utilities": "^3.2.2",
         "classnames": "^2.5.1",
+        "howler": "^2.2.4",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
         "zustand": "^5.0.15"
     },
     "devDependencies": {
+        "@types/howler": "^2.2.13",
         "@types/node": "^24.19.2",
         "@types/react": "^19.2.18",
         "@types/react-dom": "^19.2.7",
