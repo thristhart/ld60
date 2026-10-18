@@ -12,6 +12,21 @@ body {
     overflow: hidden;
 }
 
-[data-cursor] {
+* {
     cursor: none;
+}
+
+[data-cursor="point"] {
+    --hover-outline-color: white;
+    --hover-outline-offset: 3px;
+}
+[data-cursor="point"]:hover {
+    filter: drop-shadow(var(--hover-outline-offset) var(--hover-outline-offset) 0px var(--hover-outline-color))
+        drop-shadow(calc(-1 * var(--hover-outline-offset)) var(--hover-outline-offset) 0px var(--hover-outline-color))
+        drop-shadow(
+            calc(-1 * var(--hover-outline-offset)) calc(-1 * var(--hover-outline-offset)) 0px var(--hover-outline-color)
+        )
+        drop-shadow(
+            calc(var(--hover-outline-offset)) calc(-1 * var(--hover-outline-offset)) 0px var(--hover-outline-color)
+        );
 }

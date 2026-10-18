@@ -3,6 +3,7 @@ import bgImgUrlLeft from "./assets/left_window_furniture.png";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
 import grabClosedHandImgUrl from "./assets/placeholder_hand_grabbing_closed.png";
 import grabOpenHandImgUrl from "./assets/placeholder_hand_grabbing_open.png";
+import idleHandImgUrl from "./assets/placeholder_hand_idle.png";
 import pointHandImgUrl from "./assets/placeholder_hand_pointing.png";
 import bgImgUrlTable from "./assets/table_layer.png";
 import styles from "./game.module.css";
@@ -103,7 +104,7 @@ function getCursorImageForType(cursorType: string | undefined) {
         return grabClosedHandImgUrl;
     }
 
-    return "";
+    return idleHandImgUrl;
 }
 
 function useCustomCursor(pointerImgRef: RefObject<HTMLImageElement | null>, scale: number) {
@@ -130,7 +131,12 @@ function useCustomCursor(pointerImgRef: RefObject<HTMLImageElement | null>, scal
 
                 const newImg = getCursorImageForType(cursorType);
                 pointerImgRef.current.src = newImg;
-                pointerImgRef.current.style.transform = `translate3d(calc(${x}px), ${y}px, 0) scale(${scale})`;
+                const offset = { x: 0, y: 0 };
+                if (newImg === idleHandImgUrl) {
+                    offset.x = -20;
+                    offset.y = -25;
+                }
+                pointerImgRef.current.style.transform = `translate3d(calc(${x + offset.x}px), ${y + offset.y}px, 0) scale(${scale})`;
             }
         };
         window.addEventListener("mousemove", mouseMove);
