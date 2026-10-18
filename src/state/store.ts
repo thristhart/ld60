@@ -38,7 +38,7 @@ const initialState = {
             containsTape: true,
         },
         leftDrawer: {
-            isOpen: true,
+            isOpen: false,
         },
         cassette: {
             tapeInside: false,

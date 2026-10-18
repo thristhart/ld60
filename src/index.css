@@ -12,12 +12,8 @@ body {
     overflow: hidden;
 }
 
-*,
-[data-cursor] {
-    cursor: none !important;
-}
-
 [data-cursor="point"] {
+    cursor: pointer;
     --hover-outline-color: white;
     --hover-outline-offset: 3px;
 }
