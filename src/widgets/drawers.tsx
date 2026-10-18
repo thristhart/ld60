@@ -1,4 +1,5 @@
 import { Howl } from "howler";
+import { useState } from "react";
 import rattleSoundUrl from "../assets/audio/placeholder_drawer_rattle.wav";
 import drawerExpandedImgUrl from "../assets/placeholder_drawer_open.png";
 import leftDrawerOpenImgUrl from "../assets/placeholder_leftdrawer_open.png";
@@ -8,6 +9,7 @@ import { useGameStore } from "../state/store";
 import { CassetteTape } from "./cassetteplayer";
 import { Control } from "./Control";
 import { Hotspot } from "./Hotspot";
+import { LetterWidget } from "./letter";
 import type { WidgetProps } from "./widget";
 
 const rattleSound = new Howl({
@@ -69,9 +71,20 @@ function LeftDrawerWidget(props: LeftDrawerProps) {
     if (props.scaleDown) {
         return <img src={leftDrawerOpenImgUrl} />;
     }
+    return <LeftDrawerOpenContents />;
+}
+
+function LeftDrawerOpenContents() {
+    const [isLetterOpen, setLetterOpen] = useState(false);
     return (
         <div>
             <img src={drawerExpandedImgUrl} />
+            {!isLetterOpen && (
+                <Control top={600} left={1200} width={230} height={130} onClick={() => setLetterOpen(true)}>
+                    <LetterWidget scaleDown={true} />
+                </Control>
+            )}
+            {isLetterOpen && <LetterWidget />}
         </div>
     );
 }
