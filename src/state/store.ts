@@ -113,14 +113,22 @@ export const useGameStore = create<GameState>()((set) => ({
     },
 }));
 
-const targetHourAngle = 44;
-const targetMinuteAngle = 222;
+const targetHourAngleRange = { min: 24, max: 59 };
+const targetMinuteAngleRange = { min: 209, max: 238 };
+
+function hourInRange(hour: number) {
+    return hour < targetHourAngleRange.max && hour > targetHourAngleRange.min;
+}
+function minuteInRange(minute: number) {
+    return minute < targetMinuteAngleRange.max && minute > targetMinuteAngleRange.min;
+}
 
 useGameStore.subscribe((state) => {
     if (!state.widgets.rightDrawer.isOpen) {
-        const hourAngleDiff = Math.abs(state.widgets.clock.hourAngle - targetHourAngle);
-        const minuteAngleDiff = Math.abs(state.widgets.clock.minuteAngle - targetMinuteAngle);
-        if (hourAngleDiff < 3 && minuteAngleDiff < 1.5) {
+        console.log("hour: ", state.widgets.clock.hourAngle, "; minute: ", state.widgets.clock.minuteAngle);
+        const hourCorrect = hourInRange(state.widgets.clock.hourAngle);
+        const minuteCorrect = minuteInRange(state.widgets.clock.minuteAngle);
+        if (hourCorrect && minuteCorrect) {
             openRightDrawer();
         }
     }
