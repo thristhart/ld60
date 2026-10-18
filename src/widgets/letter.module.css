@@ -1,0 +1,16 @@
+.envelope {
+    width: 200px;
+}
+
+.LetterContents {
+    background-color: white;
+    position: absolute;
+    top: 500px;
+    left: 930px;
+    padding: 50px;
+    width: 600px;
+}
+.LetterContents code {
+    font-family: monospace;
+    letter-spacing: 2px;
+}
