@@ -1,7 +1,11 @@
-import { use, useRef } from "react";
+import { Scroller } from "@dnd-kit/dom";
+import { DragDropProvider, useDragDropManager, useDraggable, useDroppable } from "@dnd-kit/react";
+import { use, useEffect, useRef } from "react";
 import casetteAudioReversedUrl from "../assets/Kia of West Chester - Thats Crazy! reversed.mp3";
 import casetteAudioUrl from "../assets/Kia of West Chester - Thats Crazy!.mp3";
 import cassettePlayerImgUrl from "../assets/placeholder_cassette_player.png";
+import cassetteTapeImgUrl from "../assets/placeholder_cassette_tape.png";
+import { useGameStore } from "../state/store";
 import styles from "./cassetteplayer.module.css";
 import { Control } from "./Control";
 import type { WidgetProps } from "./widget";
@@ -49,6 +53,11 @@ const rewindRampDuration = 0.8;
 
 interface CassetteProps extends WidgetProps {}
 export function CassettePlayer(props: CassetteProps) {
+    const cassetteTapeInsidePlayer = useGameStore((s) => s.widgets.cassette.tapeInside);
+    const playerHasCassette = useGameStore((s) => s.hasCasetteTape);
+    const insertTape = useGameStore((s) => s.widgets.cassette.insertTape);
+    const eject = useGameStore((s) => s.widgets.cassette.eject);
+
     const audio = useCassetteAudioContext();
     const currentSourceRef = useRef<AudioBufferSourceNode | null>(null);
     const playbackPositionRef = useRef<number | null>(null);
@@ -89,7 +98,6 @@ export function CassettePlayer(props: CassetteProps) {
         playbackPositionRef.current = (playbackPositionRef.current ?? 0) + (now - (playbackStartTimeRef.current ?? 0));
         currentSourceRef.current.stop();
         currentSourceRef.current = null;
-        console.log("pausing at", playbackPositionRef.current);
     }
     function stopRewind() {
         if (!currentSourceRef.current) return;
@@ -101,7 +109,6 @@ export function CassettePlayer(props: CassetteProps) {
             playbackPositionRef.current = now - (playbackStartTimeRef.current ?? 0);
             currentSourceRef.current.stop();
             currentSourceRef.current = null;
-            console.log("pausing at", playbackPositionRef.current);
             return;
         }
 
@@ -145,10 +152,65 @@ export function CassettePlayer(props: CassetteProps) {
     }
     return (
         <div>
-            <img src={cassettePlayerImgUrl} className={styles.CassettePlayerWidget} />
-            <Control width={50} height={50} top={830} left={980} onDown={rewind} onUp={stopRewind} />
-            <Control width={50} height={50} top={845} left={1040} onClick={pause} />
-            <Control width={60} height={50} top={880} left={1150} onClick={play} />
+            <DragDropProvider
+                onDragEnd={(event) => {
+                    if (event.canceled) {
+                        return;
+                    }
+                    if (event.operation.target?.id === "cassetteDrop") {
+                        insertTape();
+                    }
+                }}>
+                <CassettePlayerDropTarget />
+                <img src={cassettePlayerImgUrl} className={styles.CassettePlayerWidget} />
+                {cassetteTapeInsidePlayer && (
+                    <>
+                        <Control width={50} height={50} top={830} left={980} onDown={rewind} onUp={stopRewind} />
+                        <Control width={50} height={50} top={845} left={1040} onClick={pause} />
+                        <Control
+                            width={58}
+                            height={50}
+                            top={860}
+                            left={1095}
+                            onClick={() => {
+                                pause();
+                                eject();
+                            }}
+                        />
+                        <Control width={60} height={50} top={880} left={1150} onClick={play} />
+                    </>
+                )}
+                {playerHasCassette && <DraggableCassetteTape />}
+            </DragDropProvider>
         </div>
     );
+}
+
+function CassettePlayerDropTarget() {
+    const droppable = useDroppable({
+        id: "cassetteDrop",
+    });
+    return <div className={styles.DropTarget} ref={droppable.ref}></div>;
+}
+function DraggableCassetteTape() {
+    const draggable = useDraggable({
+        id: "vhs",
+    });
+    const manager = useDragDropManager();
+    manager?.registry.plugins.get(Scroller)?.disable();
+    if (draggable.isDragging) {
+        document.documentElement.dataset.cursor = "grab_closed";
+    } else {
+        delete document.documentElement.dataset.cursor;
+    }
+    useEffect(() => {
+        return () => {
+            delete document.documentElement.dataset.cursor;
+        };
+    }, []);
+    return <img className={styles.DraggableTape} src={cassetteTapeImgUrl} ref={draggable.ref} />;
+}
+
+export function CassetteTape() {
+    return <img src={cassetteTapeImgUrl} />;
 }

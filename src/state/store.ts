@@ -1,7 +1,12 @@
 // store.ts
+import { Howl } from "howler";
 import { create } from "zustand";
-import { openRightDrawer } from "../widgets/drawers";
+import drawerOpeningSoundUrl from "../assets/audio/placeholder_drawer_opening.wav";
 import type { Widget } from "../widgets/widget";
+
+const drawerOpeningSound = new Howl({
+    src: [drawerOpeningSoundUrl],
+});
 
 export type PlugPositions = "base" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H";
 const initialState = {
@@ -24,8 +29,13 @@ const initialState = {
         },
         rightDrawer: {
             isOpen: false,
+            containsTape: true,
+        },
+        cassette: {
+            tapeInside: false,
         },
     },
+    hasCasetteTape: false,
 };
 
 type GameState = typeof initialState & {
@@ -44,8 +54,13 @@ type GameState = typeof initialState & {
         morse: {
             addMorse: (newCharacter: string) => void;
         };
+        cassette: {
+            insertTape: () => void;
+            eject: () => void;
+        };
         rightDrawer: {
             open: () => void;
+            takeTape: () => void;
         };
     };
 };
@@ -99,6 +114,8 @@ export const useGameStore = create<GameState>()((set) => ({
         rightDrawer: {
             ...initialState.widgets.rightDrawer,
             open() {
+                drawerOpeningSound.play();
+
                 set((s) => ({
                     widgets: {
                         ...s.widgets,
@@ -107,6 +124,45 @@ export const useGameStore = create<GameState>()((set) => ({
                             isOpen: true,
                         },
                     },
+                }));
+            },
+            takeTape() {
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        rightDrawer: {
+                            ...s.widgets.rightDrawer,
+                            containsTape: false,
+                        },
+                    },
+                    hasCasetteTape: true,
+                }));
+            },
+        },
+        cassette: {
+            ...initialState.widgets.cassette,
+            insertTape() {
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        cassette: {
+                            ...s.widgets.cassette,
+                            tapeInside: true,
+                        },
+                    },
+                    hasCasetteTape: false,
+                }));
+            },
+            eject() {
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        cassette: {
+                            ...s.widgets.cassette,
+                            tapeInside: false,
+                        },
+                    },
+                    hasCasetteTape: true,
                 }));
             },
         },
@@ -125,11 +181,10 @@ function minuteInRange(minute: number) {
 
 useGameStore.subscribe((state) => {
     if (!state.widgets.rightDrawer.isOpen) {
-        console.log("hour: ", state.widgets.clock.hourAngle, "; minute: ", state.widgets.clock.minuteAngle);
         const hourCorrect = hourInRange(state.widgets.clock.hourAngle);
         const minuteCorrect = minuteInRange(state.widgets.clock.minuteAngle);
         if (hourCorrect && minuteCorrect) {
-            openRightDrawer();
+            state.widgets.rightDrawer.open();
         }
     }
 });
