@@ -160,6 +160,7 @@ function PlugHead( props: { name: "One" | "Two", left: string, top: string } )
     }, []);
 
     const wireHeight = (800 - Number(top.replaceAll("px", "")) - 24);
+    //TODO; get wires to change height while dragging? 
 
     return (
         <div style={ { left: left, top: top} } className={classNames(switchboardStyles.PlugHead)} ref={ref}>
