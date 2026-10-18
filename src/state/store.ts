@@ -2,9 +2,14 @@
 import { create } from "zustand";
 import type { Widget } from "../widgets/widget";
 
+export type PlugPositions = "base" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H"
 const initialState = {
     openWidget: undefined as Widget | undefined,
     widgets: {
+        switchboard: {
+            plugOnePosition: "base" as PlugPositions,
+            plugTwoPosition: "base" as PlugPositions,
+        },
         clock: {
             hourAngle: 270,
             minuteAngle: 315,
@@ -23,6 +28,9 @@ const initialState = {
 type GameState = typeof initialState & {
     setOpenWidget: (newWidget: Widget | undefined) => void;
     widgets: {
+        switchboard: {
+            setPlugPosition: (plugNumber: "One" | "Two" , plugPosition: PlugPositions) => void;
+        },
         clock: {
             setClockHandAngle: (hand: "hour" | "minute" | "second", angle: number) => void;
         };
@@ -41,6 +49,11 @@ export const useGameStore = create<GameState>()((set) => ({
     setOpenWidget: (newWidget) => set({ openWidget: newWidget }),
     widgets: {
         ...initialState.widgets,
+        switchboard: {
+            ...initialState.widgets.switchboard,
+            setPlugPosition: (plugNumber, plugPosition) =>
+                set((s) => ({ widgets: { ...s.widgets, switchboard: { ...s.widgets.switchboard, [`plug${plugNumber}Position`]: plugPosition}}})),
+        },
         clock: {
             ...initialState.widgets.clock,
             setClockHandAngle: (hand, angle) =>
