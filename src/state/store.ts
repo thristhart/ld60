@@ -1,5 +1,6 @@
 // store.ts
 import { create } from "zustand";
+import { openRightDrawer } from "../widgets/drawers";
 import type { Widget } from "../widgets/widget";
 
 export type PlugPositions = "base" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H";
@@ -21,6 +22,9 @@ const initialState = {
         morse: {
             currentValue: "" as string,
         },
+        rightDrawer: {
+            isOpen: false,
+        },
     },
 };
 
@@ -39,6 +43,9 @@ type GameState = typeof initialState & {
         };
         morse: {
             addMorse: (newCharacter: string) => void;
+        };
+        rightDrawer: {
+            open: () => void;
         };
     };
 };
@@ -89,5 +96,33 @@ export const useGameStore = create<GameState>()((set) => ({
                 }));
             },
         },
+        rightDrawer: {
+            ...initialState.widgets.rightDrawer,
+            open() {
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        rightDrawer: {
+                            ...s.widgets.rightDrawer,
+                            isOpen: true,
+                        },
+                    },
+                }));
+            },
+        },
     },
 }));
+
+const targetHourAngle = 44;
+const targetMinuteAngle = 222;
+
+useGameStore.subscribe((state) => {
+    if (!state.widgets.rightDrawer.isOpen) {
+        const hourAngleDiff = Math.abs(state.widgets.clock.hourAngle - targetHourAngle);
+        const minuteAngleDiff = Math.abs(state.widgets.clock.minuteAngle - targetMinuteAngle);
+        console.log(state.widgets.clock.hourAngle, state.widgets.clock.minuteAngle, hourAngleDiff, minuteAngleDiff);
+        if (hourAngleDiff < 3 && minuteAngleDiff < 1.5) {
+            openRightDrawer();
+        }
+    }
+});
