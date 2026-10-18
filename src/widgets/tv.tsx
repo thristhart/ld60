@@ -117,7 +117,7 @@ export function TV(props: TVProps) {
         }
 
         const currentTime = playbackPositionRef.current ?? 0;
-        const rewindOffset = audio.forwardBuffer.duration - currentTime;
+        const rewindOffset = Math.max(audio.forwardBuffer.duration - currentTime, 0);
 
         const now = audio.context.currentTime;
         source.playbackRate.setValueAtTime(1.0, now);

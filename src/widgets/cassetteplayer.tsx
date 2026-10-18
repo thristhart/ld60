@@ -53,16 +53,19 @@ interface CassetteProps extends WidgetProps {}
 export function CassettePlayer(props: CassetteProps) {
     const cassetteTapeInsidePlayer = useGameStore((s) => s.widgets.cassette.tapeInside);
     const playerHasCassette = useGameStore((s) => s.hasCasetteTape);
+    const setCurrentTime = useGameStore((s) => s.widgets.cassette.setCurrentTime);
     const insertTape = useGameStore((s) => s.widgets.cassette.insertTape);
     const eject = useGameStore((s) => s.widgets.cassette.eject);
 
     const audio = useCassetteAudioContext();
     const currentSourceRef = useRef<AudioBufferSourceNode | null>(null);
-    const playbackPositionRef = useRef<number | null>(audio.forwardBuffer.duration - 10);
+    const playbackPositionRef = useRef<number | null>(31.4);
     const playbackStartTimeRef = useRef<number | null>(null);
     const rewindStartTimeRef = useRef<number | null>(null);
+    const isRewindingRef = useRef<boolean>(false);
 
     function rewind() {
+        isRewindingRef.current = true;
         if (currentSourceRef.current) {
             currentSourceRef.current.stop();
         }
@@ -77,7 +80,7 @@ export function CassettePlayer(props: CassetteProps) {
         }
 
         const currentTime = playbackPositionRef.current ?? 0;
-        const rewindOffset = audio.forwardBuffer.duration - currentTime;
+        const rewindOffset = Math.max(audio.forwardBuffer.duration - currentTime, 0);
 
         const now = audio.context.currentTime;
         source.playbackRate.setValueAtTime(1.0, now);
@@ -98,6 +101,7 @@ export function CassettePlayer(props: CassetteProps) {
         currentSourceRef.current = null;
     }
     function stopRewind() {
+        isRewindingRef.current = false;
         if (!currentSourceRef.current) return;
 
         const now = audio.context.currentTime;
@@ -145,6 +149,46 @@ export function CassettePlayer(props: CassetteProps) {
         currentSourceRef.current = forwardsSource;
         playbackStartTimeRef.current = audio.context.currentTime;
     }
+
+    useEffect(() => {
+        if (props.scaleDown) {
+            return;
+        }
+
+        const updateVideoCurrentTime = () => {
+            playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
+            if (isRewindingRef.current) {
+                if (rewindStartTimeRef.current) {
+                    const now = audio.context.currentTime;
+                    const timeSpentRewinding = now - rewindStartTimeRef.current;
+                    let forwardTimeLost = 0;
+
+                    if (timeSpentRewinding <= 0.8) {
+                        // stopped rewinding while doing linearRampToValueAtTime
+                        const endingRateAtStop =
+                            1.0 + (rewindTopSpeed - 1.0) * (timeSpentRewinding / rewindRampDuration);
+                        const averageRate = (1.0 + endingRateAtStop) / 2;
+                        forwardTimeLost = timeSpentRewinding * averageRate;
+                    } else {
+                        // stopped after ramping
+                        const rampTimeLost = rewindRampDuration * ((1.0 + rewindTopSpeed) / 2);
+                        const constantTimeLost = (timeSpentRewinding - rewindRampDuration) * rewindTopSpeed;
+                        forwardTimeLost = rampTimeLost + constantTimeLost;
+                    }
+                    setCurrentTime(Math.max(0, playbackPositionRef.current! - forwardTimeLost));
+                }
+                return;
+            }
+            setCurrentTime(
+                (playbackPositionRef.current ?? 0) +
+                    (currentSourceRef.current ? audio.context.currentTime - (playbackStartTimeRef.current ?? 0) : 0)
+            );
+        };
+        let playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
+        return () => {
+            cancelAnimationFrame(playbackTrackingAnimationFrame);
+        };
+    }, [props.scaleDown, setCurrentTime]);
     if (props.scaleDown) {
         return <img className={styles.ScaledDown} src={cassettePlayerImgUrl} />;
     }

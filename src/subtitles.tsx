@@ -1,13 +1,19 @@
 import { useGameStore } from "./state/store";
-import { GetVHSSubtitleAtTime } from "./state/subtitledata";
+import { GetCassetteSubtitleAtTime, GetVHSSubtitleAtTime } from "./state/subtitledata";
 import styles from "./subtitles.module.css";
 
 export function Subtitles() {
-    const isTvPlaying = useGameStore((s) => s.widgets.tv.isPlaying);
     const tvSubtitle = useGameStore((s) => GetVHSSubtitleAtTime(s.widgets.tv.currentTime));
+    const cassetteSubtitle = useGameStore((s) => GetCassetteSubtitleAtTime(s.widgets.cassette.currentTime));
 
-    if (!tvSubtitle) {
+    if (!tvSubtitle && !cassetteSubtitle) {
         return null;
     }
-    return <div className={styles.Subtitles}>{tvSubtitle?.subtitle}</div>;
+    return (
+        <div className={styles.Subtitles}>
+            {tvSubtitle?.subtitle}
+            {cassetteSubtitle && tvSubtitle && <br />}
+            {cassetteSubtitle?.subtitle}
+        </div>
+    );
 }

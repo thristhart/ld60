@@ -43,6 +43,8 @@ const initialState = {
         },
         cassette: {
             tapeInside: false,
+            currentTime: undefined as number | undefined,
+            isPlaying: false,
         },
         rotaryPhone: {
             dialed: "",
@@ -72,6 +74,7 @@ type GameState = typeof initialState & {
         cassette: {
             insertTape: () => void;
             eject: () => void;
+            setCurrentTime: (currentTime: number | undefined) => void;
         };
         rightDrawer: {
             open: () => void;
@@ -204,6 +207,13 @@ export const useGameStore = create<GameState>()((set) => ({
                     hasCasetteTape: true,
                 }));
             },
+            setCurrentTime: (currentTime: number | undefined) =>
+                set((s) => {
+                    if (s.widgets.cassette.currentTime === currentTime) {
+                        return s;
+                    }
+                    return { widgets: { ...s.widgets, cassette: { ...s.widgets.cassette, currentTime } } };
+                }),
         },
         rotaryPhone: {
             ...initialState.widgets.rotaryPhone,

@@ -20,7 +20,28 @@ const vhsSubtitles = `
 76.0	79.0	Bye-bye, from your pappy.
 `;
 
+const cassetteSubtitles = `
+12.0	14.5	Have you made plans for your family's future?
+14.5	16.0	Don't leave it to the last minute!
+16.0	19.0	If you've got a complex will or a convoluted trust,
+19.0	22.2	you can trust the offices of Duncan Baker to make it happen.
+22.2	26.81	Give us a call at 555-243-1460.
+26.81	31.0	That's 555-243-1460.
+31.0	33.5	Don't wait until it's too late!
+`;
+
 const vhsSubtitleData = vhsSubtitles
+    .trim()
+    .split("\n")
+    .map((line) => {
+        const [start, stop, subtitle] = line.trim().split("\t");
+        return {
+            start: parseFloat(start),
+            stop: parseFloat(stop),
+            subtitle,
+        };
+    });
+const cassetteSubtitleData = cassetteSubtitles
     .trim()
     .split("\n")
     .map((line) => {
@@ -37,6 +58,18 @@ export function GetVHSSubtitleAtTime(time: number | undefined) {
         return undefined;
     }
     for (const title of vhsSubtitleData) {
+        if (title.start <= time && title.stop >= time) {
+            return title;
+        }
+    }
+    return undefined;
+}
+
+export function GetCassetteSubtitleAtTime(time: number | undefined) {
+    if (!time) {
+        return undefined;
+    }
+    for (const title of cassetteSubtitleData) {
         if (title.start <= time && title.stop >= time) {
             return title;
         }
