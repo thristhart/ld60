@@ -2,7 +2,7 @@
 import { Howl } from "howler";
 import { create } from "zustand";
 import drawerOpeningSoundUrl from "../assets/audio/drawer open.mp3";
-import telephoneRingingSoundUrl from "../assets/audio/placeholder_telephone_ringing.wav";
+import telephoneRingingSoundUrl from "../assets/audio/phone_ringing.mp3";
 import type { Widget } from "../widgets/widget";
 
 const drawerOpeningSound = new Howl({
