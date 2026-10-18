@@ -33,11 +33,17 @@
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    user-select: none;
 
 }
 
 .PlugJackContainer { 
-    margin: auto
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 
 }
 
@@ -50,5 +56,59 @@
 .PlugJack {
     height: 48px;
     width: 48px;
+}
 
+.PlugHeadsContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 800px;
+    height: 800px;
+    z-index: 4;
+}
+
+.PlugHeadOneBase {
+    top: 650px;
+    left: 100px;
+}
+
+
+.PlugHeadTwoBase {
+    top: 650px;
+    left: 500px;
+}
+
+.PlugHead {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    z-index: 4;
+}
+
+
+.PlugHorizontalSection {
+    display: flex;
+    align-items: center;
+    height: 50%;
+    width: 100%;
+}
+
+.PlugHeadImage {
+    height: 75%;
+    width: 75%;
+}
+
+.PlugWireHorizontal {
+    width: 100%;
+    height: 25%;
+    background-color: black;
+}
+
+.PlugWireVertical {
+    position: absolute;
+    top: 25%;
+    right: 0;
+    width: 12%;
+    height: 100%;
+    background-color: black;
 }
