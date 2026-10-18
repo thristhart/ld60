@@ -232,7 +232,7 @@ export function TV(props: TVProps) {
                     <Control
                         debug
                         className={styles.TVPlay}
-                        onClick={play}
+                        onClick={() => (currentSourceRef.current ? pause() : play())}
                         left={1800}
                         top={755}
                         width={100}
