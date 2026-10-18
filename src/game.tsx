@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import bgImgUrlLeft from "./assets/left_window_furniture.png";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
 import bgImgUrlTable from "./assets/table_layer.png";
 import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
+import { Subtitles } from "./subtitles";
 import { AnalogClock } from "./widgets/AnalogClock";
 import { CassettePlayer } from "./widgets/cassetteplayer";
 import { LeftDrawer, RightDrawer } from "./widgets/drawers";
@@ -93,8 +94,6 @@ function WidgetView() {
 }
 
 export default function Game() {
-    const customPointerRef = useRef<HTMLImageElement>(null);
-
     const scale = useFitToScreen();
 
     return (
@@ -105,8 +104,8 @@ export default function Game() {
                 <img className={styles.bgImg} src={bgImgUrlTable} />
                 <Overview />
                 <WidgetView />
+                <Subtitles />
             </div>
-            <img className={styles.customPointer} ref={customPointerRef} popover="manual" />
         </>
     );
 }

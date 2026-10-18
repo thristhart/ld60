@@ -29,6 +29,7 @@ const initialState = {
         tv: {
             hasTape: false,
             currentTime: undefined as number | undefined,
+            isPlaying: false,
         },
         morse: {
             currentValue: "" as string,

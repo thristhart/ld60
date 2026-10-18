@@ -96,14 +96,16 @@ export function TV(props: TVProps) {
 
     const audio = useVHSAudioContext();
     const currentSourceRef = useRef<AudioBufferSourceNode | null>(null);
-    const playbackPositionRef = useRef<number | null>(audio.forwardBuffer.duration - 10);
+    const playbackPositionRef = useRef<number | null>(null);
     const playbackStartTimeRef = useRef<number | null>(null);
     const rewindStartTimeRef = useRef<number | null>(null);
+    const isRewindingRef = useRef<boolean>(false);
 
     function rewind() {
         if (currentSourceRef.current) {
             currentSourceRef.current.stop();
         }
+        isRewindingRef.current = true;
 
         const source = audio.context.createBufferSource();
         source.buffer = audio.reversedBuffer;
@@ -127,6 +129,7 @@ export function TV(props: TVProps) {
         rewindStartTimeRef.current = now;
     }
     function pause() {
+        useGameStore.setState((s) => ({ widgets: { ...s.widgets, tv: { ...s.widgets.tv, isPlaying: false } } }));
         if (!currentSourceRef.current) return;
 
         const now = audio.context.currentTime;
@@ -136,9 +139,12 @@ export function TV(props: TVProps) {
         currentSourceRef.current = null;
     }
     function stopRewind() {
+        useGameStore.setState((s) => ({ widgets: { ...s.widgets, tv: { ...s.widgets.tv, isPlaying: false } } }));
         if (!currentSourceRef.current) return;
 
         const now = audio.context.currentTime;
+
+        isRewindingRef.current = false;
 
         // not rewinding, so just pause
         if (!rewindStartTimeRef.current) {
@@ -172,6 +178,7 @@ export function TV(props: TVProps) {
             currentSourceRef.current.stop();
         }
         pause();
+        useGameStore.setState((s) => ({ widgets: { ...s.widgets, tv: { ...s.widgets.tv, isPlaying: true } } }));
 
         const forwardsSource = audio.context.createBufferSource();
         forwardsSource.buffer = audio.forwardBuffer;
@@ -185,14 +192,25 @@ export function TV(props: TVProps) {
     }
 
     useEffect(() => {
+        if (props.scaleDown) {
+            return;
+        }
+
         const updateVideoCurrentTime = () => {
             playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
+            if (isRewindingRef.current) {
+                return;
+            }
+            setCurrentTime(
+                (playbackPositionRef.current ?? 0) +
+                    (currentSourceRef.current ? audio.context.currentTime - (playbackStartTimeRef.current ?? 0) : 0)
+            );
         };
         let playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
         return () => {
             cancelAnimationFrame(playbackTrackingAnimationFrame);
         };
-    }, [setCurrentTime]);
+    }, [props.scaleDown, setCurrentTime]);
 
     return (
         <div className={classNames(styles.TV, props.scaleDown && styles.ScaledDown)} inert={props.blockInteraction}>
