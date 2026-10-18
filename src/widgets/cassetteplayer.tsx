@@ -78,6 +78,9 @@ export function CassettePlayer(props: CassetteProps) {
         if (currentSourceRef.current) {
             pause();
         }
+        useGameStore.setState((s) => ({
+            widgets: { ...s.widgets, cassette: { ...s.widgets.cassette, isRewinding: true } },
+        }));
 
         const currentTime = playbackPositionRef.current ?? 0;
         const rewindOffset = Math.max(audio.forwardBuffer.duration - currentTime, 0);
@@ -92,6 +95,9 @@ export function CassettePlayer(props: CassetteProps) {
         rewindStartTimeRef.current = now;
     }
     function pause() {
+        useGameStore.setState((s) => ({
+            widgets: { ...s.widgets, cassette: { ...s.widgets.cassette, isPlaying: false, isRewinding: false } },
+        }));
         if (!currentSourceRef.current) return;
 
         const now = audio.context.currentTime;
@@ -101,6 +107,9 @@ export function CassettePlayer(props: CassetteProps) {
         currentSourceRef.current = null;
     }
     function stopRewind() {
+        useGameStore.setState((s) => ({
+            widgets: { ...s.widgets, cassette: { ...s.widgets.cassette, isPlaying: false, isRewinding: false } },
+        }));
         isRewindingRef.current = false;
         if (!currentSourceRef.current) return;
 
@@ -138,6 +147,9 @@ export function CassettePlayer(props: CassetteProps) {
             currentSourceRef.current.stop();
         }
         pause();
+        useGameStore.setState((s) => ({
+            widgets: { ...s.widgets, cassette: { ...s.widgets.cassette, isPlaying: true, isRewinding: false } },
+        }));
 
         const forwardsSource = audio.context.createBufferSource();
         forwardsSource.buffer = audio.forwardBuffer;
@@ -157,6 +169,9 @@ export function CassettePlayer(props: CassetteProps) {
 
         const updateVideoCurrentTime = () => {
             playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
+            if (!cassetteTapeInsidePlayer) {
+                return;
+            }
             if (isRewindingRef.current) {
                 if (rewindStartTimeRef.current) {
                     const now = audio.context.currentTime;

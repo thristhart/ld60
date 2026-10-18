@@ -3,17 +3,31 @@ import { GetCassetteSubtitleAtTime, GetVHSSubtitleAtTime } from "./state/subtitl
 import styles from "./subtitles.module.css";
 
 export function Subtitles() {
-    const tvSubtitle = useGameStore((s) => GetVHSSubtitleAtTime(s.widgets.tv.currentTime));
-    const cassetteSubtitle = useGameStore((s) => GetCassetteSubtitleAtTime(s.widgets.cassette.currentTime));
+    const tvSubtitle = useGameStore((s) => {
+        if (s.widgets.tv.isRewinding && s.widgets.tv.currentTime) {
+            return "[rewinding]";
+        }
+        return s.widgets.tv.hasTape && s.widgets.tv.isPlaying
+            ? GetVHSSubtitleAtTime(s.widgets.tv.currentTime)?.subtitle
+            : undefined;
+    });
+    const cassetteSubtitle = useGameStore((s) => {
+        if (s.widgets.cassette.isRewinding && s.widgets.cassette.currentTime) {
+            return "[rewinding]";
+        }
+        return s.widgets.cassette.tapeInside && s.widgets.cassette.isPlaying
+            ? GetCassetteSubtitleAtTime(s.widgets.cassette.currentTime)?.subtitle
+            : undefined;
+    });
 
     if (!tvSubtitle && !cassetteSubtitle) {
         return null;
     }
     return (
         <div className={styles.Subtitles}>
-            {tvSubtitle?.subtitle}
+            {tvSubtitle}
             {cassetteSubtitle && tvSubtitle && <br />}
-            {cassetteSubtitle?.subtitle}
+            {cassetteSubtitle}
         </div>
     );
 }

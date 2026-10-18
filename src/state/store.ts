@@ -30,6 +30,7 @@ const initialState = {
             hasTape: false,
             currentTime: undefined as number | undefined,
             isPlaying: false,
+            isRewinding: false,
         },
         morse: {
             currentValue: "" as string,
@@ -45,6 +46,7 @@ const initialState = {
             tapeInside: false,
             currentTime: undefined as number | undefined,
             isPlaying: false,
+            isRewinding: false,
         },
         rotaryPhone: {
             dialed: "",

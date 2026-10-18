@@ -115,6 +115,9 @@ export function TV(props: TVProps) {
         if (currentSourceRef.current) {
             pause();
         }
+        useGameStore.setState((s) => ({
+            widgets: { ...s.widgets, tv: { ...s.widgets.tv, isPlaying: true, isRewinding: true } },
+        }));
 
         const currentTime = playbackPositionRef.current ?? 0;
         const rewindOffset = Math.max(audio.forwardBuffer.duration - currentTime, 0);
@@ -129,7 +132,9 @@ export function TV(props: TVProps) {
         rewindStartTimeRef.current = now;
     }
     function pause() {
-        useGameStore.setState((s) => ({ widgets: { ...s.widgets, tv: { ...s.widgets.tv, isPlaying: false } } }));
+        useGameStore.setState((s) => ({
+            widgets: { ...s.widgets, tv: { ...s.widgets.tv, isPlaying: false, isRewinding: false } },
+        }));
         if (!currentSourceRef.current) return;
 
         const now = audio.context.currentTime;
@@ -139,7 +144,9 @@ export function TV(props: TVProps) {
         currentSourceRef.current = null;
     }
     function stopRewind() {
-        useGameStore.setState((s) => ({ widgets: { ...s.widgets, tv: { ...s.widgets.tv, isPlaying: false } } }));
+        useGameStore.setState((s) => ({
+            widgets: { ...s.widgets, tv: { ...s.widgets.tv, isPlaying: false, isRewinding: false } },
+        }));
         if (!currentSourceRef.current) return;
 
         const now = audio.context.currentTime;
@@ -178,7 +185,9 @@ export function TV(props: TVProps) {
             currentSourceRef.current.stop();
         }
         pause();
-        useGameStore.setState((s) => ({ widgets: { ...s.widgets, tv: { ...s.widgets.tv, isPlaying: true } } }));
+        useGameStore.setState((s) => ({
+            widgets: { ...s.widgets, tv: { ...s.widgets.tv, isPlaying: true, isRewinding: false } },
+        }));
 
         const forwardsSource = audio.context.createBufferSource();
         forwardsSource.buffer = audio.forwardBuffer;
