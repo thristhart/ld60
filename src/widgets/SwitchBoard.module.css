@@ -93,13 +93,13 @@
 }
 
 .PlugHeadImage {
-    height: 100%;
-    width: 100%;
+    height: 75%;
+    width: 75%;
 }
 
 .PlugWireHorizontal {
     width: 100%;
-    height: 50%;
+    height: 25%;
     background-color: black;
 }
 
@@ -108,5 +108,6 @@
     top: 25%;
     right: 0;
     width: 12%;
+    height: 100%;
     background-color: black;
 }

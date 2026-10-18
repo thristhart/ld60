@@ -159,6 +159,7 @@ function PlugHead( props: { name: "One" | "Two", left: string, top: string } )
         };
     }, []);
 
+    const wireHeight = (800 - Number(top.replaceAll("px", "")) - 24);
 
     return (
         <div style={ { left: left, top: top} } className={classNames(switchboardStyles.PlugHead)} ref={ref}>
@@ -166,7 +167,7 @@ function PlugHead( props: { name: "One" | "Two", left: string, top: string } )
                 <img className={switchboardStyles.PlugHeadImage} src={plugHeadImageUrl} draggable={false} />
                 <div className={switchboardStyles.PlugWireHorizontal}/>
             </div>
-            <div style={ {height: "48px"} } className={switchboardStyles.PlugWireVertical}/>
+            <div style={ {height: `${wireHeight}%`} } className={switchboardStyles.PlugWireVertical}/>
         </div>
     );
 }
