@@ -120,7 +120,6 @@ useGameStore.subscribe((state) => {
     if (!state.widgets.rightDrawer.isOpen) {
         const hourAngleDiff = Math.abs(state.widgets.clock.hourAngle - targetHourAngle);
         const minuteAngleDiff = Math.abs(state.widgets.clock.minuteAngle - targetMinuteAngle);
-        console.log(state.widgets.clock.hourAngle, state.widgets.clock.minuteAngle, hourAngleDiff, minuteAngleDiff);
         if (hourAngleDiff < 3 && minuteAngleDiff < 1.5) {
             openRightDrawer();
         }
