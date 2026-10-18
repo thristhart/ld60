@@ -141,7 +141,7 @@ export function CassettePlayer(props: CassetteProps) {
         playbackStartTimeRef.current = audio.context.currentTime;
     }
     if (props.scaleDown) {
-        return <img src={cassettePlayerImgUrl} />;
+        return <img className={styles.ScaledDown} src={cassettePlayerImgUrl} />;
     }
     return (
         <div>

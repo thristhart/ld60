@@ -12,8 +12,9 @@ body {
     overflow: hidden;
 }
 
-* {
-    cursor: none;
+*,
+[data-cursor] {
+    cursor: none !important;
 }
 
 [data-cursor="point"] {

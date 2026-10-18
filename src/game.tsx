@@ -62,7 +62,7 @@ function Overview() {
             <Hotspot left={895} top={750} width={190} height={150} widget={LoggingRotaryPhone} />
             <Hotspot left={520} top={780} width={190} height={150} widget={Morse} />
             <Hotspot left={1925} top={246} width={400} height={400} widget={SwitchBoard} />
-            <Hotspot left={1425} top={700} width={400} height={400} widget={CassettePlayer} />
+            <Hotspot left={1525} top={830} width={150} height={150} widget={CassettePlayer} />
         </>
     );
 }
