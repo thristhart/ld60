@@ -60,7 +60,7 @@ export function CassettePlayer(props: CassetteProps) {
 
     const audio = useCassetteAudioContext();
     const currentSourceRef = useRef<AudioBufferSourceNode | null>(null);
-    const playbackPositionRef = useRef<number | null>(null);
+    const playbackPositionRef = useRef<number | null>(audio.forwardBuffer.duration - 10);
     const playbackStartTimeRef = useRef<number | null>(null);
     const rewindStartTimeRef = useRef<number | null>(null);
 
