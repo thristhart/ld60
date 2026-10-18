@@ -26,8 +26,6 @@ async function createCasetteAudioContext() {
         getAudioBuffer(context, casetteAudioUrl),
         getAudioBuffer(context, casetteAudioReversedUrl),
     ]);
-    const casetteAudioReversedElement = document.createElement("audio");
-    casetteAudioReversedElement.src = casetteAudioReversedUrl;
 
     const gain = context.createGain();
     gain.gain.value = 0.2;

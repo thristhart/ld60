@@ -1,9 +1,11 @@
 import { Scroller } from "@dnd-kit/dom";
 import { DragDropProvider, useDragDropManager, useDraggable, useDroppable } from "@dnd-kit/react";
 import classNames from "classnames";
-import { useEffect, useRef } from "react";
+import { use, useEffect } from "react";
+import vhsAudioUrl from "../assets/audio/vhs_intro_raw.mp3";
+import vhsReversedAudioUrl from "../assets/audio/vhs_intro_raw_reversed.mp3";
 import tvOverviewImgUrl from "../assets/placeholder_tv_overview.png";
-import vhsTapeUrl from "../assets/placeholder_vhs_tape_video.mp4";
+import vhsPortraitImgUrl from "../assets/placeholder_vhs_portrait.png";
 import tvImgUrl from "../assets/TV_placeholder.png";
 import vhsImgUrl from "../assets/vhs.png";
 import { useGameStore } from "../state/store";
@@ -43,6 +45,42 @@ function VHS() {
     );
 }
 
+async function getAudioBuffer(audioContext: AudioContext, audioUrl: string) {
+    const response = await fetch(audioUrl);
+    const arrayBuffer = await response.arrayBuffer();
+
+    return audioContext.decodeAudioData(arrayBuffer);
+}
+
+let contextPromise: ReturnType<typeof createVHSAudioContext> | undefined = undefined;
+
+async function createVHSAudioContext() {
+    const context = new AudioContext();
+
+    const [forwardBuffer, reversedBuffer] = await Promise.all([
+        getAudioBuffer(context, vhsAudioUrl),
+        getAudioBuffer(context, vhsReversedAudioUrl),
+    ]);
+
+    const gain = context.createGain();
+    gain.gain.value = 0.2;
+    gain.connect(context.destination);
+
+    return { context, gain, forwardBuffer, reversedBuffer };
+}
+
+function getVHSAudioContext() {
+    if (contextPromise) {
+        return contextPromise;
+    }
+    contextPromise = createVHSAudioContext();
+    return contextPromise;
+}
+
+function useVHSAudioContext() {
+    return use(getVHSAudioContext());
+}
+
 interface TVProps extends WidgetProps {}
 export function TV(props: TVProps) {
     const currentTime = useGameStore((s) => s.widgets.tv.currentTime);
@@ -51,42 +89,16 @@ export function TV(props: TVProps) {
     const setHasTape = useGameStore((s) => s.widgets.tv.setHasTape);
 
     const isTVFocused = useGameStore((s) => s.openWidget === TV);
-    const videoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         const updateVideoCurrentTime = () => {
             playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
-            setCurrentTime(videoRef.current?.currentTime);
         };
         let playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
         return () => {
             cancelAnimationFrame(playbackTrackingAnimationFrame);
         };
     }, [setCurrentTime]);
-
-    useEffect(() => {
-        if (!videoRef.current) {
-            return;
-        }
-        if (videoRef.current.paused) {
-            videoRef.current.currentTime = currentTime ?? 0;
-        }
-    }, [currentTime, props.scaleDown]);
-
-    function playFromCurrent() {
-        if (!videoRef.current || !hasTape) {
-            return;
-        }
-        videoRef.current?.play();
-    }
-
-    function rewind() {
-        if (!videoRef.current || !hasTape) {
-            return;
-        }
-        videoRef.current?.pause();
-        videoRef.current!.currentTime = 0;
-    }
 
     return (
         <div className={classNames(styles.TV, props.scaleDown && styles.ScaledDown)} inert={props.blockInteraction}>
@@ -97,30 +109,14 @@ export function TV(props: TVProps) {
                     }
                     if (event.operation.target?.id === "vhsDrop") {
                         setHasTape(true);
-                        requestAnimationFrame(() => {
-                            videoRef.current?.play();
-                        });
+                        // TODO: start playing audio
                     }
                 }}>
                 <VHSDropTarget />
-                <video
-                    className={styles.TVVideo}
-                    src={vhsTapeUrl}
-                    playsInline
-                    ref={videoRef}
-                    muted={props.blockInteraction && isTVFocused}
-                />
+                <img className={styles.TVVideo} src={vhsPortraitImgUrl} />
                 <img className={styles.TVimg} src={props.scaleDown ? tvOverviewImgUrl : tvImgUrl} />
-                {!props.scaleDown && (
-                    <button className={styles.TVPlay} onClick={playFromCurrent}>
-                        ▶️
-                    </button>
-                )}
-                {!props.scaleDown && (
-                    <button className={styles.TVRewind} onClick={rewind}>
-                        ⏪
-                    </button>
-                )}
+                {!props.scaleDown && <button className={styles.TVPlay}>▶️</button>}
+                {!props.scaleDown && <button className={styles.TVRewind}>⏪</button>}
                 {!props.scaleDown && !hasTape && <VHS />}
             </DragDropProvider>
         </div>
