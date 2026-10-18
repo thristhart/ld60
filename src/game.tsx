@@ -8,6 +8,7 @@ import bgImgUrlTable from "./assets/table_layer.png";
 import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
 import { AnalogClock } from "./widgets/AnalogClock";
+import { Drawer } from "./widgets/Drawer";
 import { Hotspot } from "./widgets/Hotspot";
 import { Morse } from "./widgets/morse";
 import { RotaryPhone } from "./widgets/RotaryPhone";
@@ -60,6 +61,7 @@ function Overview() {
             <Hotspot left={895} top={750} width={190} height={150} widget={LoggingRotaryPhone} />
             <Hotspot left={520} top={780} width={190} height={150} widget={Morse} />
             <Hotspot left={1925} top={246} width={400} height={400} widget={SwitchBoard} />
+            <Hotspot left={648} top={989} width={400} height={200} widget={Drawer} />
         </>
     );
 }
