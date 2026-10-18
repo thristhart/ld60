@@ -1,11 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
-import { DragDropProvider, useDraggable, useDroppable } from "@dnd-kit/react";
-import { Hotspot } from "./Hotspot";
-import { Control } from "./Control";
+import { useMemo } from "react";
 import rotaryPhoneImgUrl from "../assets/RotaryPhone.png";
+import { useGameStore } from "../state/store";
+import { Control } from "./Control";
 import styles from "./RotaryPhone.module.css";
 import type { WidgetProps } from "./widget";
-
 
 const rotarLeft = 400;
 const rotarTop = 200;
@@ -16,11 +14,10 @@ interface RotaryPhoneProps extends WidgetProps {
 }
 
 export function RotaryPhone(props: RotaryPhoneProps) {
-    const [ dialed, setDialed ] = useState<string>("");
+    const dialed = useGameStore((s) => s.widgets.rotaryPhone.dialed);
+    const addDialedNumber = useGameStore((s) => s.widgets.rotaryPhone.addDialedNumber);
     const dial = (digit: number) => {
-        const newDialed = `${dialed}${digit}`;
-        setDialed(newDialed);
-        props.onDial?.(newDialed);
+        addDialedNumber(digit);
     };
 
     if (props.scaleDown) {
@@ -30,16 +27,13 @@ export function RotaryPhone(props: RotaryPhoneProps) {
     return (
         <div className={styles.RotaryPhone}>
             <img className={styles.RotaryPhoneImg} src={rotaryPhoneImgUrl} />
-            <RotaryPhoneRotar
-                left={rotarLeft}
-                top={rotarTop}
-                size={rotarSize}
-            />
-            <div style={{
-                position: "absolute",
-                left: rotarLeft + (rotarSize / 2),
-                top: rotarTop + (rotarSize /2),
-            }}>
+            <RotaryPhoneRotar left={rotarLeft} top={rotarTop} size={rotarSize} />
+            <div
+                style={{
+                    position: "absolute",
+                    left: rotarLeft + rotarSize / 2,
+                    top: rotarTop + rotarSize / 2,
+                }}>
                 <RotaryPhoneDigit digit={1} onClick={dial} />
                 <RotaryPhoneDigit digit={2} onClick={dial} />
                 <RotaryPhoneDigit digit={3} onClick={dial} />
@@ -58,7 +52,7 @@ export function RotaryPhone(props: RotaryPhoneProps) {
 interface RotaryPhoneRotarProps {
     left: number;
     top: number;
-    size: number
+    size: number;
 }
 
 function RotaryPhoneRotar(props: RotaryPhoneRotarProps) {
@@ -70,13 +64,11 @@ function RotaryPhoneRotar(props: RotaryPhoneRotarProps) {
             height={props.size}
             onClick={() => console.log("rotor clicked")}
             clipPath="circle(50% at 50% 50%)"
-            debug
-        >
+            debug>
             <div></div>
         </Control>
     );
 }
-
 
 const rotarHoleSize = 80;
 const rotarDigitDiameter = rotarSize - 100;
@@ -90,7 +82,7 @@ function RotaryPhoneDigit(props: RotaryPhoneDigitProps) {
     const dist = 100;
     const angle = useMemo(() => {
         const digit = props.digit === 0 ? 10 : props.digit;
-        return (Math.PI / 8) + (digit * Math.PI / 6);
+        return Math.PI / 8 + (digit * Math.PI) / 6;
     }, [props.digit]);
     const radius = (rotarDigitDiameter - rotarHoleSize) / 2;
     const top = -radius * Math.sin(angle) - rotarHoleSize / 2;
@@ -104,8 +96,7 @@ function RotaryPhoneDigit(props: RotaryPhoneDigitProps) {
             height={rotarHoleSize}
             onClick={() => props.onClick?.(props.digit)}
             clipPath="circle(50% at 50% 50%)"
-            debug
-        >
+            debug>
             <span className={styles.RotaryPhoneDigit}>{props.digit}</span>
         </Control>
     );

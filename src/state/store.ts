@@ -37,6 +37,9 @@ const initialState = {
         cassette: {
             tapeInside: false,
         },
+        rotaryPhone: {
+            dialed: "",
+        },
     },
     hasCasetteTape: false,
 };
@@ -67,6 +70,9 @@ type GameState = typeof initialState & {
         };
         leftDrawer: {
             open: () => void;
+        };
+        rotaryPhone: {
+            addDialedNumber: (newNumber: number) => void;
         };
     };
 };
@@ -188,11 +194,38 @@ export const useGameStore = create<GameState>()((set) => ({
                 }));
             },
         },
+        rotaryPhone: {
+            ...initialState.widgets.rotaryPhone,
+            addDialedNumber(newDialedNumber: number) {
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        rotaryPhone: {
+                            ...s.widgets.rotaryPhone,
+                            dialed: s.widgets.rotaryPhone.dialed + newDialedNumber.toString(),
+                        },
+                    },
+                }));
+            },
+            resetDialedNumber() {
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        rotaryPhone: {
+                            ...s.widgets.rotaryPhone,
+                            dialed: "",
+                        },
+                    },
+                }));
+            },
+        },
     },
 }));
 
 const targetHourAngleRange = { min: 24, max: 59 };
 const targetMinuteAngleRange = { min: 209, max: 238 };
+
+const targetPhoneNumber = "123456";
 
 function hourInRange(hour: number) {
     return hour < targetHourAngleRange.max && hour > targetHourAngleRange.min;
@@ -207,6 +240,13 @@ useGameStore.subscribe((state) => {
         const minuteCorrect = minuteInRange(state.widgets.clock.minuteAngle);
         if (hourCorrect && minuteCorrect) {
             state.widgets.rightDrawer.open();
+        }
+    }
+
+    if (!state.widgets.leftDrawer.isOpen) {
+        const phoneNumberCorrect = state.widgets.rotaryPhone.dialed === targetPhoneNumber;
+        if (phoneNumberCorrect) {
+            state.widgets.leftDrawer.open();
         }
     }
 });
