@@ -1,6 +1,7 @@
 import { Howl } from "howler";
 import rattleSoundUrl from "../assets/audio/placeholder_drawer_rattle.wav";
 import drawerExpandedImgUrl from "../assets/placeholder_drawer_open.png";
+import leftDrawerOpenImgUrl from "../assets/placeholder_leftdrawer_open.png";
 import rightDrawerOpenImgUrl from "../assets/placeholder_rightdrawer_open.png";
 import rightDrawerLockedImgUrl from "../assets/rightdrawer_locked.png";
 import { useGameStore } from "../state/store";
@@ -49,4 +50,36 @@ export function RightDrawer() {
         return <RightDrawerOpen />;
     }
     return <RightDrawerLocked />;
+}
+
+function LeftDrawerLocked() {
+    return (
+        <Control top={1053} left={756} width={309} height={95} onClick={() => rattleSound.play()}>
+            <img src={rightDrawerLockedImgUrl} />
+        </Control>
+    );
+}
+
+function LeftDrawerOpen() {
+    return <Hotspot top={1053} left={680} width={384} height={214} widget={LeftDrawerWidget}></Hotspot>;
+}
+
+interface LeftDrawerProps extends WidgetProps {}
+function LeftDrawerWidget(props: LeftDrawerProps) {
+    if (props.scaleDown) {
+        return <img src={leftDrawerOpenImgUrl} />;
+    }
+    return (
+        <div>
+            <img src={drawerExpandedImgUrl} />
+        </div>
+    );
+}
+
+export function LeftDrawer() {
+    const isOpen = useGameStore((s) => s.widgets.leftDrawer.isOpen);
+    if (isOpen) {
+        return <LeftDrawerOpen />;
+    }
+    return <LeftDrawerLocked />;
 }

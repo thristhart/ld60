@@ -31,6 +31,9 @@ const initialState = {
             isOpen: false,
             containsTape: true,
         },
+        leftDrawer: {
+            isOpen: false,
+        },
         cassette: {
             tapeInside: false,
         },
@@ -61,6 +64,9 @@ type GameState = typeof initialState & {
         rightDrawer: {
             open: () => void;
             takeTape: () => void;
+        };
+        leftDrawer: {
+            open: () => void;
         };
     };
 };
@@ -136,6 +142,22 @@ export const useGameStore = create<GameState>()((set) => ({
                         },
                     },
                     hasCasetteTape: true,
+                }));
+            },
+        },
+        leftDrawer: {
+            ...initialState.widgets.leftDrawer,
+            open() {
+                drawerOpeningSound.play();
+
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        leftDrawer: {
+                            ...s.widgets.leftDrawer,
+                            isOpen: true,
+                        },
+                    },
                 }));
             },
         },

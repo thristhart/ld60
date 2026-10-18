@@ -10,7 +10,7 @@ import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
 import { AnalogClock } from "./widgets/AnalogClock";
 import { CassettePlayer } from "./widgets/cassetteplayer";
-import { RightDrawer } from "./widgets/drawers";
+import { LeftDrawer, RightDrawer } from "./widgets/drawers";
 import { Hotspot } from "./widgets/Hotspot";
 import { Morse } from "./widgets/morse";
 import { RotaryPhone } from "./widgets/RotaryPhone";
@@ -64,6 +64,7 @@ function Overview() {
             <Hotspot left={520} top={780} width={190} height={150} widget={Morse} />
             <Hotspot left={1925} top={246} width={400} height={400} widget={SwitchBoard} />
             <Hotspot left={1525} top={830} width={150} height={150} widget={CassettePlayer} />
+            <LeftDrawer />
             <RightDrawer />
         </>
     );
