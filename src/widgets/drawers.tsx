@@ -1,6 +1,6 @@
 import { Howl } from "howler";
 import { useState } from "react";
-import rattleSoundUrl from "../assets/audio/placeholder_drawer_rattle.wav";
+import rattleSoundUrl from "../assets/audio/drawer locked.mp3";
 import drawerExpandedImgUrl from "../assets/placeholder_drawer_open.png";
 import leftDrawerOpenImgUrl from "../assets/placeholder_leftdrawer_open.png";
 import rightDrawerOpenImgUrl from "../assets/placeholder_rightdrawer_open.png";
