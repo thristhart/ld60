@@ -1,8 +1,8 @@
 import { Scroller } from "@dnd-kit/dom";
 import { DragDropProvider, useDragDropManager, useDraggable, useDroppable } from "@dnd-kit/react";
 import { use, useEffect, useRef } from "react";
-import casetteAudioReversedUrl from "../assets/Kia of West Chester - Thats Crazy! reversed.mp3";
-import casetteAudioUrl from "../assets/Kia of West Chester - Thats Crazy!.mp3";
+import casetteAudioUrl from "../assets/audio/cassette_ad.mp3";
+import casetteAudioReversedUrl from "../assets/audio/cassette_ad_reversed.mp3";
 import cassettePlayerImgUrl from "../assets/placeholder_cassette_player.png";
 import cassetteTapeImgUrl from "../assets/placeholder_cassette_tape.png";
 import { useGameStore } from "../state/store";
