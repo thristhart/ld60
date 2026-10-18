@@ -73,6 +73,21 @@ export function TV(props: TVProps) {
         }
     }, [currentTime, props.scaleDown]);
 
+    function playFromCurrent() {
+        if (!videoRef.current || !hasTape) {
+            return;
+        }
+        videoRef.current?.play();
+    }
+
+    function rewind() {
+        if (!videoRef.current || !hasTape) {
+            return;
+        }
+        videoRef.current?.pause();
+        videoRef.current!.currentTime = 0;
+    }
+
     return (
         <div className={classNames(styles.TV, props.scaleDown && styles.ScaledDown)} inert={props.blockInteraction}>
             <DragDropProvider
@@ -96,6 +111,12 @@ export function TV(props: TVProps) {
                     muted={props.blockInteraction && isTVFocused}
                 />
                 <img className={styles.TVimg} src={props.scaleDown ? tvOverviewImgUrl : tvImgUrl} />
+                <button className={styles.TVPlay} onClick={playFromCurrent}>
+                    ▶️
+                </button>
+                <button className={styles.TVRewind} onClick={rewind}>
+                    ⏪
+                </button>
                 {!props.scaleDown && !hasTape && <VHS />}
             </DragDropProvider>
         </div>
