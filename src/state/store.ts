@@ -2,10 +2,16 @@
 import { Howl } from "howler";
 import { create } from "zustand";
 import drawerOpeningSoundUrl from "../assets/audio/placeholder_drawer_opening.wav";
+import telephoneRingingSoundUrl from "../assets/audio/placeholder_telephone_ringing.wav";
 import type { Widget } from "../widgets/widget";
 
 const drawerOpeningSound = new Howl({
     src: [drawerOpeningSoundUrl],
+});
+
+const telephoneRingingSound = new Howl({
+    src: [telephoneRingingSoundUrl],
+    loop: true,
 });
 
 export type PlugPositions = "base" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H";
@@ -37,8 +43,12 @@ const initialState = {
         cassette: {
             tapeInside: false,
         },
+        rotaryPhone: {
+            ringing: false,
+        },
     },
     hasCasetteTape: false,
+    hasWon: false,
 };
 
 type GameState = typeof initialState & {
@@ -67,6 +77,9 @@ type GameState = typeof initialState & {
         };
         leftDrawer: {
             open: () => void;
+        };
+        rotaryPhone: {
+            ring: () => void;
         };
     };
 };
@@ -188,6 +201,21 @@ export const useGameStore = create<GameState>()((set) => ({
                 }));
             },
         },
+        rotaryPhone: {
+            ...initialState.widgets.rotaryPhone,
+            ring() {
+                telephoneRingingSound.play();
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        rotaryPhone: {
+                            ...s.widgets.rotaryPhone,
+                            ringing: true,
+                        },
+                    },
+                }));
+            },
+        },
     },
 }));
 
@@ -207,6 +235,17 @@ useGameStore.subscribe((state) => {
         const minuteCorrect = minuteInRange(state.widgets.clock.minuteAngle);
         if (hourCorrect && minuteCorrect) {
             state.widgets.rightDrawer.open();
+        }
+    }
+    if (!state.widgets.rotaryPhone.ringing && !state.hasWon) {
+        if (
+            (state.widgets.switchboard.plugOnePosition === "B" && state.widgets.switchboard.plugTwoPosition === "G") ||
+            (state.widgets.switchboard.plugOnePosition === "G" && state.widgets.switchboard.plugTwoPosition === "B")
+        ) {
+            // biscuit
+            if (state.widgets.morse.currentValue.trim().endsWith("-... .. ... -.-. ..- .. -")) {
+                state.widgets.rotaryPhone.ring();
+            }
         }
     }
 });
