@@ -13,7 +13,7 @@ const vhsSubtitles = `
 47.1	50.68	you were still entranced by the rotary phone.
 50.68	56.62	Of all your siblings you're the only one who knows how to read an analog clock, or tune a radio.
 56.62	61.14	Everyone else thinks they're getting a small but even share of my meager fortune,
-61.14	65.29	but in truth I will be leaving most of my wealth and possessions to you.
+61.14	65.29	but in truth I'm leaving most of my wealth and possessions to you.
 65.29	69.0	What pleasant memories we have of our times together!
 69.0	72.0	I hope this little exercise jogs up some of them.
 72.0	76.0	The next step involves the clock, and my birthday.
