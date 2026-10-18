@@ -1,6 +1,7 @@
 const vhsSubtitles = `
-0	5.73	This videotape is the last will and testament of Ralph Palmer,
-5.73	7.5	born on April 18th, 1954 at 4:53pm,
+4.00	7.75	This videotape is the last will and testament of Ralph Palmer,
+7.75	11.8	born on April 18th, 1954 at 4:53pm,
+11.80	14.0	as represented by me, Duncan Baker.
 `;
 
 const vhsSubtitleData = vhsSubtitles
