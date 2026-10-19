@@ -395,7 +395,7 @@ export function CassetteAudioProvider(props: { children: React.ReactNode }) {
         return () => {
             cancelAnimationFrame(playbackTrackingAnimationFrame);
         };
-    }, [setCurrentTime]);
+    }, [setCurrentTime, cassetteTapeInsidePlayer]);
 
     const value = useMemo(() => ({ play, pause, rewind, stopRewind }), []);
 

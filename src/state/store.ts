@@ -122,25 +122,29 @@ export const useGameStore = create<GameState>()((set) => ({
                 set((s) => ({
                     widgets: {
                         ...s.widgets,
-                        switchboard: { 
-                            ...s.widgets.switchboard, 
-                            [`plug${plugNumber}Position`]: plugPosition, 
+                        switchboard: {
+                            ...s.widgets.switchboard,
+                            [`plug${plugNumber}Position`]: plugPosition,
                         },
                         // clear any sent message if you change the switchboard position
                         morse: {
                             ...s.widgets.morse,
                             currentValue: "",
-                        }
+                        },
                     },
                 })),
         },
         clock: {
             ...initialState.widgets.clock,
             updatePuzzleClockAngle: (hand) =>
-                set((s) => ({ widgets: { ...s.widgets, clock: { ...s.widgets.clock, [`${hand}Angle`]: s.widgets.clock[`${hand}UIAngle`] } } })),
-             setClockHandUIAngle: (hand, angle) =>
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        clock: { ...s.widgets.clock, [`${hand}Angle`]: s.widgets.clock[`${hand}UIAngle`] },
+                    },
+                })),
+            setClockHandUIAngle: (hand, angle) =>
                 set((s) => ({ widgets: { ...s.widgets, clock: { ...s.widgets.clock, [`${hand}UIAngle`]: angle } } })),
-    
         },
         tv: {
             ...initialState.widgets.tv,
