@@ -5,6 +5,8 @@
 }
 .TV.ScaledDown {
     transform: unset;
+    width: 372.5px;
+    height: 266px;
 }
 .TVimg {
     width: 100%;

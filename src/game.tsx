@@ -61,7 +61,7 @@ function Overview() {
             <Hotspot left={630} top={300} width={200} height={500} widget={MorseReference} />
             <Hotspot left={1900} top={355} width={640} height={620} widget={SwitchBoard} />
             <img className={styles.bgImg} src={bgImgUrlTable} />
-            <Hotspot left={1120} top={600} width={1490 / 4} height={1064 / 4} widget={TV} />
+            <Hotspot left={1120} top={600} width={500} height={300} widget={TV} />
             <Hotspot left={1480} top={300} width={235} height={235} widget={AnalogClock} />
             <Hotspot left={895} top={750} width={200} height={200} widget={LoggingRotaryPhone} />
             <Hotspot left={530} top={785} width={180} height={100} widget={Morse} />
