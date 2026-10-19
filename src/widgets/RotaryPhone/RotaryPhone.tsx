@@ -81,7 +81,7 @@ export function RotaryPhone(props: RotaryPhoneProps) {
                 top={159}
                 left={632}
                 width={397}
-                height={146}
+                height={230}
             />
         </div>
     );
