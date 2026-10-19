@@ -122,7 +122,15 @@ export const useGameStore = create<GameState>()((set) => ({
                 set((s) => ({
                     widgets: {
                         ...s.widgets,
-                        switchboard: { ...s.widgets.switchboard, [`plug${plugNumber}Position`]: plugPosition },
+                        switchboard: { 
+                            ...s.widgets.switchboard, 
+                            [`plug${plugNumber}Position`]: plugPosition, 
+                        },
+                        // clear any sent message if you change the switchboard position
+                        morse: {
+                            ...s.widgets.morse,
+                            currentValue: "",
+                        }
                     },
                 })),
         },
