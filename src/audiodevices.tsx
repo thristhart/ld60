@@ -142,6 +142,7 @@ export function VHSAudioProvider(props: { children: React.ReactNode }) {
         rewindStartTimeRef.current = null;
         currentSourceRef.current.stop();
         currentSourceRef.current = null;
+        play();
     }
     function play() {
         if (currentSourceRef.current) {
@@ -335,6 +336,7 @@ export function CassetteAudioProvider(props: { children: React.ReactNode }) {
         rewindStartTimeRef.current = null;
         currentSourceRef.current.stop();
         currentSourceRef.current = null;
+        play();
     }
     function play() {
         if (currentSourceRef.current) {
