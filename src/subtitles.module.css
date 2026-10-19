@@ -1,12 +1,12 @@
 .Subtitles {
-    color: #fff340;
+    color: #74b5aa;
     text-shadow:
         -1px -1px 0 #000,
         1px -1px 0 #000,
         -1px 1px 0 #000,
         1px 1px 0 #000,
-        0 0 4px rgba(255, 243, 64, 0.6),
-        0 0 12px rgba(255, 243, 64, 0.4);
+        0 0 4px #74b5aa,
+        0 0 12px #74b5aa;
     background-color: rgba(0, 0, 0, 0.65);
 
     position: absolute;
@@ -21,4 +21,5 @@
     font-style: normal;
 
     text-transform: uppercase;
+    z-index: 1000;
 }
