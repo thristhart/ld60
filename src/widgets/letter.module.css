@@ -3,12 +3,21 @@
 }
 
 .LetterContents {
-    background-color: white;
     position: absolute;
-    top: 500px;
+    top: 300px;
     left: 930px;
-    padding: 50px;
-    width: 600px;
+    width: 700px;
+    height: 900px;
+    background-image: url("../assets/letter_bg.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    padding: 100px;
+    box-sizing: border-box;
+
+    font-family: "Special Elite", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 25px;
 }
 .LetterContents code {
     font-family: monospace;
