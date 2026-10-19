@@ -12,6 +12,7 @@ const drawerOpeningSound = new Howl({
 const telephoneRingingSound = new Howl({
     src: [telephoneRingingSoundUrl],
     loop: true,
+    volume: 0.5,
 });
 
 export type PlugPositions = "base" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H";
