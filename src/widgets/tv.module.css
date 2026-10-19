@@ -1,6 +1,10 @@
 .TV {
     position: absolute;
     inset: 0;
+    transform: scale(0.8);
+}
+.TV.ScaledDown {
+    transform: unset;
 }
 .TVimg {
     width: 100%;
@@ -26,7 +30,7 @@
 .VHS {
     position: absolute;
     top: 1100px;
-    right: 300px;
+    right: 100px;
     width: 400px;
     cursor: grab;
 }

@@ -213,7 +213,10 @@ export function CassettePlayer(props: CassetteProps) {
     if (props.scaleDown) {
         return (
             <div className={styles.ScaledDown}>
-                <img className={styles.CassetteImage} src={cassettePlayerOpenImgUrl} />
+                <img
+                    className={styles.CassetteImage}
+                    src={cassetteTapeInsidePlayer ? cassettePlayerClosedImgUrl : cassettePlayerOpenImgUrl}
+                />
                 <img className={styles.CassetteButtons} src={cassettePlayerButtonsImgUrl} />
             </div>
         );
