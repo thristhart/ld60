@@ -5,6 +5,7 @@ import bgImgUrlTable from "./assets/table_layer.png";
 import { CassetteAudioProvider, VHSAudioProvider } from "./audiodevices";
 import styles from "./game.module.css";
 import { MuteButton } from "./mutebutton";
+import { ScaleContext } from "./scalecontext";
 import { useGameStore } from "./state/store";
 import { Subtitles } from "./subtitles";
 import { AnalogClock } from "./widgets/AnalogClock";
@@ -165,17 +166,19 @@ export default function Game() {
     const scale = useFitToScreen();
 
     return (
-        <VHSAudioProvider>
-            <CassetteAudioProvider>
-                <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
-                    <img className={styles.bgImg} src={bgImgUrl} />
-                    <Overview />
-                    <WidgetView />
-                    <YouWinScreen />
-                    <Subtitles />
-                </div>
-                <MuteButton />
-            </CassetteAudioProvider>
-        </VHSAudioProvider>
+        <ScaleContext.Provider value={scale}>
+            <VHSAudioProvider>
+                <CassetteAudioProvider>
+                    <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
+                        <img className={styles.bgImg} src={bgImgUrl} />
+                        <Overview />
+                        <WidgetView />
+                        <YouWinScreen />
+                        <Subtitles />
+                    </div>
+                    <MuteButton />
+                </CassetteAudioProvider>
+            </VHSAudioProvider>
+        </ScaleContext.Provider>
     );
 }
