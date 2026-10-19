@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
-import { maxRotation } from "./rotaryPhoneUtils";
+import { dialedDigit, maxRotation } from "./rotaryPhoneUtils";
 
 const dialTolerance = Math.PI / 36;
+const reverseLockAngle = Math.PI / 60;
 const returnSpeed = (2 * Math.PI) / 1500;
 
 export function useRotorDial(onDialed: (digit: number) => void) {
@@ -34,6 +35,8 @@ export function useRotorDial(onDialed: (digit: number) => void) {
             const max = maxRotation(digit);
             let lastAngle = pointerAngle(e.clientX, e.clientY);
             let rotation = 0;
+            let peak = 0;
+            let returning = false;
 
             const onMove = (ev: globalThis.PointerEvent) => {
                 const current = pointerAngle(ev.clientX, ev.clientY);
@@ -45,14 +48,25 @@ export function useRotorDial(onDialed: (digit: number) => void) {
                     delta += 2 * Math.PI;
                 }
                 lastAngle = current;
-                rotation = Math.min(Math.max(rotation + delta, 0), max);
-                setAngle(rotation);
+                if (returning) {
+                    rotation += Math.min(delta, 0);
+                } else {
+                    rotation = Math.min(rotation + delta, max);
+                    peak = Math.max(peak, rotation);
+                    returning = rotation < peak - reverseLockAngle;
+                }
+                if (returning && rotation <= 0) {
+                    onUp();
+                    return;
+                }
+                setAngle(Math.max(rotation, 0));
             };
 
             const onUp = () => {
                 stopDrag();
-                if (rotation >= max - dialTolerance) {
-                    onDialedRef.current(digit);
+                const dialed = dialedDigit(peak, dialTolerance);
+                if (dialed !== undefined) {
+                    onDialedRef.current(dialed);
                 }
                 if (rotation > 0) {
                     setReturnMs(rotation / returnSpeed);

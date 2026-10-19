@@ -124,7 +124,6 @@ function RotaryPhoneRotor(props: RotaryPhoneRotorProps) {
                     height={rotorHoleSize}
                     onPointerDown={(e) => grab(hole.digit, e)}
                     clipPath="circle(50% at 50% 50%)"
-                    debug
                 />
             ))}
         </div>

@@ -26,3 +26,9 @@ export const fingerStopAdjust = Math.PI / 24;
 export function maxRotation(digit: number) {
     return digitAngle(digit) - fingerStopAngle - fingerStopAdjust;
 }
+
+// Like pulse dialing: one pulse per digit whose full travel was reached, so an early release dials a lower digit
+export function dialedDigit(rotation: number, tolerance: number) {
+    const pulses = digits.filter((digit) => rotation >= maxRotation(digit) - tolerance).length;
+    return pulses === 0 ? undefined : pulses % 10;
+}
