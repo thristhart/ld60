@@ -3,8 +3,11 @@ import { DragDropProvider, useDragDropManager, useDraggable, useDroppable } from
 import classNames from "classnames";
 import { use, useEffect } from "react";
 import tvOverviewImgUrl from "../assets/placeholder_tv_overview.png";
-import vhsPortraitImgUrl from "../assets/placeholder_vhs_portrait.png";
 import tvImgUrl from "../assets/tv.png";
+import vhsImgBackgroundURL from "../assets/tv_background.png";
+import vhsImgGrampsURL from "../assets/tv_gramps.png";
+import vhsImgLawyerURL from "../assets/tv_lawyer.png";
+import vhsImgScanlinesURL from "../assets/tv_scanlines.png";
 import vhsImgUrl from "../assets/vhs.png";
 import { VHSAudioContext } from "../audiodevices";
 import { useGameStore } from "../state/store";
@@ -49,6 +52,25 @@ function VHS(props: VHSProps) {
     );
 }
 
+interface VHSImageProps extends WidgetProps {}
+function VHSImage(props: VHSImageProps) {
+    const audioProgress = useGameStore((s) => s.widgets.tv.currentTime);
+    const IsGrampsTime = (audioProgress ?? 0) > 35.2;
+
+    return (
+        <div className={styles.TVVideo}>
+            <img className={styles.TVVideoInternal} src={vhsImgBackgroundURL} inert />
+            {!IsGrampsTime && (
+                <img className={classNames(styles.TVVideoInternal, styles.TVVideoLawyer)} src={vhsImgLawyerURL} inert />
+            )}
+            {IsGrampsTime && (
+                <img className={classNames(styles.TVVideoInternal, styles.TVVideoGramps)} src={vhsImgGrampsURL} inert />
+            )}
+            <img className={styles.TVVideoInternal} src={vhsImgScanlinesURL} inert />
+        </div>
+    );
+}
+
 interface TVProps extends WidgetProps {}
 export function TV(props: TVProps) {
     const hasTape = useGameStore((s) => s.widgets.tv.hasTape);
@@ -69,7 +91,7 @@ export function TV(props: TVProps) {
                     }
                 }}>
                 <div className={styles.TVVideo}></div>
-                {hasTape && <img className={styles.TVVideo} src={vhsPortraitImgUrl} inert />}
+                {hasTape && <VHSImage />}
                 <img className={styles.TVimg} src={props.scaleDown ? tvOverviewImgUrl : tvImgUrl} inert />
                 <VHSDropTarget />
                 {!props.scaleDown && hasTape && (
