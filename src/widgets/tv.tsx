@@ -6,7 +6,7 @@ import vhsAudioUrl from "../assets/audio/vhs_intro.mp3";
 import vhsReversedAudioUrl from "../assets/audio/vhs_intro_reversed.mp3";
 import tvOverviewImgUrl from "../assets/placeholder_tv_overview.png";
 import vhsPortraitImgUrl from "../assets/placeholder_vhs_portrait.png";
-import tvImgUrl from "../assets/TV_placeholder.png";
+import tvImgUrl from "../assets/tv.png";
 import vhsImgUrl from "../assets/vhs.png";
 import { useGameStore } from "../state/store";
 import { Control } from "./Control";
@@ -249,34 +249,21 @@ export function TV(props: TVProps) {
                         play();
                     }
                 }}>
-                <VHSDropTarget />
                 <div className={styles.TVVideo}></div>
                 {hasTape && <img className={styles.TVVideo} src={vhsPortraitImgUrl} />}
                 <img className={styles.TVimg} src={props.scaleDown ? tvOverviewImgUrl : tvImgUrl} />
+                <VHSDropTarget />
                 {!props.scaleDown && hasTape && (
                     <Control
-                        debug
-                        className={styles.TVPlay}
                         onClick={() => (currentSourceRef.current ? pause() : play())}
-                        left={1800}
-                        top={755}
-                        width={100}
-                        height={100}>
-                        ▶️
-                    </Control>
+                        left={1700}
+                        top={800}
+                        width={130}
+                        height={120}
+                    />
                 )}
                 {!props.scaleDown && hasTape && (
-                    <Control
-                        debug
-                        className={styles.TVRewind}
-                        left={1800}
-                        top={860}
-                        width={100}
-                        height={100}
-                        onDown={rewind}
-                        onUp={stopRewind}>
-                        ⏪
-                    </Control>
+                    <Control left={1840} top={800} width={130} height={120} onDown={rewind} onUp={stopRewind} />
                 )}
                 {!props.scaleDown && !hasTape && <VHS />}
             </DragDropProvider>

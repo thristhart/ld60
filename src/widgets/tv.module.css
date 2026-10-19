@@ -27,18 +27,13 @@
     position: absolute;
     top: 1100px;
     right: 300px;
+    width: 400px;
+    cursor: grab;
 }
 .VHSDropTarget {
     position: absolute;
     right: 600px;
-    bottom: 770px;
+    bottom: 670px;
     width: 280px;
-    height: 100px;
-}
-.TVPlay {
-    background-color: red;
-}
-
-.TVRewind {
-    background-color: red;
+    height: 500px;
 }
