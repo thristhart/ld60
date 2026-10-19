@@ -34,6 +34,8 @@ const initialState = {
         clock: {
             hourAngle: 270,
             minuteAngle: 315,
+            hourUIAngle: 270,
+            minuteUIAngle: 315,
         },
         tv: {
             hasTape: false,
@@ -76,7 +78,8 @@ type GameState = typeof initialState & {
             setPlugPosition: (plugNumber: "One" | "Two", plugPosition: PlugPositions) => void;
         };
         clock: {
-            setClockHandAngle: (hand: "hour" | "minute", angle: number) => void;
+            updatePuzzleClockAngle: (hand: "hour" | "minute") => void;
+            setClockHandUIAngle: (hand: "hour" | "minute", angle: number) => void;
         };
         tv: {
             setHasTape: (hasTape: boolean) => void;
@@ -125,8 +128,11 @@ export const useGameStore = create<GameState>()((set) => ({
         },
         clock: {
             ...initialState.widgets.clock,
-            setClockHandAngle: (hand, angle) =>
-                set((s) => ({ widgets: { ...s.widgets, clock: { ...s.widgets.clock, [`${hand}Angle`]: angle } } })),
+            updatePuzzleClockAngle: (hand) =>
+                set((s) => ({ widgets: { ...s.widgets, clock: { ...s.widgets.clock, [`${hand}Angle`]: s.widgets.clock[`${hand}UIAngle`] } } })),
+             setClockHandUIAngle: (hand, angle) =>
+                set((s) => ({ widgets: { ...s.widgets, clock: { ...s.widgets.clock, [`${hand}UIAngle`]: angle } } })),
+    
         },
         tv: {
             ...initialState.widgets.tv,
