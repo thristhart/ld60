@@ -1,35 +1,26 @@
 .SwitchboardContainer {
+    width: 640px;
+    height: 695px;
     position: relative;
-    width: 800px;
-    height: 800px;
 }
 
 .SwitchboardContainer.ScaledDown {
-    transform: translate(-225px, -200px) scale(0.5);
-}
-
-.BackgroundContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
 }
 
 .SwitchboardBack {
-    width: 800px;
-    height: 600px;
-}
-
-.SwitchboardDeck {
-    width: 800px;
-    height: 200px;
+    width: 640px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .PlugGrid {
     position: absolute;
     z-index: 2;
-    width: 800px;
-    height: 600px;
+    width: 566px;
+    height: 437px;
+    top: 150px;
+    left: 38px;
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -39,15 +30,16 @@
 .PlugJackContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    height: 100%;
-    width: 100%;
+    padding-top: 48px;
 }
 
 .PlugJackName {
-    font-size: 72px;
-    padding-bottom: 24px;
+    font-family: "Special Elite", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 13px;
 }
 
 .PlugJack {
