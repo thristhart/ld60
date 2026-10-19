@@ -1,10 +1,8 @@
 import classNames from "classnames";
 import { useEffect, useRef, useState } from "react";
-import telegraphKeyBaseImgUrl from "../assets/placeholder_telegraph_key_base.png";
-import telegraphKeyLeverImgUrl from "../assets/placeholder_telegraph_key_lever.png";
-import telegraphKeyLightOffImgUrl from "../assets/placeholder_telegraph_key_off.png";
-import telegraphKeyLightOnImgUrl from "../assets/placeholder_telegraph_key_on.png";
-import telegraphKeyOverviewImgUrl from "../assets/placeholder_telegraph_key_overview.png";
+import telegraphKeyOverviewImgUrl from "../assets/telegraph_key.png";
+import telegraphKeyBaseImgUrl from "../assets/telegraph_key_base.png";
+import telegraphKeyLeverImgUrl from "../assets/telegraph_key_lever.png";
 import { useGameStore } from "../state/store";
 import { Control } from "./Control";
 import styles from "./morse.module.css";
@@ -90,10 +88,6 @@ function TelegraphKey() {
         <div className={styles.TelegraphKey}>
             <img className={styles.TelegraphKeyBase} src={telegraphKeyBaseImgUrl} />
             <img
-                className={styles.TelegraphKeyLight}
-                src={pressed ? telegraphKeyLightOnImgUrl : telegraphKeyLightOffImgUrl}
-            />
-            <img
                 className={classNames(styles.TelegraphKeyLever, pressed && styles.LeverPressed)}
                 src={telegraphKeyLeverImgUrl}
             />
@@ -104,10 +98,10 @@ function TelegraphKey() {
             </div>
             <Control
                 className={styles.TelegraphButton}
-                left={865}
-                top={660}
-                width={130}
-                height={200}
+                left={1565}
+                top={300}
+                width={230}
+                height={400}
                 onDown={() => setPressed(true)}
                 onUp={() => setPressed(false)}
                 onExit={() => setPressed(false)}

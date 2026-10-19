@@ -1,3 +1,6 @@
+.ScaledDown {
+    width: 120px;
+}
 .TelegraphKeyLight {
     position: absolute;
     top: 740px;
@@ -6,12 +9,18 @@
 
 .TelegraphKeyLever {
     position: absolute;
-    top: 670px;
-    left: 880px;
-    transform-origin: 420px 120px;
+    top: 402px;
+    left: 770px;
+    transform-origin: 231px 242px;
 }
 .LeverPressed {
-    transform: rotate(-7deg);
+    transform: rotate(9deg);
+}
+
+.TelegraphKeyBase {
+    position: absolute;
+    top: 600px;
+    left: 700px;
 }
 
 .TelegraphButton {
@@ -20,13 +29,17 @@
 
 .TelegraphPreview {
     position: absolute;
-    top: 870px;
-    left: 1300px;
-    width: 340px;
-    height: 70px;
-    background-color: #253f24;
+    top: 900px;
+    left: 1340px;
+    width: 510px;
+    height: 160px;
     white-space: nowrap;
     overflow: hidden;
+    transform: rotate(-8deg);
+    transform-origin: top left;
+    display: flex;
+    align-items: center;
+    clip-path: polygon(96% 64%, 95% 80%, 0% 79%, 2.3% 45%, 3% 36%, 3.4% 21%, 98.6% 21%, 97.6% 41%);
 }
 
 .TelegraphPreviewText {
@@ -35,7 +48,7 @@
     font-size: 36px;
     position: absolute;
     right: 8px;
-    color: #62e390;
-    text-shadow: 0 0 10px rgba(0, 255, 192, 0.6);
+    color: black;
     white-space: pre;
+    padding-right: 16px;
 }
