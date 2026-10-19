@@ -1,6 +1,6 @@
 .SwitchboardContainer {
     position: relative;
-    width: 800px; 
+    width: 800px;
     height: 800px;
 }
 
@@ -8,16 +8,16 @@
     transform: translate(-225px, -200px) scale(0.5);
 }
 
-.BackgroundContainer { 
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
+.BackgroundContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 
 .SwitchboardBack {
     width: 800px;
-    height: 600px; 
+    height: 600px;
 }
 
 .SwitchboardDeck {
@@ -26,31 +26,28 @@
 }
 
 .PlugGrid {
-    position: absolute; 
+    position: absolute;
     z-index: 2;
     width: 800px;
-    height: 600px; 
+    height: 600px;
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     user-select: none;
-
 }
 
-.PlugJackContainer { 
+.PlugJackContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
     width: 100%;
-
 }
 
 .PlugJackName {
     font-size: 72px;
     padding-bottom: 24px;
-    
 }
 
 .PlugJack {
@@ -72,7 +69,6 @@
     left: 100px;
 }
 
-
 .PlugHeadTwoBase {
     top: 650px;
     left: 500px;
@@ -81,10 +77,9 @@
 .PlugHead {
     position: absolute;
     height: 100px;
-    width: 100px;
+    width: 140px;
     z-index: 4;
 }
-
 
 .PlugHorizontalSection {
     display: flex;

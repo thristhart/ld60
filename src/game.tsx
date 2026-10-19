@@ -141,7 +141,9 @@ export default function Game() {
 
     return (
         <>
-            <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
+            <div
+                className={styles.playArea}
+                style={{ transform: `translate(-50%, -50%) scale(${scale})`, "--scale": scale }}>
                 <img className={styles.bgImg} src={bgImgUrl} />
                 <img className={styles.bgImg} src={bgImgUrlLeft} />
                 <img className={styles.bgImg} src={bgImgUrlTable} />
