@@ -4,6 +4,7 @@ import bgImgUrl from "./assets/background.png";
 import bgImgUrlTable from "./assets/table_layer.png";
 import { CassetteAudioProvider, VHSAudioProvider } from "./audiodevices";
 import styles from "./game.module.css";
+import { MuteButton } from "./mutebutton";
 import { useGameStore } from "./state/store";
 import { Subtitles } from "./subtitles";
 import { AnalogClock } from "./widgets/AnalogClock";
@@ -96,10 +97,18 @@ function WidgetView() {
     );
 }
 
+const baseVolume = 0.2;
 function YouWinScreen() {
     const hasWon = useGameStore((s) => s.hasWon);
     const phoneCallAudioRef = useRef<HTMLAudioElement>(null);
+    const volume = useGameStore((s) => (s.muted ? 0 : s.volume * baseVolume));
+    if (phoneCallAudioRef.current) {
+        phoneCallAudioRef.current.volume = volume;
+    }
     useEffect(() => {
+        if (phoneCallAudioRef.current) {
+            phoneCallAudioRef.current.volume = volume;
+        }
         if (hasWon) {
             phoneCallAudioRef.current?.play();
         } else {
@@ -150,6 +159,7 @@ export default function Game() {
                     <YouWinScreen />
                     <Subtitles />
                 </div>
+                <MuteButton />
             </CassetteAudioProvider>
         </VHSAudioProvider>
     );

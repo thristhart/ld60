@@ -97,7 +97,7 @@ export function GetCassetteSubtitleAtTime(time: number | undefined) {
     }
     return undefined;
 }
-console.log(phoneCallSubtitleData);
+
 export function GetPhoneCallSubtitleAtTime(time: number | undefined) {
     if (!time) {
         return undefined;
