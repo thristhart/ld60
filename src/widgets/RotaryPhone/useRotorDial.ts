@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
-import { dialedDigit, maxRotation } from "./rotaryPhoneUtils";
+import tickSoundUrl from "../../assets/audio/click_4.mp3";
+import { angleToDigit, dialedDigit, maxRotation } from "./rotaryPhoneUtils";
+
+const tickSound = new Howl({
+    src: [tickSoundUrl],
+    volume: 0.2,
+});
 
 const dialTolerance = Math.PI / 36;
 const reverseLockAngle = Math.PI / 60;
@@ -37,6 +43,7 @@ export function useRotorDial(onDialed: (digit: number) => void) {
             let rotation = 0;
             let peak = 0;
             let returning = false;
+            let lastDigit = -1;
 
             const onMove = (ev: globalThis.PointerEvent) => {
                 const current = pointerAngle(ev.clientX, ev.clientY);
@@ -58,6 +65,11 @@ export function useRotorDial(onDialed: (digit: number) => void) {
                 if (returning && rotation <= 0) {
                     onUp();
                     return;
+                }
+                let digitAtAngle = angleToDigit(rotation);
+                if (lastDigit != digitAtAngle) {
+                    tickSound.play();
+                    lastDigit = digitAtAngle;
                 }
                 setAngle(Math.max(rotation, 0));
             };

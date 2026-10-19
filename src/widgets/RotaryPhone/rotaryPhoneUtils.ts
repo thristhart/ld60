@@ -30,6 +30,14 @@ export function digitAngle(digit: number) {
     return Math.PI / 6 + ((digit === 0 ? 10 : digit) * Math.PI) / 6;
 }
 
+export function angleToDigit(angle: number): number {
+    const exactValue = (6 * angle) / Math.PI - 1;
+
+    const rawDigit = Math.round(exactValue);
+
+    return rawDigit === 10 ? 0 : rawDigit;
+}
+
 export function holeOffset(digit: number, rotorSize: number) {
     const [x, y] = rotorArtHoleCenters[digit];
     const scale = rotorSize / rotorArtSize;
