@@ -19,7 +19,6 @@
     left: 625px;
     width: 1000px;
     height: 900px;
-    background-color: black;
 }
 .ScaledDown .TVVideo {
     top: 20px;
@@ -45,4 +44,47 @@
     bottom: 670px;
     width: 280px;
     height: 500px;
+}
+
+.TVVideoInternal {
+    position: absolute;
+    width: 1000px;
+    height: 900px;
+}
+
+.ScaledDown .TVVideoInternal {
+    top: 0;
+    left: 0;
+    width: 254px;
+    height: 230px;
+}
+
+.TVVideoInternal.TVVideoLawyer {
+    position: absolute;
+    top: 120px;
+    left: 250px;
+    width: 490px;
+    height: 846px;
+}
+
+.TVVideoInternal.TVVideoGramps {
+    position: absolute;
+    top: 180px;
+    left: 210px;
+    width: 531px;
+    height: 677px;
+}
+
+.ScaledDown .TVVideoInternal.TVVideoLawyer {
+    top: 30px;
+    left: 59px;
+    width: 127px;
+    height: 216px;
+}
+
+.ScaledDown .TVVideoInternal.TVVideoGramps {
+    top: 40px;
+    left: 57px;
+    width: 137px;
+    height: 173px;
 }
