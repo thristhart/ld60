@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import phoneCallAudioUrl from "./assets/audio/win phone call.mp3";
-import bgImgUrlLeft from "./assets/left_window_furniture.png";
-import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
+import bgImgUrl from "./assets/background.png";
 import bgImgUrlTable from "./assets/table_layer.png";
 import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
@@ -143,7 +142,6 @@ export default function Game() {
         <>
             <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
                 <img className={styles.bgImg} src={bgImgUrl} />
-                <img className={styles.bgImg} src={bgImgUrlLeft} />
                 <img className={styles.bgImg} src={bgImgUrlTable} />
                 <Overview />
                 <WidgetView />
