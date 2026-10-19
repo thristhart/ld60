@@ -1,13 +1,13 @@
 import { useMemo } from "react";
-import rotaryPhoneImgUrl from "../assets/RotaryPhone.png";
+import rotaryPhoneImgUrl from "../assets/Rphone_placeholder_body.png";
 import { useGameStore } from "../state/store";
 import { Control } from "./Control";
 import styles from "./RotaryPhone.module.css";
 import type { WidgetProps } from "./widget";
 
-const rotarLeft = 400;
-const rotarTop = 200;
-const rotarSize = 500;
+const rotorLeft = 190;
+const rotorTop = 320;
+const rotorSize = 400;
 
 interface RotaryPhoneProps extends WidgetProps {
     onDial?: (dialed: string) => void;
@@ -23,19 +23,19 @@ export function RotaryPhone(props: RotaryPhoneProps) {
     };
 
     if (props.scaleDown) {
-        return <img className={styles.ScaledDown} src={rotaryPhoneImgUrl} inert={props.blockInteraction} />;
+        return <PhoneImage inert={props.blockInteraction} />;
     }
 
     return (
         <div className={styles.RotaryPhone}>
-            <img className={styles.RotaryPhoneImg} src={rotaryPhoneImgUrl} />
+            <PhoneImage />
             {isPhoneRinging && <Control top={0} left={0} height={500} width={1200} onClick={answerPhone} />}
-            <RotaryPhoneRotar left={rotarLeft} top={rotarTop} size={rotarSize} />
+            <RotaryPhoneRotor left={rotorLeft} top={rotorTop} size={rotorSize} />
             <div
                 style={{
                     position: "absolute",
-                    left: rotarLeft + rotarSize / 2,
-                    top: rotarTop + rotarSize / 2,
+                    left: rotorLeft + rotorSize / 2,
+                    top: rotorTop + rotorSize / 2,
                 }}>
                 <RotaryPhoneDigit digit={1} onClick={dial} />
                 <RotaryPhoneDigit digit={2} onClick={dial} />
@@ -52,13 +52,25 @@ export function RotaryPhone(props: RotaryPhoneProps) {
     );
 }
 
-interface RotaryPhoneRotarProps {
+interface PhoneImageProps {
+    inert?: boolean;
+}
+
+function PhoneImage(props: PhoneImageProps) {
+    return (
+        <div className={styles.RotaryPhoneFrame} inert={props.inert}>
+            <img className={styles.RotaryPhoneImg} src={rotaryPhoneImgUrl} draggable={false} />
+        </div>
+    );
+}
+
+interface RotaryPhoneRotorProps {
     left: number;
     top: number;
     size: number;
 }
 
-function RotaryPhoneRotar(props: RotaryPhoneRotarProps) {
+function RotaryPhoneRotor(props: RotaryPhoneRotorProps) {
     return (
         <Control
             left={props.left}
@@ -73,8 +85,8 @@ function RotaryPhoneRotar(props: RotaryPhoneRotarProps) {
     );
 }
 
-const rotarHoleSize = 80;
-const rotarDigitDiameter = rotarSize - 100;
+const rotorHoleSize = 50;
+const rotorDigitDiameter = rotorSize - 70;
 
 interface RotaryPhoneDigitProps {
     digit: number;
@@ -87,16 +99,16 @@ function RotaryPhoneDigit(props: RotaryPhoneDigitProps) {
         const digit = props.digit === 0 ? 10 : props.digit;
         return Math.PI / 8 + (digit * Math.PI) / 6;
     }, [props.digit]);
-    const radius = (rotarDigitDiameter - rotarHoleSize) / 2;
-    const top = -radius * Math.sin(angle) - rotarHoleSize / 2;
-    const left = radius * Math.cos(angle) - rotarHoleSize / 2;
+    const radius = (rotorDigitDiameter - rotorHoleSize) / 2;
+    const top = -radius * Math.sin(angle) - rotorHoleSize / 2;
+    const left = radius * Math.cos(angle) - rotorHoleSize / 2;
 
     return (
         <Control
             left={left}
             top={top}
-            width={rotarHoleSize}
-            height={rotarHoleSize}
+            width={rotorHoleSize}
+            height={rotorHoleSize}
             onClick={() => props.onClick?.(props.digit)}
             clipPath="circle(50% at 50% 50%)"
             debug>
