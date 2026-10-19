@@ -19,12 +19,16 @@ function VHSDropTarget() {
     return <div className={styles.VHSDropTarget} ref={droppable.ref}></div>;
 }
 
-function VHS() {
+interface VHSProps {
+    scaleDown: boolean | undefined;
+}
+function VHS(props: VHSProps) {
     const draggable = useDraggable({
         id: "vhs",
     });
     const manager = useDragDropManager();
     manager?.registry.plugins.get(Scroller)?.disable();
+
     if (draggable.isDragging) {
         document.documentElement.dataset.cursor = "grab_closed";
     } else {
@@ -39,7 +43,7 @@ function VHS() {
         <img
             className={styles.VHS}
             src={vhsImgUrl}
-            ref={draggable.ref}
+            ref={props.scaleDown ? undefined : draggable.ref}
             data-cursor={draggable.isDragging ? "grab_closed" : "grab_open"}
         />
     );
@@ -81,7 +85,7 @@ export function TV(props: TVProps) {
                         onUp={vhsAudio.stopRewind}
                     />
                 )}
-                {!props.scaleDown && !hasTape && <VHS />}
+                {!hasTape && <VHS scaleDown={props.scaleDown} />}
             </DragDropProvider>
         </div>
     );

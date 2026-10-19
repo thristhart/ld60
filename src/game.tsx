@@ -64,7 +64,7 @@ function Overview() {
             <Hotspot left={895} top={750} width={200} height={200} widget={LoggingRotaryPhone} />
             <Hotspot left={530} top={785} width={180} height={100} widget={Morse} />
             <Hotspot left={1925} top={246} width={400} height={400} widget={SwitchBoard} />
-            <Hotspot left={1525} top={830} width={150} height={150} widget={CassettePlayer} />
+            <Hotspot left={1625} top={830} width={150} height={150} widget={CassettePlayer} />
             <LeftDrawer />
             <RightDrawer />
         </>

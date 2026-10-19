@@ -34,6 +34,11 @@
     width: 400px;
     cursor: grab;
 }
+.ScaledDown .VHS {
+    top: 230px;
+    width: 100px;
+    right: -100px;
+}
 .VHSDropTarget {
     position: absolute;
     right: 600px;
