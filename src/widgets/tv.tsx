@@ -55,6 +55,7 @@ function VHS(props: VHSProps) {
 interface VHSImageProps extends WidgetProps {}
 function VHSImage(props: VHSImageProps) {
     const audioProgress = useGameStore((s) => s.widgets.tv.currentTime);
+    const playing = useGameStore((s) => s.widgets.tv.isPlaying);
     const IsGrampsTime = (audioProgress ?? 0) > 35.2;
 
     return (
@@ -66,7 +67,11 @@ function VHSImage(props: VHSImageProps) {
             {IsGrampsTime && (
                 <img className={classNames(styles.TVVideoInternal, styles.TVVideoGramps)} src={vhsImgGrampsURL} inert />
             )}
-            <img className={styles.TVVideoInternal} src={vhsImgScanlinesURL} inert />
+            <img
+                className={classNames(styles.TVVideoInternal, styles.TVVideoScanlines, playing ? styles.Playing : "")}
+                src={vhsImgScanlinesURL}
+                inert
+            />
         </div>
     );
 }

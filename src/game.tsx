@@ -7,6 +7,7 @@ import theyflower from './assets/theyflower.png';
 import { CassetteAudioProvider, VHSAudioProvider } from "./audiodevices";
 import styles from "./game.module.css";
 import { MuteButton } from "./mutebutton";
+import { ScaleContext } from "./scalecontext";
 import { useGameStore } from "./state/store";
 import { Subtitles } from "./subtitles";
 import { AnalogClock } from "./widgets/AnalogClock";
@@ -55,7 +56,19 @@ function useFitToScreen() {
 }
 
 function LoggingRotaryPhone(props: WidgetProps) {
-    return <RotaryPhone {...props} onDial={(dialed) => console.log(`dialed ${dialed}`)} />;
+    const openWidget = useGameStore.getState().openWidget;
+    const isOpen = useRef(openWidget === LoggingRotaryPhone);
+    const setDialedNumber = useGameStore((s) => s.widgets.rotaryPhone.setDialedNumber);
+    useEffect(() => {
+        if (isOpen.current === true && openWidget !== LoggingRotaryPhone) {
+            setDialedNumber("");
+        }
+        isOpen.current = openWidget === LoggingRotaryPhone;
+    }, [isOpen.current, openWidget]);
+
+    return (
+        <RotaryPhone {...props} />
+    );
 }
 
 function Overview() {
@@ -159,17 +172,19 @@ export default function Game() {
     const scale = useFitToScreen();
 
     return (
-        <VHSAudioProvider>
-            <CassetteAudioProvider>
-                <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
-                    <img className={styles.bgImg} src={bgImgUrl} />
-                    <Overview />
-                    <WidgetView />
-                    <YouWinScreen />
-                    <Subtitles />
-                </div>
-                <MuteButton />
-            </CassetteAudioProvider>
-        </VHSAudioProvider>
+        <ScaleContext.Provider value={scale}>
+            <VHSAudioProvider>
+                <CassetteAudioProvider>
+                    <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
+                        <img className={styles.bgImg} src={bgImgUrl} />
+                        <Overview />
+                        <WidgetView />
+                        <YouWinScreen />
+                        <Subtitles />
+                    </div>
+                    <MuteButton />
+                </CassetteAudioProvider>
+            </VHSAudioProvider>
+        </ScaleContext.Provider>
     );
 }
