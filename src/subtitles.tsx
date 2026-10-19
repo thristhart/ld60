@@ -1,5 +1,5 @@
 import { useGameStore } from "./state/store";
-import { GetCassetteSubtitleAtTime, GetVHSSubtitleAtTime } from "./state/subtitledata";
+import { GetCassetteSubtitleAtTime, GetPhoneCallSubtitleAtTime, GetVHSSubtitleAtTime } from "./state/subtitledata";
 import styles from "./subtitles.module.css";
 
 export function Subtitles() {
@@ -19,8 +19,11 @@ export function Subtitles() {
             ? GetCassetteSubtitleAtTime(s.widgets.cassette.currentTime)?.subtitle
             : undefined;
     });
+    const phoneCallSubtitle = useGameStore((s) => {
+        return GetPhoneCallSubtitleAtTime(s.phoneCallCurrentTime)?.subtitle;
+    });
 
-    if (!tvSubtitle && !cassetteSubtitle) {
+    if (!tvSubtitle && !cassetteSubtitle && !phoneCallSubtitle) {
         return null;
     }
     return (
@@ -28,6 +31,7 @@ export function Subtitles() {
             {tvSubtitle}
             {cassetteSubtitle && tvSubtitle && <br />}
             {cassetteSubtitle}
+            {phoneCallSubtitle}
         </div>
     );
 }
