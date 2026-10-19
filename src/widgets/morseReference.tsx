@@ -7,6 +7,10 @@ interface MorseReferenceProps extends WidgetProps {}
 
 export function MorseReference(props: MorseReferenceProps) {
     return (
-        <img className={classNames(styles.MorsePoster, props.scaleDown && styles.ScaledDown)} src={morsePosterImgUrl} />
+        <img
+            className={classNames(styles.MorsePoster, props.scaleDown && styles.ScaledDown)}
+            src={morsePosterImgUrl}
+            inert
+        />
     );
 }

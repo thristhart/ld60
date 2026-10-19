@@ -45,10 +45,11 @@
 .TelegraphPreviewText {
     padding-left: 12px;
     font-weight: bold;
-    font-size: 36px;
+    font-size: 42px;
     position: absolute;
     right: 8px;
     color: black;
     white-space: pre;
     padding-right: 16px;
+    user-select: none;
 }

@@ -65,8 +65,8 @@ export function TV(props: TVProps) {
                     }
                 }}>
                 <div className={styles.TVVideo}></div>
-                {hasTape && <img className={styles.TVVideo} src={vhsPortraitImgUrl} />}
-                <img className={styles.TVimg} src={props.scaleDown ? tvOverviewImgUrl : tvImgUrl} />
+                {hasTape && <img className={styles.TVVideo} src={vhsPortraitImgUrl} inert />}
+                <img className={styles.TVimg} src={props.scaleDown ? tvOverviewImgUrl : tvImgUrl} inert />
                 <VHSDropTarget />
                 {!props.scaleDown && hasTape && (
                     <Control onClick={vhsAudio.togglePlay} left={1700} top={800} width={130} height={120} />

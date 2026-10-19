@@ -50,9 +50,10 @@ export function CassettePlayer(props: CassetteProps) {
                 <img
                     src={cassetteTapeInsidePlayer ? cassettePlayerClosedImgUrl : cassettePlayerOpenImgUrl}
                     className={styles.CassettePlayerWidget}
+                    inert
                 />
                 {!cassetteTapeInsidePlayer && (
-                    <img src={cassettePlayerButtonsImgUrl} className={styles.CassetteButtons} />
+                    <img src={cassettePlayerButtonsImgUrl} className={styles.CassetteButtons} inert />
                 )}
                 {cassetteTapeInsidePlayer && (
                     <>

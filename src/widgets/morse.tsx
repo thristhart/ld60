@@ -86,7 +86,7 @@ function TelegraphKey() {
 
     return (
         <div className={styles.TelegraphKey}>
-            <img className={styles.TelegraphKeyBase} src={telegraphKeyBaseImgUrl} />
+            <img className={styles.TelegraphKeyBase} src={telegraphKeyBaseImgUrl} inert />
             <img
                 className={classNames(styles.TelegraphKeyLever, pressed && styles.LeverPressed)}
                 src={telegraphKeyLeverImgUrl}
