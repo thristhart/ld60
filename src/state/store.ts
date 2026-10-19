@@ -101,7 +101,7 @@ type GameState = typeof initialState & {
             open: () => void;
         };
         rotaryPhone: {
-            addDialedNumber: (newNumber: number) => void;
+            setDialedNumber: (newNumber: string) => void;
             resetDialedNumber: () => void;
             ring: () => void;
             answer: () => void;
@@ -240,16 +240,21 @@ export const useGameStore = create<GameState>()((set) => ({
         },
         rotaryPhone: {
             ...initialState.widgets.rotaryPhone,
-            addDialedNumber(newDialedNumber: number) {
-                set((s) => ({
-                    widgets: {
-                        ...s.widgets,
-                        rotaryPhone: {
-                            ...s.widgets.rotaryPhone,
-                            dialed: s.widgets.rotaryPhone.dialed + newDialedNumber.toString(),
+            setDialedNumber(dialed: string) {
+                set((s) => {
+                    console.log(`dialed ${dialed}`);
+                    const forceModalClosed = dialed.length >= 10 && s.openWidget?.name === "LoggingRotaryPhone";
+                    return {
+                        openWidget: forceModalClosed ? undefined : s.openWidget,
+                        widgets: {
+                            ...s.widgets,
+                            rotaryPhone: {
+                                ...s.widgets.rotaryPhone,
+                                dialed,
+                            },
                         },
-                    },
-                }));
+                    };
+                });
             },
             resetDialedNumber() {
                 set((s) => ({

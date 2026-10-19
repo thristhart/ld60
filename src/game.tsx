@@ -52,7 +52,19 @@ function useFitToScreen() {
 }
 
 function LoggingRotaryPhone(props: WidgetProps) {
-    return <RotaryPhone {...props} onDial={(dialed) => console.log(`dialed ${dialed}`)} />;
+    const openWidget = useGameStore.getState().openWidget;
+    const isOpen = useRef(openWidget === LoggingRotaryPhone);
+    const setDialedNumber = useGameStore((s) => s.widgets.rotaryPhone.setDialedNumber);
+    useEffect(() => {
+        if (isOpen.current === true && openWidget !== LoggingRotaryPhone) {
+            setDialedNumber("");
+        }
+        isOpen.current = openWidget === LoggingRotaryPhone;
+    }, [isOpen.current, openWidget]);
+
+    return (
+        <RotaryPhone {...props} />
+    );
 }
 
 function Overview() {

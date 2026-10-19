@@ -26,14 +26,15 @@ interface RotaryPhoneProps extends WidgetProps {
 export function RotaryPhone(props: RotaryPhoneProps) {
     const isPhoneRinging = useGameStore((s) => s.widgets.rotaryPhone.ringing);
     const answerPhone = useGameStore((s) => s.widgets.rotaryPhone.answer);
-    const addDialedNumber = useGameStore((s) => s.widgets.rotaryPhone.addDialedNumber);
+    const setDialedNumber = useGameStore((s) => s.widgets.rotaryPhone.setDialedNumber);
     const { onDial } = props;
     const dial = useCallback(
         (digit: number) => {
-            addDialedNumber(digit);
+            const newDialed = `${useGameStore.getState().widgets.rotaryPhone.dialed}${digit.toString()}`;
+            setDialedNumber(newDialed);
             onDial?.(useGameStore.getState().widgets.rotaryPhone.dialed);
         },
-        [addDialedNumber, onDial]
+        [setDialedNumber, onDial]
     );
 
     if (props.scaleDown) {
