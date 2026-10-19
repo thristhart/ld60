@@ -138,7 +138,9 @@ function YouWinScreen() {
                     <li>
                         <a href="https://bsky.app/profile/thristhart.bsky.social">thristhart</a>
                     </li>
-                    <li>other people's credits as they prefer</li>
+                    <li>Zyrconium</li>
+                    <li>LGPO</li>
+                    <li>Tanvern</li>
                 </ul>
             </section>
         </div>
