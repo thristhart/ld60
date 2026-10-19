@@ -1,5 +1,7 @@
-import { useCallback, useId, useState } from "react";
+import { useCallback, useEffect, useId, useState } from "react";
 import clickSoundUrl from "../../assets/audio/click_2.mp3";
+import hangUpSoundUrl from "../../assets/audio/click_4.mp3";
+import pickUpSoundUrl from "../../assets/audio/click_3.mp3";
 import rotaryPhoneImgUrl from "../../assets/phone_base.webp";
 import rotaryPhoneOffHookImgUrl from "../../assets/phone_off_hook.webp";
 import rotorImgUrl from "../../assets/phone_rotor.webp";
@@ -20,6 +22,21 @@ import { useRotorDial } from "./useRotorDial";
 const dialClickSound = new Howl({
     src: [clickSoundUrl],
     volume: 0.5,
+});
+
+const hangUpSound= new Howl({
+    src: [hangUpSoundUrl],
+    volume: 0.2,
+    sprite: {
+        click: [50, 600],
+    },
+});
+const pickUpSound = new Howl({
+    src: [pickUpSoundUrl],
+    volume: 0.2,
+    sprite: {
+        click: [50, 600],
+    },
 });
 
 const rotorLeft = 690;
@@ -54,6 +71,7 @@ export function RotaryPhone(props: RotaryPhoneProps) {
         }
         setIsHungUp(true);
         setDialedNumber("");
+        hangUpSound.play("click");
     }, [isHungUp]);
 
     const pickUp = useCallback(() => {
@@ -62,7 +80,12 @@ export function RotaryPhone(props: RotaryPhoneProps) {
         }
         setIsHungUp(false);
         setDialedNumber("");
+        pickUpSound.play("click");
     }, [isHungUp]);
+
+    useEffect(() => {
+        pickUpSound.play("click");
+    }, []);
 
     if (props.scaleDown) {
         return <PhoneImage inert={props.blockInteraction} closeUp={false} includeRotor={true} offHook={false} />;
