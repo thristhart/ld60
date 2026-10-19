@@ -1,0 +1,10 @@
+.MuteButton {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+}
+.volumecontrols {
+    position: absolute;
+    inset-inline-end: 0;
+    padding-inline-end: 8px;
+}

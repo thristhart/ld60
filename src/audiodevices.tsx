@@ -61,6 +61,8 @@ export function VHSAudioProvider(props: { children: React.ReactNode }) {
     const playbackStartTimeRef = useRef<number | null>(null);
     const rewindStartTimeRef = useRef<number | null>(null);
     const isRewindingRef = useRef<boolean>(false);
+    const volume = useGameStore((s) => (s.muted ? 0 : s.volume * baseVolume));
+    audio.gain.gain.value = volume;
 
     function rewind() {
         if (currentSourceRef.current) {
@@ -205,6 +207,8 @@ export function VHSAudioProvider(props: { children: React.ReactNode }) {
     return <VHSAudioContext.Provider value={value} children={props.children} />;
 }
 
+const baseVolume = 0.2;
+
 let cassetteContextPromise: ReturnType<typeof createCasetteAudioContext> | undefined = undefined;
 
 async function createCasetteAudioContext() {
@@ -216,7 +220,7 @@ async function createCasetteAudioContext() {
     ]);
 
     const gain = context.createGain();
-    gain.gain.value = 0.2;
+    gain.gain.value = baseVolume;
     gain.connect(context.destination);
 
     return { context, gain, forwardBuffer, reversedBuffer };
@@ -251,6 +255,8 @@ export function CassetteAudioProvider(props: { children: React.ReactNode }) {
     const playbackStartTimeRef = useRef<number | null>(null);
     const rewindStartTimeRef = useRef<number | null>(null);
     const isRewindingRef = useRef<boolean>(false);
+    const volume = useGameStore((s) => (s.muted ? 0 : s.volume * baseVolume));
+    audio.gain.gain.value = volume;
 
     function rewind() {
         isRewindingRef.current = true;

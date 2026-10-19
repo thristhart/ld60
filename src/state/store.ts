@@ -56,6 +56,8 @@ const initialState = {
     hasCasetteTape: false,
     hasWon: false,
     phoneCallCurrentTime: undefined as number | undefined,
+    muted: false,
+    volume: 1.0,
 };
 
 type GameState = typeof initialState & {
@@ -93,6 +95,8 @@ type GameState = typeof initialState & {
             answer: () => void;
         };
     };
+    setMuted: (muted: boolean) => void;
+    setVolume: (volume: number) => void;
 };
 
 export const useGameStore = create<GameState>()((set) => ({
@@ -270,6 +274,12 @@ export const useGameStore = create<GameState>()((set) => ({
             },
         },
     },
+    setMuted(muted) {
+        set({ muted });
+    },
+    setVolume(volume) {
+        set({ volume });
+    },
 }));
 
 const targetHourAngleRange = { min: 24, max: 59 };
@@ -311,4 +321,7 @@ useGameStore.subscribe((state) => {
             }
         }
     }
+
+    Howler.mute(state.muted);
+    Howler.volume(state.volume);
 });
