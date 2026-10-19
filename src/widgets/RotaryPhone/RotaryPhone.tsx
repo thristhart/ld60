@@ -70,19 +70,12 @@ export function RotaryPhone(props: RotaryPhoneProps) {
 
     return (
         <div className={styles.RotaryPhone}>
-            <PhoneImage closeUp={true} includeRotor={false} offHook={!isHungUp} />
+            <PhoneImage closeUp={true} includeRotor={false} offHook={!isHungUp && !isPhoneRinging} />
             {isPhoneRinging && <Control top={0} left={0} height={500} width={1200} onClick={answerPhone} />}
             <RotaryPhoneNumberPlate left={rotorLeft} top={rotorTop} size={rotorSize} />
             <RotaryPhoneRotor left={rotorLeft} top={rotorTop} size={rotorSize} onDialed={dial} />
             <FingerStop />
-            <Control
-                onDown={hangUp}
-                onUp={pickUp}
-                top={159}
-                left={632}
-                width={397}
-                height={230}
-            />
+            <Control onDown={hangUp} onUp={pickUp} top={159} left={632} width={397} height={230} />
         </div>
     );
 }
@@ -105,7 +98,8 @@ function PhoneImage(props: PhoneImageProps) {
         <div className={props.closeUp ? styles.RotaryPhoneCloseUpFrame : styles.RotaryPhoneFrame} inert={props.inert}>
             <img
                 className={imgClass}
-                src={props.offHook ? rotaryPhoneOffHookImgUrl : rotaryPhoneImgUrl} draggable={false}
+                src={props.offHook ? rotaryPhoneOffHookImgUrl : rotaryPhoneImgUrl}
+                draggable={false}
             />
             {props.includeRotor && <img className={styles.RotaryPhoneRotor} src={rotorImgUrl} />}
         </div>

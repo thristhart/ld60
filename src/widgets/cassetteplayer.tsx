@@ -80,7 +80,7 @@ export function CassettePlayer(props: CassetteProps) {
                                 buttonUpClickSound.play();
                                 cassetteAudio.stopRewind();
                             }}>
-                            <img src={rewindButtonImgUrl} />
+                            <img src={rewindButtonImgUrl} inert />
                         </Control>
                         <Control
                             width={100}
@@ -90,7 +90,7 @@ export function CassettePlayer(props: CassetteProps) {
                             onDown={() => buttonDownClickSound.play()}
                             onUp={() => buttonUpClickSound.play()}
                             onClick={cassetteAudio.pause}>
-                            <img src={pauseButtonImgUrl} />
+                            <img src={pauseButtonImgUrl} inert />
                         </Control>
                         <Control
                             width={110}
@@ -103,7 +103,7 @@ export function CassettePlayer(props: CassetteProps) {
                                 cassetteAudio.pause();
                                 eject();
                             }}>
-                            <img src={stopButtonImgUrl} />
+                            <img src={stopButtonImgUrl} inert />
                         </Control>
                         <Control
                             width={130}
@@ -113,7 +113,7 @@ export function CassettePlayer(props: CassetteProps) {
                             onDown={() => buttonDownClickSound.play()}
                             onUp={() => buttonUpClickSound.play()}
                             onClick={cassetteAudio.play}>
-                            <img src={playButtonImgUrl} />
+                            <img src={playButtonImgUrl} inert />
                         </Control>
                     </>
                 )}
