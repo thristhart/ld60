@@ -28,7 +28,7 @@ const initialState = {
     openWidget: undefined as Widget | undefined,
     widgets: {
         switchboard: {
-            plugOnePosition: "Telegraph" as PlugPositions,
+            plugOnePosition: "Clock" as PlugPositions,
             plugTwoPosition: "Clark" as PlugPositions,
         },
         clock: {
