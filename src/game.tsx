@@ -58,7 +58,7 @@ function Overview() {
         <>
             <Hotspot left={630} top={330} width={400} height={600} widget={MorseReference} />
             <Hotspot left={1120} top={600} width={1490 / 4} height={1064 / 4} widget={TV} />
-            <Hotspot left={1505} top={300} width={235} height={235} widget={AnalogClock} />
+            <Hotspot left={1480} top={300} width={235} height={235} widget={AnalogClock} />
             <Hotspot left={895} top={750} width={190} height={150} widget={LoggingRotaryPhone} />
             <Hotspot left={520} top={780} width={190} height={150} widget={Morse} />
             <Hotspot left={1925} top={246} width={400} height={400} widget={SwitchBoard} />
