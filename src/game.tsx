@@ -10,6 +10,7 @@ import { CassettePlayer } from "./widgets/cassetteplayer";
 import { LeftDrawer, RightDrawer } from "./widgets/drawers";
 import { Hotspot } from "./widgets/Hotspot";
 import { Morse } from "./widgets/morse";
+import { MorseReference } from "./widgets/morseReference";
 import { RotaryPhone } from "./widgets/RotaryPhone";
 import { SwitchBoard } from "./widgets/SwitchBoard";
 import { TV } from "./widgets/tv";
@@ -63,6 +64,7 @@ function Overview() {
             <Hotspot left={1525} top={830} width={150} height={150} widget={CassettePlayer} />
             <LeftDrawer />
             <RightDrawer />
+            <Hotspot left={630} top={330} width={400} height={600} widget={MorseReference} />
         </>
     );
 }
