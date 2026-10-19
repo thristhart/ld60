@@ -1,6 +1,9 @@
 import { Scroller } from "@dnd-kit/dom";
 import { DragDropProvider, useDragDropManager, useDraggable, useDroppable } from "@dnd-kit/react";
+import { Howl } from "howler";
 import { use, useEffect } from "react";
+import buttonUpClickSoundUrl from "../assets/audio/click_3.mp3";
+import buttonDownClickSoundUrl from "../assets/audio/click_3_bassboost.mp3";
 import cassetteTapeImgUrl from "../assets/cassette.png";
 import cassettePlayerButtonsImgUrl from "../assets/cassette_player_buttons.png";
 import cassettePlayerClosedImgUrl from "../assets/cassette_player_closed.png";
@@ -14,6 +17,13 @@ import { useGameStore } from "../state/store";
 import styles from "./cassetteplayer.module.css";
 import { Control } from "./Control";
 import type { WidgetProps } from "./widget";
+
+const buttonDownClickSound = new Howl({
+    src: [buttonDownClickSoundUrl],
+});
+const buttonUpClickSound = new Howl({
+    src: [buttonUpClickSoundUrl],
+});
 
 interface CassetteProps extends WidgetProps {}
 export function CassettePlayer(props: CassetteProps) {
@@ -62,11 +72,24 @@ export function CassettePlayer(props: CassetteProps) {
                             height={130}
                             top={835}
                             left={905}
-                            onDown={cassetteAudio.rewind}
-                            onUp={cassetteAudio.stopRewind}>
+                            onDown={() => {
+                                buttonDownClickSound.play();
+                                cassetteAudio.rewind();
+                            }}
+                            onUp={() => {
+                                buttonUpClickSound.play();
+                                cassetteAudio.stopRewind();
+                            }}>
                             <img src={rewindButtonImgUrl} />
                         </Control>
-                        <Control width={100} height={130} top={855} left={1025} onClick={cassetteAudio.pause}>
+                        <Control
+                            width={100}
+                            height={130}
+                            top={855}
+                            left={1025}
+                            onDown={() => buttonDownClickSound.play()}
+                            onUp={() => buttonUpClickSound.play()}
+                            onClick={cassetteAudio.pause}>
                             <img src={pauseButtonImgUrl} />
                         </Control>
                         <Control
@@ -74,13 +97,22 @@ export function CassettePlayer(props: CassetteProps) {
                             height={130}
                             top={875}
                             left={1140}
+                            onDown={() => buttonDownClickSound.play()}
+                            onUp={() => buttonUpClickSound.play()}
                             onClick={() => {
                                 cassetteAudio.pause();
                                 eject();
                             }}>
                             <img src={stopButtonImgUrl} />
                         </Control>
-                        <Control width={130} height={130} top={898} left={1260} onClick={cassetteAudio.play}>
+                        <Control
+                            width={130}
+                            height={130}
+                            top={898}
+                            left={1260}
+                            onDown={() => buttonDownClickSound.play()}
+                            onUp={() => buttonUpClickSound.play()}
+                            onClick={cassetteAudio.play}>
                             <img src={playButtonImgUrl} />
                         </Control>
                     </>
