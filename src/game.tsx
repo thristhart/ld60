@@ -3,7 +3,7 @@ import phoneCallAudioUrl from "./assets/audio/win phone call.mp3";
 import bgImgUrl from "./assets/background.png";
 import bgYouWinImageUrl from "./assets/End_credit_scene.png";
 import bgImgUrlTable from "./assets/table_layer.png";
-import theyflower from './assets/theyflower.png';
+import theyflower from "./assets/theyflower.png";
 import { CassetteAudioProvider, VHSAudioProvider } from "./audiodevices";
 import styles from "./game.module.css";
 import { MuteButton } from "./mutebutton";
@@ -20,7 +20,6 @@ import { RotaryPhone } from "./widgets/RotaryPhone";
 import { SwitchBoard } from "./widgets/SwitchBoard";
 import { TV } from "./widgets/tv";
 import type { WidgetProps } from "./widgets/widget";
-
 
 // Area on the background image that we must ensure is always visible
 const safeZoneLeft = 240;
@@ -66,9 +65,7 @@ function LoggingRotaryPhone(props: WidgetProps) {
         isOpen.current = openWidget === LoggingRotaryPhone;
     }, [isOpen.current, openWidget]);
 
-    return (
-        <RotaryPhone {...props} />
-    );
+    return <RotaryPhone {...props} />;
 }
 
 function Overview() {
@@ -147,7 +144,7 @@ function YouWinScreen() {
     }
     return (
         <div className={styles.YouWinScreen}>
-            <img className={ styles.YouWinBG } src={bgYouWinImageUrl} draggable={false}></img>
+            <img className={styles.YouWinBG} src={bgYouWinImageUrl} draggable={false}></img>
             <section className={styles.Credits}>
                 <audio src={phoneCallAudioUrl} ref={phoneCallAudioRef} />
                 <h2>Thanks for playing!</h2>
@@ -160,8 +157,17 @@ function YouWinScreen() {
                     <li>LGPO</li>
                     <li>Tanvern</li>
                     <li>gqycloud</li>
-                    <li ><span style={{ display: "flex", alignItems: "center" } }><span>Theyflower </span><img style={{ marginLeft: "8px", height: "32px"}} src={theyflower}></img></span></li>
-                    <li>spider-worm</li>
+                    <li>
+                        <a href="https://twitch.tv/Theyflower">
+                            <span style={{ display: "flex", alignItems: "center" }}>
+                                <span>Theyflower </span>
+                                <img style={{ marginLeft: "8px", height: "32px" }} src={theyflower}></img>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/spiderworm">spider-worm</a>
+                    </li>
                 </ul>
             </section>
         </div>
