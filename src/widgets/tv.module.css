@@ -94,18 +94,16 @@
 
 .TVVideoScanlines.Playing {
     animation-name: scanlineAnimation;
-    animation-duration: 20s;
+    animation-duration: 4s;
     animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 @keyframes scanlineAnimation {
     0% {
         transform: translate(0px, 0px);
     }
-    50% {
-        transform: translate(0px, -40px);
-    }
     100% {
-        transform: translate(0px, 0px);
+        transform: translate(0px, -26px);
     }
 }
