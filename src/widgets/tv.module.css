@@ -91,3 +91,21 @@
     width: 137px;
     height: 173px;
 }
+
+.TVVideoScanlines.Playing {
+    animation-name: scanlineAnimation;
+    animation-duration: 20s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes scanlineAnimation {
+    0% {
+        transform: translate(0px, 0px);
+    }
+    50% {
+        transform: translate(0px, -40px);
+    }
+    100% {
+        transform: translate(0px, 0px);
+    }
+}
