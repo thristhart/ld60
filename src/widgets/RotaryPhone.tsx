@@ -16,6 +16,8 @@ interface RotaryPhoneProps extends WidgetProps {
 export function RotaryPhone(props: RotaryPhoneProps) {
     const dialed = useGameStore((s) => s.widgets.rotaryPhone.dialed);
     const addDialedNumber = useGameStore((s) => s.widgets.rotaryPhone.addDialedNumber);
+    const isPhoneRinging = useGameStore((s) => s.widgets.rotaryPhone.ringing);
+    const answerPhone = useGameStore((s) => s.widgets.rotaryPhone.answer);
     const dial = (digit: number) => {
         addDialedNumber(digit);
     };
@@ -27,6 +29,7 @@ export function RotaryPhone(props: RotaryPhoneProps) {
     return (
         <div className={styles.RotaryPhone}>
             <img className={styles.RotaryPhoneImg} src={rotaryPhoneImgUrl} />
+            {isPhoneRinging && <Control top={0} left={0} height={500} width={1200} onClick={answerPhone} />}
             <RotaryPhoneRotar left={rotarLeft} top={rotarTop} size={rotarSize} />
             <div
                 style={{

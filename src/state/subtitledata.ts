@@ -30,6 +30,16 @@ const cassetteSubtitles = `
 31.0	33.5	Don't wait until it's too late!
 `;
 
+const phoneCallSubtitles = `
+0.00	1.64	This is Duncan Baker.
+1.64	3.00	Congratulations!
+3.00	5.88	You've completed the little game your grandfather left for you.
+5.88	9.00	In doing so, you'll be receiving the other thing he left for you:
+9.00	11.75	5.6 million dollars.
+11.75	15.00	But the real treasure is all this old tech you got to use, right?
+16.20	17.4	Right?
+`;
+
 const vhsSubtitleData = vhsSubtitles
     .trim()
     .split("\n")
@@ -42,6 +52,17 @@ const vhsSubtitleData = vhsSubtitles
         };
     });
 const cassetteSubtitleData = cassetteSubtitles
+    .trim()
+    .split("\n")
+    .map((line) => {
+        const [start, stop, subtitle] = line.trim().split("\t");
+        return {
+            start: parseFloat(start),
+            stop: parseFloat(stop),
+            subtitle,
+        };
+    });
+const phoneCallSubtitleData = phoneCallSubtitles
     .trim()
     .split("\n")
     .map((line) => {
@@ -70,6 +91,18 @@ export function GetCassetteSubtitleAtTime(time: number | undefined) {
         return undefined;
     }
     for (const title of cassetteSubtitleData) {
+        if (title.start <= time && title.stop >= time) {
+            return title;
+        }
+    }
+    return undefined;
+}
+console.log(phoneCallSubtitleData);
+export function GetPhoneCallSubtitleAtTime(time: number | undefined) {
+    if (!time) {
+        return undefined;
+    }
+    for (const title of phoneCallSubtitleData) {
         if (title.start <= time && title.stop >= time) {
             return title;
         }

@@ -87,12 +87,9 @@ const rewindRampDuration = 0.8;
 
 interface TVProps extends WidgetProps {}
 export function TV(props: TVProps) {
-    const currentTime = useGameStore((s) => s.widgets.tv.currentTime);
     const setCurrentTime = useGameStore((s) => s.widgets.tv.setCurrentTime);
     const hasTape = useGameStore((s) => s.widgets.tv.hasTape);
     const setHasTape = useGameStore((s) => s.widgets.tv.setHasTape);
-
-    const isTVFocused = useGameStore((s) => s.openWidget === TV);
 
     const audio = useVHSAudioContext();
     const currentSourceRef = useRef<AudioBufferSourceNode | null>(null);

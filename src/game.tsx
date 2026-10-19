@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import phoneCallAudioUrl from "./assets/audio/win phone call.mp3";
 import bgImgUrlLeft from "./assets/left_window_furniture.png";
 import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
 import bgImgUrlTable from "./assets/table_layer.png";
@@ -93,6 +94,46 @@ function WidgetView() {
     );
 }
 
+function YouWinScreen() {
+    const hasWon = useGameStore((s) => s.hasWon);
+    const phoneCallAudioRef = useRef<HTMLAudioElement>(null);
+    useEffect(() => {
+        if (hasWon) {
+            phoneCallAudioRef.current?.play();
+        } else {
+            return;
+        }
+
+        const updatePhonecallCurrentTime = () => {
+            playbackTrackingAnimationFrame = requestAnimationFrame(updatePhonecallCurrentTime);
+            useGameStore.setState({ phoneCallCurrentTime: phoneCallAudioRef.current?.currentTime ?? undefined });
+        };
+        let playbackTrackingAnimationFrame = requestAnimationFrame(updatePhonecallCurrentTime);
+        return () => {
+            cancelAnimationFrame(playbackTrackingAnimationFrame);
+        };
+    }, [hasWon]);
+
+    if (!hasWon) {
+        return null;
+    }
+    return (
+        <div className={styles.YouWinScreen}>
+            <section>
+                <audio src={phoneCallAudioUrl} ref={phoneCallAudioRef} />
+                <h2>Thanks for playing!</h2>
+                <p>Featuring the work of:</p>
+                <ul>
+                    <li>
+                        <a href="https://bsky.app/profile/thristhart.bsky.social">thristhart</a>
+                    </li>
+                    <li>other people's credits as they prefer</li>
+                </ul>
+            </section>
+        </div>
+    );
+}
+
 export default function Game() {
     const scale = useFitToScreen();
 
@@ -104,6 +145,7 @@ export default function Game() {
                 <img className={styles.bgImg} src={bgImgUrlTable} />
                 <Overview />
                 <WidgetView />
+                <YouWinScreen />
                 <Subtitles />
             </div>
         </>

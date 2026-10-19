@@ -55,6 +55,7 @@ const initialState = {
     },
     hasCasetteTape: false,
     hasWon: false,
+    phoneCallCurrentTime: undefined as number | undefined,
 };
 
 type GameState = typeof initialState & {
@@ -89,6 +90,7 @@ type GameState = typeof initialState & {
             addDialedNumber: (newNumber: number) => void;
             resetDialedNumber: () => void;
             ring: () => void;
+            answer: () => void;
         };
     };
 };
@@ -251,6 +253,19 @@ export const useGameStore = create<GameState>()((set) => ({
                             ringing: true,
                         },
                     },
+                }));
+            },
+            answer() {
+                telephoneRingingSound.stop();
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        rotaryPhone: {
+                            ...s.widgets.rotaryPhone,
+                            ringing: false,
+                        },
+                    },
+                    hasWon: true,
                 }));
             },
         },
