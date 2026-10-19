@@ -79,6 +79,7 @@ const totalCableLength = 600;
 const segmentCount = 40;
 const segmentLength = totalCableLength / segmentCount;
 const gravity = 0.5;
+const friction = 0.85;
 
 interface CablePoint {
     x: number;
@@ -111,14 +112,14 @@ function updateCablePhysics(points: CablePoint[], plugA: { x: number; y: number 
 
     for (let cablePoint of points) {
         if (!cablePoint.pinned) {
-            const dX = cablePoint.x - cablePoint.oldX;
-            const dY = cablePoint.y - cablePoint.oldY;
+            const velocityX = (cablePoint.x - cablePoint.oldX) * friction;
+            const velocityY = (cablePoint.y - cablePoint.oldY) * friction;
 
             cablePoint.oldX = cablePoint.x;
             cablePoint.oldY = cablePoint.y;
 
-            cablePoint.x += dX;
-            cablePoint.y += dY + gravity;
+            cablePoint.x += velocityX;
+            cablePoint.y += velocityY + gravity;
         }
     }
 
@@ -130,7 +131,7 @@ function updateCablePhysics(points: CablePoint[], plugA: { x: number; y: number 
             const dX = p2.x - p1.x;
             const dY = p2.y - p1.y;
             const dist = Math.hypot(dX, dY);
-            const diff = Math.min(segmentLength - dist, 0.1);
+            const diff = Math.min(segmentLength - dist, 0.0001);
             const percent = diff / dist / 2;
             const offsetX = dX * percent;
             const offsetY = dY * percent;
