@@ -189,10 +189,13 @@ export function VHSAudioProvider(props: { children: React.ReactNode }) {
                 }
                 return;
             }
-            setCurrentTime(
+            const currTime =
                 (playbackPositionRef.current ?? 0) +
-                    (currentSourceRef.current ? audio.context.currentTime - (playbackStartTimeRef.current ?? 0) : 0)
-            );
+                (currentSourceRef.current ? audio.context.currentTime - (playbackStartTimeRef.current ?? 0) : 0);
+            if (currentSourceRef.current?.buffer?.duration && currTime >= currentSourceRef.current?.buffer?.duration) {
+                pause();
+            }
+            setCurrentTime(currTime);
         };
         let playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
         return () => {
@@ -270,15 +273,15 @@ export function CassetteAudioProvider(props: { children: React.ReactNode }) {
         source.connect(audio.gain);
 
         // playing
-        if (currentSourceRef.current) {
-            pause();
-        }
+        pause();
         useGameStore.setState((s) => ({
             widgets: { ...s.widgets, cassette: { ...s.widgets.cassette, isRewinding: true } },
         }));
 
         const currentTime = playbackPositionRef.current ?? 0;
         const rewindOffset = Math.max(audio.forwardBuffer.duration - currentTime, 0);
+
+        console.log(rewindOffset);
 
         const now = audio.context.currentTime;
         source.playbackRate.setValueAtTime(1.0, now);
@@ -298,6 +301,7 @@ export function CassetteAudioProvider(props: { children: React.ReactNode }) {
         const now = audio.context.currentTime;
 
         playbackPositionRef.current = (playbackPositionRef.current ?? 0) + (now - (playbackStartTimeRef.current ?? 0));
+        playbackStartTimeRef.current = null;
         currentSourceRef.current.stop();
         currentSourceRef.current = null;
     }
@@ -332,6 +336,7 @@ export function CassetteAudioProvider(props: { children: React.ReactNode }) {
             const constantTimeLost = (timeSpentRewinding - rewindRampDuration) * rewindTopSpeed;
             forwardTimeLost = rampTimeLost + constantTimeLost;
         }
+        console.log(forwardTimeLost);
         playbackPositionRef.current = Math.max(0, (playbackPositionRef.current ?? 0) - forwardTimeLost);
         rewindStartTimeRef.current = null;
         currentSourceRef.current.stop();
@@ -356,6 +361,7 @@ export function CassetteAudioProvider(props: { children: React.ReactNode }) {
 
         currentSourceRef.current = forwardsSource;
         playbackStartTimeRef.current = audio.context.currentTime;
+        console.log(playbackPositionRef.current, playbackStartTimeRef.current);
     }
 
     useEffect(() => {
@@ -386,10 +392,13 @@ export function CassetteAudioProvider(props: { children: React.ReactNode }) {
                 }
                 return;
             }
-            setCurrentTime(
+            const currTime =
                 (playbackPositionRef.current ?? 0) +
-                    (currentSourceRef.current ? audio.context.currentTime - (playbackStartTimeRef.current ?? 0) : 0)
-            );
+                (currentSourceRef.current ? audio.context.currentTime - (playbackStartTimeRef.current ?? 0) : 0);
+            if (currentSourceRef.current?.buffer?.duration && currTime >= currentSourceRef.current?.buffer?.duration) {
+                pause();
+            }
+            setCurrentTime(currTime);
         };
         let playbackTrackingAnimationFrame = requestAnimationFrame(updateVideoCurrentTime);
         return () => {
