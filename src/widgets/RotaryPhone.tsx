@@ -1,13 +1,12 @@
-import { useMemo } from "react";
 import rotaryPhoneImgUrl from "../assets/Rphone_placeholder_body.png";
 import { useGameStore } from "../state/store";
 import { Control } from "./Control";
 import styles from "./RotaryPhone.module.css";
 import type { WidgetProps } from "./widget";
 
-const rotorLeft = 190;
-const rotorTop = 320;
-const rotorSize = 400;
+const rotorLeft = 195;
+const rotorTop = 370;
+const rotorSize = 380;
 
 interface RotaryPhoneProps extends WidgetProps {
     onDial?: (dialed: string) => void;
@@ -37,16 +36,9 @@ export function RotaryPhone(props: RotaryPhoneProps) {
                     left: rotorLeft + rotorSize / 2,
                     top: rotorTop + rotorSize / 2,
                 }}>
-                <RotaryPhoneDigit digit={1} onClick={dial} />
-                <RotaryPhoneDigit digit={2} onClick={dial} />
-                <RotaryPhoneDigit digit={3} onClick={dial} />
-                <RotaryPhoneDigit digit={4} onClick={dial} />
-                <RotaryPhoneDigit digit={5} onClick={dial} />
-                <RotaryPhoneDigit digit={6} onClick={dial} />
-                <RotaryPhoneDigit digit={7} onClick={dial} />
-                <RotaryPhoneDigit digit={8} onClick={dial} />
-                <RotaryPhoneDigit digit={9} onClick={dial} />
-                <RotaryPhoneDigit digit={0} onClick={dial} />
+                {digits.map((digit) => (
+                    <RotaryPhoneDigit key={digit} digit={digit} onClick={dial} />
+                ))}
             </div>
         </div>
     );
@@ -71,22 +63,43 @@ interface RotaryPhoneRotorProps {
 }
 
 function RotaryPhoneRotor(props: RotaryPhoneRotorProps) {
+    const strokeWidth = 5;
+    const center = props.size / 2;
+
+    const d = [
+        circlePath(center, center, center - strokeWidth / 2),
+        ...digits.map((digit) =>
+            circlePath(
+                center + rotorHoleRingRadius * Math.cos(digitAngle(digit)),
+                center - rotorHoleRingRadius * Math.sin(digitAngle(digit)),
+                rotorHoleSize / 2
+            )
+        ),
+    ].join(" ");
+
     return (
-        <Control
-            left={props.left}
-            top={props.top}
+        <svg
+            style={{ position: "absolute", left: props.left, top: props.top }}
             width={props.size}
             height={props.size}
-            onClick={() => console.log("rotor clicked")}
-            clipPath="circle(50% at 50% 50%)"
-            debug>
-            <div></div>
-        </Control>
+            viewBox={`0 0 ${props.size} ${props.size}`}>
+            <path d={d} fillRule="evenodd" fill="#0d4466" stroke="black" strokeWidth={strokeWidth} />
+        </svg>
     );
 }
 
+const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 const rotorHoleSize = 50;
 const rotorDigitDiameter = rotorSize - 70;
+const rotorHoleRingRadius = (rotorDigitDiameter - rotorHoleSize) / 2;
+
+function digitAngle(digit: number) {
+    return Math.PI / 8 + ((digit === 0 ? 10 : digit) * Math.PI) / 6;
+}
+
+function circlePath(cx: number, cy: number, r: number) {
+    return `M ${cx - r} ${cy} a ${r} ${r} 0 1 0 ${2 * r} 0 a ${r} ${r} 0 1 0 ${-2 * r} 0 Z`;
+}
 
 interface RotaryPhoneDigitProps {
     digit: number;
@@ -94,14 +107,9 @@ interface RotaryPhoneDigitProps {
 }
 
 function RotaryPhoneDigit(props: RotaryPhoneDigitProps) {
-    const dist = 100;
-    const angle = useMemo(() => {
-        const digit = props.digit === 0 ? 10 : props.digit;
-        return Math.PI / 8 + (digit * Math.PI) / 6;
-    }, [props.digit]);
-    const radius = (rotorDigitDiameter - rotorHoleSize) / 2;
-    const top = -radius * Math.sin(angle) - rotorHoleSize / 2;
-    const left = radius * Math.cos(angle) - rotorHoleSize / 2;
+    const angle = digitAngle(props.digit);
+    const top = -rotorHoleRingRadius * Math.sin(angle) - rotorHoleSize / 2;
+    const left = rotorHoleRingRadius * Math.cos(angle) - rotorHoleSize / 2;
 
     return (
         <Control
