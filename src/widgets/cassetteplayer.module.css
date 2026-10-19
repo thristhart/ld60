@@ -20,6 +20,11 @@
     width: 400px;
     image-rendering: pixelated;
 }
+
+.NonDraggableTape {
+    width: 200px;
+}
+
 .DropTarget {
     width: 100px;
     height: 100px;

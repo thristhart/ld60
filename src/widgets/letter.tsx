@@ -1,4 +1,4 @@
-import envelopeImage from "../assets/placeholder_envelope.png";
+import envelopeImage from "../assets/envelope.png";
 import styles from "./letter.module.css";
 import type { WidgetProps } from "./widget";
 

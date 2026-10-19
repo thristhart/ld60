@@ -1,6 +1,7 @@
 import { Scroller } from "@dnd-kit/dom";
 import { DragDropProvider, useDragDropManager, useDraggable, useDroppable } from "@dnd-kit/react";
 import { use, useEffect } from "react";
+import cassetteTapeImgUrl from "../assets/cassette.png";
 import cassettePlayerButtonsImgUrl from "../assets/cassette_player_buttons.png";
 import cassettePlayerClosedImgUrl from "../assets/cassette_player_closed.png";
 import cassettePlayerOpenImgUrl from "../assets/cassette_player_open.png";
@@ -8,7 +9,6 @@ import pauseButtonImgUrl from "../assets/cassette_player_pause.png";
 import playButtonImgUrl from "../assets/cassette_player_play.png";
 import rewindButtonImgUrl from "../assets/cassette_player_rewind.png";
 import stopButtonImgUrl from "../assets/cassette_player_stop.png";
-import cassetteTapeImgUrl from "../assets/placeholder_cassette_tape.png";
 import { CassetteAudioContext } from "../audiodevices";
 import { useGameStore } from "../state/store";
 import styles from "./cassetteplayer.module.css";
@@ -117,5 +117,5 @@ function DraggableCassetteTape() {
 }
 
 export function CassetteTape() {
-    return <img src={cassetteTapeImgUrl} />;
+    return <img className={styles.NonDraggableTape} src={cassetteTapeImgUrl} />;
 }
