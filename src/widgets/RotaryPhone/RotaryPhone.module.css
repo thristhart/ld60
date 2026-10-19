@@ -22,6 +22,9 @@
     max-width: none;
 }
 
-.RotaryPhoneDigit {
-    font-size: 40px;
+.RotaryPhoneRotor {
+    position: absolute;
+    width: 38%;
+    top: 53%;
+    left: 29%;
 }

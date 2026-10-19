@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import clockFaceImgUrl from "../assets/analog_clock/clock_face.png";
 import hourHandImgUrl from "../assets/analog_clock/hour_hand.png";
 import minuteHandImgUrl from "../assets/analog_clock/minute_hand.png";
@@ -51,17 +51,45 @@ export function AnalogClock(props: AnalogClockProps) {
     const minuteHandRef = useRef<HTMLImageElement>(null);
 
     const { hourAngle, minuteAngle, setClockHandAngle } = useGameStore((s) => s.widgets.clock);
+    const [ hourLocal, setHourLocal ] = useState( hourAngle );
+    const hourLocalRef = useRef(hourAngle);
+    hourLocalRef.current = hourLocal;
+
+    useEffect( () => {
+        setHourLocal(hourAngle);
+    }, [hourAngle])
+
+    const [ minuteLocal, setMinuteLocal ] = useState( minuteAngle); 
+    const minuteLocalRef = useRef(minuteAngle);
+    minuteLocalRef.current = minuteLocal;
+
+    useEffect( () => {
+        setMinuteLocal(minuteAngle);
+    }, [minuteAngle])
+
 
     const hourHandRadianDrag = useRadianDrag(
         containerRef,
         hourHandRef,
-        useCallback((a) => setClockHandAngle("hour", a), [setClockHandAngle])
+        useCallback((a) => setHourLocal(a), [setHourLocal])
     );
     const minuteHandRadianDrag = useRadianDrag(
         containerRef,
         minuteHandRef,
-        useCallback((a) => setClockHandAngle("minute", a), [setClockHandAngle])
+        useCallback((a) => setMinuteLocal(a), [setMinuteLocal])
     );
+
+    const onHourHandMouseUp = useCallback( () => {
+        setClockHandAngle('hour', hourLocalRef.current )
+        window.removeEventListener("mousemove", hourHandRadianDrag);
+        window.removeEventListener("mouseup", onMinuteHandMouseUp);
+        if (containerRef.current) {
+            delete containerRef.current.dataset.cursor;
+        }
+        if (hourHandRef.current) {
+            delete hourHandRef.current.dataset.forcehover;
+        }
+    }, [hourLocalRef, setClockHandAngle])
 
     const onHourHandClick = useCallback(() => {
         if (containerRef.current) {
@@ -69,36 +97,28 @@ export function AnalogClock(props: AnalogClockProps) {
         }
 
         window.addEventListener("mousemove", hourHandRadianDrag);
-        const onMouseUp = (e: MouseEvent) => {
-            window.removeEventListener("mousemove", hourHandRadianDrag);
-            window.removeEventListener("mouseup", onMouseUp);
-            if (containerRef.current) {
-                delete containerRef.current.dataset.cursor;
-            }
-            if (hourHandRef.current) {
-                delete hourHandRef.current.dataset.forcehover;
-            }
-        };
-        window.addEventListener("mouseup", onMouseUp);
+        window.addEventListener("mouseup", onHourHandMouseUp);
     }, []);
 
-    const onMinuteHandClick = useCallback(() => {
-        if (containerRef.current) {
-            containerRef.current.dataset.cursor = "point";
-        }
-        window.addEventListener("mousemove", minuteHandRadianDrag);
-        const onMouseUp = (e: MouseEvent) => {
+    const onMinuteHandMouseUp = useCallback( () => {
+            setClockHandAngle('minute', minuteLocalRef.current)
             window.removeEventListener("mousemove", minuteHandRadianDrag);
-            window.removeEventListener("mouseup", onMouseUp);
+            window.removeEventListener("mouseup", onMinuteHandMouseUp);
             if (containerRef.current) {
                 delete containerRef.current.dataset.cursor;
             }
             if (minuteHandRef.current) {
                 delete minuteHandRef.current.dataset.forcehover;
             }
-        };
-        window.addEventListener("mouseup", onMouseUp);
-    }, []);
+    }, [minuteLocalRef, setClockHandAngle])
+
+    const onMinuteHandClick = useCallback(() => {
+        if (containerRef.current) {
+            containerRef.current.dataset.cursor = "point";
+        }
+        window.addEventListener("mousemove", minuteHandRadianDrag);
+        window.addEventListener("mouseup", onMinuteHandMouseUp);
+    }, [onMinuteHandMouseUp]);
 
     return (
         <div
@@ -115,7 +135,7 @@ export function AnalogClock(props: AnalogClockProps) {
                 onMouseDown={onMinuteHandClick}
                 className={analogClockStyles.MinuteHand}
                 src={minuteHandImgUrl}
-                style={{ transform: `rotate(${minuteAngle}deg)` }}
+                style={{ transform: `rotate(${minuteLocal}deg)` }}
                 draggable={false}
                 data-cursor="point"
             />
@@ -124,7 +144,7 @@ export function AnalogClock(props: AnalogClockProps) {
                 onMouseDown={onHourHandClick}
                 className={analogClockStyles.HourHand}
                 src={hourHandImgUrl}
-                style={{ transform: `rotate(${hourAngle}deg)` }}
+                style={{ transform: `rotate(${hourLocal}deg)` }}
                 draggable={false}
                 data-cursor="point"
             />

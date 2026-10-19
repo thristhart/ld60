@@ -59,11 +59,12 @@ function Overview() {
     return (
         <>
             <Hotspot left={630} top={300} width={200} height={500} widget={MorseReference} />
-            <Hotspot left={1120} top={600} width={1490 / 4} height={1064 / 4} widget={TV} />
+            <Hotspot left={1900} top={355} width={640} height={620} widget={SwitchBoard} />
+            <img className={styles.bgImg} src={bgImgUrlTable} />
+            <Hotspot left={1120} top={600} width={500} height={300} widget={TV} />
             <Hotspot left={1480} top={300} width={235} height={235} widget={AnalogClock} />
             <Hotspot left={895} top={750} width={200} height={200} widget={LoggingRotaryPhone} />
             <Hotspot left={530} top={785} width={180} height={100} widget={Morse} />
-            <Hotspot left={1925} top={246} width={400} height={400} widget={SwitchBoard} />
             <Hotspot left={1625} top={830} width={150} height={150} widget={CassettePlayer} />
             <LeftDrawer />
             <RightDrawer />
@@ -141,6 +142,7 @@ function YouWinScreen() {
                     <li>Zyrconium</li>
                     <li>LGPO</li>
                     <li>Tanvern</li>
+                    <li>gqycloud</li>
                 </ul>
             </section>
         </div>
@@ -155,7 +157,6 @@ export default function Game() {
             <CassetteAudioProvider>
                 <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
                     <img className={styles.bgImg} src={bgImgUrl} />
-                    <img className={styles.bgImg} src={bgImgUrlTable} />
                     <Overview />
                     <WidgetView />
                     <YouWinScreen />

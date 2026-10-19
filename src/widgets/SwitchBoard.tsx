@@ -3,67 +3,60 @@ import { DragDropProvider, useDragDropManager, useDraggable, useDroppable } from
 import classNames from "classnames";
 import { useEffect, useRef } from "react";
 import plugHeadImageUrl from "../assets/switchboard/plug_head.png";
-import plugJackImageUrl from "../assets/switchboard/plug_jack.png";
-import switchboardBackImageUrl from "../assets/switchboard/switchboard_back.png";
-import switchboardDeckImageUrl from "../assets/switchboard/switchboard_deck.png";
+import switchboardBackImageUrl from "../assets/switchboard/switchboard.png";
 import { useGameStore, type PlugPositions } from "../state/store";
 import switchboardStyles from "./SwitchBoard.module.css";
 import type { WidgetProps } from "./widget";
 
 interface SwitchboardProps extends WidgetProps {}
-const plugJacks = ["A", "B", "C", "D", "E", "F", "G", "H"];
+const plugJacks: PlugPositions[] = [
+    "Phone",
+    "Telegraph",
+    "Typewriter",
+    "Clock",
+    "Butcher",
+    "Clark",
+    "Baker",
+    "Stevenson",
+];
 
 const positionMap = {
-    baseOne: {
-        left: "100px",
-        top: "650px",
+    Phone: {
+        left: "55px",
+        top: "250px",
     },
-    baseTwo: {
-        left: "500px",
-        top: "650px",
+    Telegraph: {
+        left: "195px",
+        top: "250px",
     },
-    A: {
-        left: "100px",
-        top: "180px",
+    Typewriter: {
+        left: "340px",
+        top: "250px",
     },
-    B: {
-        left: "300px",
-        top: "180px",
+    Clock: {
+        left: "480px",
+        top: "250px",
     },
-    C: {
-        left: "500px",
-        top: "180px",
+    Butcher: {
+        left: "55px",
+        top: "465px",
     },
-    D: {
-        left: "700px",
-        top: "180px",
+    Clark: {
+        left: "195px",
+        top: "465px",
     },
-    E: {
-        left: "100px",
-        top: "480px",
+    Baker: {
+        left: "340px",
+        top: "465px",
     },
-    F: {
-        left: "300px",
-        top: "480px",
-    },
-    G: {
-        left: "500px",
-        top: "480px",
-    },
-    H: {
-        left: "700px",
-        top: "480px",
+    Stevenson: {
+        left: "480px",
+        top: "465px",
     },
 };
 
 function getPlugPosition(plugType: "One" | "Two", position: PlugPositions) {
-    switch (position) {
-        case "base":
-            if (plugType === "One") return positionMap.baseOne;
-            return positionMap.baseTwo;
-        default:
-            return positionMap[position];
-    }
+    return positionMap[position];
 }
 
 function PlugJackDroppable(props: { jackName: string }) {
@@ -77,12 +70,6 @@ function PlugJackDroppable(props: { jackName: string }) {
     return (
         <div className={switchboardStyles.PlugJackContainer} ref={ref}>
             <div className={switchboardStyles.PlugJackName}>{jackName}</div>
-            <img
-                id={`plug-jack-${jackName}`}
-                className={switchboardStyles.PlugJack}
-                src={plugJackImageUrl}
-                draggable={false}
-            />
         </div>
     );
 }
@@ -102,20 +89,7 @@ export function SwitchBoard(props: SwitchboardProps) {
             )}
             inert={props.blockInteraction}
             draggable={false}>
-            <div className={switchboardStyles.BackgroundContainer}>
-                <img
-                    className={switchboardStyles.SwitchboardBack}
-                    src={switchboardBackImageUrl}
-                    draggable={false}
-                    inert
-                />
-                <img
-                    className={switchboardStyles.SwitchboardDeck}
-                    src={switchboardDeckImageUrl}
-                    draggable={false}
-                    inert
-                />
-            </div>
+            <img className={switchboardStyles.SwitchboardBack} src={switchboardBackImageUrl} draggable={false} inert />
             <DragDropProvider
                 onDragEnd={(event) => {
                     if (event.canceled) {

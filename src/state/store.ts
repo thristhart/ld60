@@ -15,13 +15,21 @@ const telephoneRingingSound = new Howl({
     volume: 0.5,
 });
 
-export type PlugPositions = "base" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H";
+export type PlugPositions =
+    | "Phone"
+    | "Telegraph"
+    | "Typewriter"
+    | "Clock"
+    | "Butcher"
+    | "Clark"
+    | "Baker"
+    | "Stevenson";
 const initialState = {
     openWidget: undefined as Widget | undefined,
     widgets: {
         switchboard: {
-            plugOnePosition: "base" as PlugPositions,
-            plugTwoPosition: "base" as PlugPositions,
+            plugOnePosition: "Clock" as PlugPositions,
+            plugTwoPosition: "Clark" as PlugPositions,
         },
         clock: {
             hourAngle: 270,
@@ -313,8 +321,10 @@ useGameStore.subscribe((state) => {
 
     if (!state.widgets.rotaryPhone.ringing && !state.hasWon) {
         if (
-            (state.widgets.switchboard.plugOnePosition === "B" && state.widgets.switchboard.plugTwoPosition === "G") ||
-            (state.widgets.switchboard.plugOnePosition === "G" && state.widgets.switchboard.plugTwoPosition === "B")
+            (state.widgets.switchboard.plugOnePosition === "Telegraph" &&
+                state.widgets.switchboard.plugTwoPosition === "Baker") ||
+            (state.widgets.switchboard.plugOnePosition === "Baker" &&
+                state.widgets.switchboard.plugTwoPosition === "Telegraph")
         ) {
             // biscuit
             if (state.widgets.morse.currentValue.trim().endsWith("-... .. ... -.-. ..- .. -")) {
