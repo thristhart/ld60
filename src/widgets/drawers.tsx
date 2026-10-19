@@ -1,7 +1,7 @@
 import { Howl } from "howler";
 import { useState } from "react";
 import rattleSoundUrl from "../assets/audio/drawer locked.mp3";
-import drawerExpandedImgUrl from "../assets/placeholder_drawer_open.png";
+import drawerExpandedImgUrl from "../assets/drawer_interior.png";
 import leftDrawerOpenImgUrl from "../assets/placeholder_leftdrawer_open.png";
 import rightDrawerOpenImgUrl from "../assets/placeholder_rightdrawer_open.png";
 import rightDrawerLockedImgUrl from "../assets/rightdrawer_locked.png";
@@ -36,7 +36,7 @@ function RightDrawerWidget(props: RightDrawerProps) {
     }
     return (
         <div>
-            <img src={drawerExpandedImgUrl} />
+            <img src={drawerExpandedImgUrl} inert />
             {hasTape && (
                 <Control top={600} left={1200} width={171} height={92} onClick={takeTape}>
                     <CassetteTape />
@@ -78,7 +78,7 @@ function LeftDrawerOpenContents() {
     const [isLetterOpen, setLetterOpen] = useState(false);
     return (
         <div>
-            <img src={drawerExpandedImgUrl} />
+            <img src={drawerExpandedImgUrl} inert />
             {!isLetterOpen && (
                 <Control top={600} left={1200} width={230} height={130} onClick={() => setLetterOpen(true)}>
                     <LetterWidget scaleDown={true} />

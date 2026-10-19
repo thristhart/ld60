@@ -1,6 +1,10 @@
 .TV {
     position: absolute;
     inset: 0;
+    transform: scale(0.8);
+}
+.TV.ScaledDown {
+    transform: unset;
 }
 .TVimg {
     width: 100%;
@@ -26,19 +30,19 @@
 .VHS {
     position: absolute;
     top: 1100px;
-    right: 300px;
+    right: 100px;
+    width: 400px;
+    cursor: grab;
+}
+.ScaledDown .VHS {
+    top: 230px;
+    width: 100px;
+    right: -100px;
 }
 .VHSDropTarget {
     position: absolute;
     right: 600px;
-    bottom: 770px;
+    bottom: 670px;
     width: 280px;
-    height: 100px;
-}
-.TVPlay {
-    background-color: red;
-}
-
-.TVRewind {
-    background-color: red;
+    height: 500px;
 }

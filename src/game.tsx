@@ -1,14 +1,18 @@
 import { useEffect, useRef, useState } from "react";
-import bgImgUrlLeft from "./assets/left_window_furniture.png";
-import bgImgUrl from "./assets/Placeholder BG Asset - Sketch 1.png";
+import phoneCallAudioUrl from "./assets/audio/win phone call.mp3";
+import bgImgUrl from "./assets/background.png";
 import bgImgUrlTable from "./assets/table_layer.png";
+import { CassetteAudioProvider, VHSAudioProvider } from "./audiodevices";
 import styles from "./game.module.css";
+import { MuteButton } from "./mutebutton";
 import { useGameStore } from "./state/store";
+import { Subtitles } from "./subtitles";
 import { AnalogClock } from "./widgets/AnalogClock";
 import { CassettePlayer } from "./widgets/cassetteplayer";
 import { LeftDrawer, RightDrawer } from "./widgets/drawers";
 import { Hotspot } from "./widgets/Hotspot";
 import { Morse } from "./widgets/morse";
+import { MorseReference } from "./widgets/morseReference";
 import { RotaryPhone } from "./widgets/RotaryPhone";
 import { SwitchBoard } from "./widgets/SwitchBoard";
 import { TV } from "./widgets/tv";
@@ -54,12 +58,14 @@ function LoggingRotaryPhone(props: WidgetProps) {
 function Overview() {
     return (
         <>
+            <Hotspot left={630} top={300} width={200} height={500} widget={MorseReference} />
+            <Hotspot left={1900} top={355} width={640} height={620} widget={SwitchBoard} />
+            <img className={styles.bgImg} src={bgImgUrlTable} />
             <Hotspot left={1120} top={600} width={1490 / 4} height={1064 / 4} widget={TV} />
-            <Hotspot left={1505} top={300} width={235} height={235} widget={AnalogClock} />
-            <Hotspot left={895} top={750} width={190} height={150} widget={LoggingRotaryPhone} />
-            <Hotspot left={520} top={780} width={190} height={150} widget={Morse} />
-            <Hotspot left={1925} top={246} width={400} height={400} widget={SwitchBoard} />
-            <Hotspot left={1525} top={830} width={150} height={150} widget={CassettePlayer} />
+            <Hotspot left={1480} top={300} width={235} height={235} widget={AnalogClock} />
+            <Hotspot left={895} top={750} width={200} height={200} widget={LoggingRotaryPhone} />
+            <Hotspot left={530} top={785} width={180} height={100} widget={Morse} />
+            <Hotspot left={1625} top={830} width={150} height={150} widget={CassettePlayer} />
             <LeftDrawer />
             <RightDrawer />
         </>
@@ -92,21 +98,72 @@ function WidgetView() {
     );
 }
 
-export default function Game() {
-    const customPointerRef = useRef<HTMLImageElement>(null);
+const baseVolume = 0.2;
+function YouWinScreen() {
+    const hasWon = useGameStore((s) => s.hasWon);
+    const phoneCallAudioRef = useRef<HTMLAudioElement>(null);
+    const volume = useGameStore((s) => (s.muted ? 0 : s.volume * baseVolume));
+    if (phoneCallAudioRef.current) {
+        phoneCallAudioRef.current.volume = volume;
+    }
+    useEffect(() => {
+        if (phoneCallAudioRef.current) {
+            phoneCallAudioRef.current.volume = volume;
+        }
+        if (hasWon) {
+            phoneCallAudioRef.current?.play();
+        } else {
+            return;
+        }
 
+        const updatePhonecallCurrentTime = () => {
+            playbackTrackingAnimationFrame = requestAnimationFrame(updatePhonecallCurrentTime);
+            useGameStore.setState({ phoneCallCurrentTime: phoneCallAudioRef.current?.currentTime ?? undefined });
+        };
+        let playbackTrackingAnimationFrame = requestAnimationFrame(updatePhonecallCurrentTime);
+        return () => {
+            cancelAnimationFrame(playbackTrackingAnimationFrame);
+        };
+    }, [hasWon]);
+
+    if (!hasWon) {
+        return null;
+    }
+    return (
+        <div className={styles.YouWinScreen}>
+            <section>
+                <audio src={phoneCallAudioUrl} ref={phoneCallAudioRef} />
+                <h2>Thanks for playing!</h2>
+                <p>Featuring the work of:</p>
+                <ul>
+                    <li>
+                        <a href="https://bsky.app/profile/thristhart.bsky.social">thristhart</a>
+                    </li>
+                    <li>Zyrconium</li>
+                    <li>LGPO</li>
+                    <li>Tanvern</li>
+                    <li>gqycloud</li>
+                </ul>
+            </section>
+        </div>
+    );
+}
+
+export default function Game() {
     const scale = useFitToScreen();
 
     return (
-        <>
-            <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
-                <img className={styles.bgImg} src={bgImgUrl} />
-                <img className={styles.bgImg} src={bgImgUrlLeft} />
-                <img className={styles.bgImg} src={bgImgUrlTable} />
-                <Overview />
-                <WidgetView />
-            </div>
-            <img className={styles.customPointer} ref={customPointerRef} popover="manual" />
-        </>
+        <VHSAudioProvider>
+            <CassetteAudioProvider>
+                <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
+                    <img className={styles.bgImg} src={bgImgUrl} />
+                    <Overview />
+                    <WidgetView />
+                    <YouWinScreen />
+                    <Subtitles />
+                </div>
+                <MuteButton />
+            </CassetteAudioProvider>
+        </VHSAudioProvider>
     );
 }

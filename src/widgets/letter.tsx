@@ -1,4 +1,4 @@
-import envelopeImage from "../assets/placeholder_envelope.png";
+import envelopeImage from "../assets/envelope.png";
 import styles from "./letter.module.css";
 import type { WidgetProps } from "./widget";
 
@@ -12,18 +12,17 @@ export function LetterWidget(props: WidgetProps) {
 function LetterContents() {
     return (
         <div className={styles.LetterContents}>
-            <p>Cheddar,</p>
-            <p>You've done well so far. Finally, I ask you to simply send a telegraph message.</p>
+            <p>To my dear beloved cheddar biscuit,</p>
+            <p>You've almost done it! The vast majority of my fortune will soon be yours.</p>
             <p>
-                Use the switchboard to connect the telegraph key to the offices of the executor of my will, PLACEHOLDER
-                LAWYER FIRST NAME.
+                All that is required is for you to telegraph the secret word to my lawyer's office. Make sure the signal
+                is properly routed through the phone switchboard.
             </p>
             <p>
-                Once he has received from you the password <code>BISCUIT</code>, he will call you to arrange your
-                inheritance.
+                The secret word is you! <code>BISCUIT</code>.
             </p>
             <p>I'm so proud,</p>
-            <p>Grandpa.</p>
+            <p>Pappy</p>
         </div>
     );
 }

@@ -1,6 +1,16 @@
-.CassettePlayerWidget {
-    width: 800px;
-    image-rendering: pixelated;
+.ScaledDown .CassetteImage {
+    width: 140px;
+}
+.CassetteButtons {
+    position: absolute;
+    top: 840px;
+    left: 914px;
+}
+.ScaledDown .CassetteButtons {
+    width: 74px;
+    position: absolute;
+    top: 90px;
+    left: 20px;
 }
 
 .DraggableTape {
@@ -10,6 +20,11 @@
     width: 400px;
     image-rendering: pixelated;
 }
+
+.NonDraggableTape {
+    width: 200px;
+}
+
 .DropTarget {
     width: 100px;
     height: 100px;

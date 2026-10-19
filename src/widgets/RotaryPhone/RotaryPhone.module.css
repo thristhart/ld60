@@ -1,0 +1,27 @@
+.RotaryPhone {
+    position: relative;
+    height: 800px;
+    width: 800px;
+}
+
+.RotaryPhoneFrame {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    aspect-ratio: 889 / 1029;
+    transform: translateX(-50%);
+    overflow: hidden;
+}
+
+.RotaryPhoneImg {
+    position: absolute;
+    width: 288%; /* 2560 / 889 */
+    left: -96.29%; /* -856 / 889 */
+    top: -15.94%; /* -164 / 1029 */
+    max-width: none;
+}
+
+.RotaryPhoneDigit {
+    font-size: 40px;
+}

@@ -2,7 +2,7 @@
 import { Howl } from "howler";
 import { create } from "zustand";
 import drawerOpeningSoundUrl from "../assets/audio/drawer open.mp3";
-import telephoneRingingSoundUrl from "../assets/audio/placeholder_telephone_ringing.wav";
+import telephoneRingingSoundUrl from "../assets/audio/phone_ringing.mp3";
 import type { Widget } from "../widgets/widget";
 
 const drawerOpeningSound = new Howl({
@@ -12,15 +12,24 @@ const drawerOpeningSound = new Howl({
 const telephoneRingingSound = new Howl({
     src: [telephoneRingingSoundUrl],
     loop: true,
+    volume: 0.5,
 });
 
-export type PlugPositions = "base" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H";
+export type PlugPositions =
+    | "Phone"
+    | "Telegraph"
+    | "Typewriter"
+    | "Clock"
+    | "Butcher"
+    | "Clark"
+    | "Baker"
+    | "Stevenson";
 const initialState = {
     openWidget: undefined as Widget | undefined,
     widgets: {
         switchboard: {
-            plugOnePosition: "base" as PlugPositions,
-            plugTwoPosition: "base" as PlugPositions,
+            plugOnePosition: "Clock" as PlugPositions,
+            plugTwoPosition: "Clark" as PlugPositions,
         },
         clock: {
             hourAngle: 270,
@@ -29,6 +38,8 @@ const initialState = {
         tv: {
             hasTape: false,
             currentTime: undefined as number | undefined,
+            isPlaying: false,
+            isRewinding: false,
         },
         morse: {
             currentValue: "" as string,
@@ -42,6 +53,9 @@ const initialState = {
         },
         cassette: {
             tapeInside: false,
+            currentTime: undefined as number | undefined,
+            isPlaying: false,
+            isRewinding: false,
         },
         rotaryPhone: {
             dialed: "",
@@ -50,6 +64,9 @@ const initialState = {
     },
     hasCasetteTape: false,
     hasWon: false,
+    phoneCallCurrentTime: undefined as number | undefined,
+    muted: false,
+    volume: 1.0,
 };
 
 type GameState = typeof initialState & {
@@ -71,6 +88,7 @@ type GameState = typeof initialState & {
         cassette: {
             insertTape: () => void;
             eject: () => void;
+            setCurrentTime: (currentTime: number | undefined) => void;
         };
         rightDrawer: {
             open: () => void;
@@ -83,8 +101,11 @@ type GameState = typeof initialState & {
             addDialedNumber: (newNumber: number) => void;
             resetDialedNumber: () => void;
             ring: () => void;
+            answer: () => void;
         };
     };
+    setMuted: (muted: boolean) => void;
+    setVolume: (volume: number) => void;
 };
 
 export const useGameStore = create<GameState>()((set) => ({
@@ -203,6 +224,13 @@ export const useGameStore = create<GameState>()((set) => ({
                     hasCasetteTape: true,
                 }));
             },
+            setCurrentTime: (currentTime: number | undefined) =>
+                set((s) => {
+                    if (s.widgets.cassette.currentTime === currentTime) {
+                        return s;
+                    }
+                    return { widgets: { ...s.widgets, cassette: { ...s.widgets.cassette, currentTime } } };
+                }),
         },
         rotaryPhone: {
             ...initialState.widgets.rotaryPhone,
@@ -240,14 +268,33 @@ export const useGameStore = create<GameState>()((set) => ({
                     },
                 }));
             },
+            answer() {
+                telephoneRingingSound.stop();
+                set((s) => ({
+                    widgets: {
+                        ...s.widgets,
+                        rotaryPhone: {
+                            ...s.widgets.rotaryPhone,
+                            ringing: false,
+                        },
+                    },
+                    hasWon: true,
+                }));
+            },
         },
+    },
+    setMuted(muted) {
+        set({ muted });
+    },
+    setVolume(volume) {
+        set({ volume });
     },
 }));
 
 const targetHourAngleRange = { min: 24, max: 59 };
 const targetMinuteAngleRange = { min: 209, max: 238 };
 
-const targetPhoneNumber = "123456";
+const targetPhoneNumber = "5552431460";
 
 function hourInRange(hour: number) {
     return hour < targetHourAngleRange.max && hour > targetHourAngleRange.min;
@@ -274,8 +321,10 @@ useGameStore.subscribe((state) => {
 
     if (!state.widgets.rotaryPhone.ringing && !state.hasWon) {
         if (
-            (state.widgets.switchboard.plugOnePosition === "B" && state.widgets.switchboard.plugTwoPosition === "G") ||
-            (state.widgets.switchboard.plugOnePosition === "G" && state.widgets.switchboard.plugTwoPosition === "B")
+            (state.widgets.switchboard.plugOnePosition === "Telegraph" &&
+                state.widgets.switchboard.plugTwoPosition === "Baker") ||
+            (state.widgets.switchboard.plugOnePosition === "Baker" &&
+                state.widgets.switchboard.plugTwoPosition === "Telegraph")
         ) {
             // biscuit
             if (state.widgets.morse.currentValue.trim().endsWith("-... .. ... -.-. ..- .. -")) {
@@ -283,4 +332,7 @@ useGameStore.subscribe((state) => {
             }
         }
     }
+
+    Howler.mute(state.muted);
+    Howler.volume(state.volume);
 });

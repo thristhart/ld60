@@ -1,0 +1,1 @@
+export { RotaryPhone } from "./RotaryPhone";

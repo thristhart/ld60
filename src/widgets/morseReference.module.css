@@ -1,0 +1,6 @@
+.MorsePoster {
+    width: 440px;
+}
+.MorsePoster.ScaledDown {
+    width: 200px;
+}
