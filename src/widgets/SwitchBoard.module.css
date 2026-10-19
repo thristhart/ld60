@@ -42,11 +42,6 @@
     font-size: 13px;
 }
 
-.PlugJack {
-    height: 48px;
-    width: 48px;
-}
-
 .PlugHeadsContainer {
     position: absolute;
     top: 0;
@@ -83,6 +78,14 @@
 .PlugHeadImage {
     height: 75%;
     width: 75%;
+    clip-path: inset(0 0 0 50%);
+    transition:
+        clip-path 60ms linear,
+        transform 60ms linear;
+}
+[aria-grabbed="true"] .PlugHeadImage {
+    clip-path: inset(0 0 0 0);
+    transform: translateX(10px);
 }
 
 .PlugWireHorizontal {
