@@ -1,7 +1,9 @@
 .RotaryPhone {
     position: relative;
-    height: 800px;
-    width: 800px;
+    width: 1660px;
+    aspect-ratio: 854 / 490;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .RotaryPhoneFrame {
@@ -19,6 +21,28 @@
     width: 288%; /* 2560 / 889 */
     left: -96.29%; /* -856 / 889 */
     top: -15.94%; /* -164 / 1029 */
+    max-width: none;
+}
+
+.RotaryPhoneCloseUpFrame {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.RotaryPhoneOffHook {
+    position: absolute;
+    width: 119.91%; /* 1024 / 854 */
+    left: -9.95%; /* -85 / 854 */
+    top: -3.67%; /* -18 / 490 */
+    max-width: none;
+}
+
+.RotaryPhoneHungUp {
+    position: absolute;
+    width: 119.91%; /* 1024 / 854 */
+    left: -9.97%; /* -85.17 / 854 */
+    top: -3.75%; /* -18.37 / 490 */
     max-width: none;
 }
 

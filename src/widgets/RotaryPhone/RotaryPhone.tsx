@@ -1,7 +1,7 @@
-import { useCallback, useId } from "react";
+import { useCallback, useId, useState } from "react";
 import clickSoundUrl from "../../assets/audio/click_2.mp3";
-
 import rotaryPhoneImgUrl from "../../assets/phone_base.webp";
+import rotaryPhoneOffHookImgUrl from "../../assets/phone_off_hook.webp";
 import rotorImgUrl from "../../assets/phone_rotor.webp";
 import { useGameStore } from "../../state/store";
 import { Control } from "../Control";
@@ -22,8 +22,8 @@ const dialClickSound = new Howl({
     volume: 0.5,
 });
 
-const rotorLeft = 245;
-const rotorTop = 420;
+const rotorLeft = 690;
+const rotorTop = 512;
 const rotorSize = 280;
 
 interface RotaryPhoneProps extends WidgetProps {
@@ -35,6 +35,7 @@ export function RotaryPhone(props: RotaryPhoneProps) {
     const answerPhone = useGameStore((s) => s.widgets.rotaryPhone.answer);
     const setDialedNumber = useGameStore((s) => s.widgets.rotaryPhone.setDialedNumber);
     const { onDial } = props;
+
     const dial = useCallback(
         (digit: number) => {
             dialClickSound.play();
@@ -45,30 +46,67 @@ export function RotaryPhone(props: RotaryPhoneProps) {
         [setDialedNumber, onDial]
     );
 
+    const [isHungUp, setIsHungUp] = useState<boolean>(false);
+
+    const hangUp = useCallback(() => {
+        if (isHungUp) {
+            return;
+        }
+        setIsHungUp(true);
+        setDialedNumber("");
+    }, [isHungUp]);
+
+    const pickUp = useCallback(() => {
+        if (!isHungUp) {
+            return;
+        }
+        setIsHungUp(false);
+        setDialedNumber("");
+    }, [isHungUp]);
+
     if (props.scaleDown) {
-        return <PhoneImage inert={props.blockInteraction} includeRotor={true} />;
+        return <PhoneImage inert={props.blockInteraction} closeUp={false} includeRotor={true} offHook={false} />;
     }
 
     return (
         <div className={styles.RotaryPhone}>
-            <PhoneImage includeRotor={false} />
+            <PhoneImage closeUp={true} includeRotor={false} offHook={!isHungUp} />
             {isPhoneRinging && <Control top={0} left={0} height={500} width={1200} onClick={answerPhone} />}
             <RotaryPhoneNumberPlate left={rotorLeft} top={rotorTop} size={rotorSize} />
             <RotaryPhoneRotor left={rotorLeft} top={rotorTop} size={rotorSize} onDialed={dial} />
             <FingerStop />
+            <Control
+                onDown={hangUp}
+                onUp={pickUp}
+                top={159}
+                left={632}
+                width={397}
+                height={146}
+            />
         </div>
     );
 }
 
 interface PhoneImageProps {
     inert?: boolean;
+    closeUp: boolean;
     includeRotor: boolean;
+    offHook: boolean;
 }
 
 function PhoneImage(props: PhoneImageProps) {
+    const imgClass = !props.closeUp
+        ? styles.RotaryPhoneImg
+        : props.offHook
+          ? styles.RotaryPhoneOffHook
+          : styles.RotaryPhoneHungUp;
+
     return (
-        <div className={styles.RotaryPhoneFrame} inert={props.inert}>
-            <img className={styles.RotaryPhoneImg} src={rotaryPhoneImgUrl} draggable={false} />
+        <div className={props.closeUp ? styles.RotaryPhoneCloseUpFrame : styles.RotaryPhoneFrame} inert={props.inert}>
+            <img
+                className={imgClass}
+                src={props.offHook ? rotaryPhoneOffHookImgUrl : rotaryPhoneImgUrl} draggable={false}
+            />
             {props.includeRotor && <img className={styles.RotaryPhoneRotor} src={rotorImgUrl} />}
         </div>
     );
@@ -126,7 +164,6 @@ function RotaryPhoneRotor(props: RotaryPhoneRotorProps) {
         return { digit, left: center + offset.x, top: center + offset.y };
     });
 
-    // The art paints the holes in; cut them out so the number plate underneath shows through
     const clip = [
         `M 0 0 H ${props.size} V ${props.size} H 0 Z`,
         ...holes.map((hole) => circlePath(hole.left, hole.top, holeSize / 2)),
