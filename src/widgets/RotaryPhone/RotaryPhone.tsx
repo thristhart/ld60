@@ -1,5 +1,6 @@
 import { useCallback, useId } from "react";
 import clickSoundUrl from "../../assets/audio/click_2.mp3";
+
 import rotaryPhoneImgUrl from "../../assets/phone_base.webp";
 import rotorImgUrl from "../../assets/phone_rotor.webp";
 import { useGameStore } from "../../state/store";
@@ -16,7 +17,7 @@ import {
 } from "./rotaryPhoneUtils";
 import { useRotorDial } from "./useRotorDial";
 
-const dialClick = new Howl({
+const dialClickSound = new Howl({
     src: [clickSoundUrl],
     volume: 0.5,
 });
@@ -36,7 +37,7 @@ export function RotaryPhone(props: RotaryPhoneProps) {
     const { onDial } = props;
     const dial = useCallback(
         (digit: number) => {
-            dialClick.play();
+            dialClickSound.play();
             const newDialed = `${useGameStore.getState().widgets.rotaryPhone.dialed}${digit.toString()}`;
             setDialedNumber(newDialed);
             onDial?.(useGameStore.getState().widgets.rotaryPhone.dialed);
