@@ -57,7 +57,7 @@ function LoggingRotaryPhone(props: WidgetProps) {
 function Overview() {
     return (
         <>
-            <Hotspot left={630} top={330} width={400} height={600} widget={MorseReference} />
+            <Hotspot left={630} top={300} width={200} height={500} widget={MorseReference} />
             <Hotspot left={1120} top={600} width={1490 / 4} height={1064 / 4} widget={TV} />
             <Hotspot left={1480} top={300} width={235} height={235} widget={AnalogClock} />
             <Hotspot left={895} top={750} width={190} height={150} widget={LoggingRotaryPhone} />

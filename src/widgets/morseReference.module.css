@@ -1,14 +1,6 @@
-.MorseReferenceBackground {
-    background-image: url("../assets/old_paper.png");
-    padding: 60px;
+.MorsePoster {
+    width: 440px;
 }
-
-.MorseReferenceCell {
-    display: inline-block;
-    width: 30px;
-    border: 1px black solid;
-    padding: 4px;
-}
-
-.MorseReferenceCell.scaledDown {
+.MorsePoster.ScaledDown {
+    width: 200px;
 }
