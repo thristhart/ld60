@@ -65,7 +65,7 @@ export function AnalogClock(props: AnalogClockProps) {
 
     useEffect( () => {
         setMinuteLocal(minuteAngle);
-    }, [hourAngle])
+    }, [minuteAngle])
 
 
     const hourHandRadianDrag = useRadianDrag(
