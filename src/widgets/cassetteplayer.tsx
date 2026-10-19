@@ -3,7 +3,13 @@ import { DragDropProvider, useDragDropManager, useDraggable, useDroppable } from
 import { use, useEffect, useRef } from "react";
 import casetteAudioUrl from "../assets/audio/cassette_ad.mp3";
 import casetteAudioReversedUrl from "../assets/audio/cassette_ad_reversed.mp3";
-import cassettePlayerImgUrl from "../assets/placeholder_cassette_player.png";
+import cassettePlayerButtonsImgUrl from "../assets/cassette_player_buttons.png";
+import cassettePlayerClosedImgUrl from "../assets/cassette_player_closed.png";
+import cassettePlayerOpenImgUrl from "../assets/cassette_player_open.png";
+import pauseButtonImgUrl from "../assets/cassette_player_pause.png";
+import playButtonImgUrl from "../assets/cassette_player_play.png";
+import rewindButtonImgUrl from "../assets/cassette_player_rewind.png";
+import stopButtonImgUrl from "../assets/cassette_player_stop.png";
 import cassetteTapeImgUrl from "../assets/placeholder_cassette_tape.png";
 import { useGameStore } from "../state/store";
 import styles from "./cassetteplayer.module.css";
@@ -205,7 +211,12 @@ export function CassettePlayer(props: CassetteProps) {
         };
     }, [props.scaleDown, setCurrentTime]);
     if (props.scaleDown) {
-        return <img className={styles.ScaledDown} src={cassettePlayerImgUrl} />;
+        return (
+            <div className={styles.ScaledDown}>
+                <img className={styles.CassetteImage} src={cassettePlayerOpenImgUrl} />
+                <img className={styles.CassetteButtons} src={cassettePlayerButtonsImgUrl} />
+            </div>
+        );
     }
     return (
         <div>
@@ -219,22 +230,35 @@ export function CassettePlayer(props: CassetteProps) {
                     }
                 }}>
                 <CassettePlayerDropTarget />
-                <img src={cassettePlayerImgUrl} className={styles.CassettePlayerWidget} />
+                <img
+                    src={cassetteTapeInsidePlayer ? cassettePlayerClosedImgUrl : cassettePlayerOpenImgUrl}
+                    className={styles.CassettePlayerWidget}
+                />
+                {!cassetteTapeInsidePlayer && (
+                    <img src={cassettePlayerButtonsImgUrl} className={styles.CassetteButtons} />
+                )}
                 {cassetteTapeInsidePlayer && (
                     <>
-                        <Control width={50} height={50} top={830} left={980} onDown={rewind} onUp={stopRewind} />
-                        <Control width={50} height={50} top={845} left={1040} onClick={pause} />
+                        <Control width={130} height={130} top={835} left={905} onDown={rewind} onUp={stopRewind}>
+                            <img src={rewindButtonImgUrl} />
+                        </Control>
+                        <Control width={100} height={130} top={855} left={1025} onClick={pause}>
+                            <img src={pauseButtonImgUrl} />
+                        </Control>
                         <Control
-                            width={58}
-                            height={50}
-                            top={860}
-                            left={1095}
+                            width={110}
+                            height={130}
+                            top={875}
+                            left={1140}
                             onClick={() => {
                                 pause();
                                 eject();
-                            }}
-                        />
-                        <Control width={60} height={50} top={880} left={1150} onClick={play} />
+                            }}>
+                            <img src={stopButtonImgUrl} />
+                        </Control>
+                        <Control width={130} height={130} top={898} left={1260} onClick={play}>
+                            <img src={playButtonImgUrl} />
+                        </Control>
                     </>
                 )}
                 {playerHasCassette && <DraggableCassetteTape />}
