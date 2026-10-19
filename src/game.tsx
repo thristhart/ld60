@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import phoneCallAudioUrl from "./assets/audio/win phone call.mp3";
 import bgImgUrl from "./assets/background.png";
 import bgImgUrlTable from "./assets/table_layer.png";
+import { CassetteAudioProvider, VHSAudioProvider } from "./audiodevices";
 import styles from "./game.module.css";
 import { useGameStore } from "./state/store";
 import { Subtitles } from "./subtitles";
@@ -139,15 +140,17 @@ export default function Game() {
     const scale = useFitToScreen();
 
     return (
-        <>
-            <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
-                <img className={styles.bgImg} src={bgImgUrl} />
-                <img className={styles.bgImg} src={bgImgUrlTable} />
-                <Overview />
-                <WidgetView />
-                <YouWinScreen />
-                <Subtitles />
-            </div>
-        </>
+        <VHSAudioProvider>
+            <CassetteAudioProvider>
+                <div className={styles.playArea} style={{ transform: `translate(-50%, -50%) scale(${scale})` }}>
+                    <img className={styles.bgImg} src={bgImgUrl} />
+                    <img className={styles.bgImg} src={bgImgUrlTable} />
+                    <Overview />
+                    <WidgetView />
+                    <YouWinScreen />
+                    <Subtitles />
+                </div>
+            </CassetteAudioProvider>
+        </VHSAudioProvider>
     );
 }
